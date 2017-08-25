@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace的值就是dao接口的完整路径，就这个demo而言namespace 就是userDao.java的完整路径-->
+<mapper namespace="com.jxust.ssm.dao.DevAttrDao">
+	<resultMap id="BaseResultMap" type="com.jxust.ssm.pojo.DevAttr">
+		<id column="sn" property="sn" jdbcType="INTEGER" />
+		<result column="nDevType" property="nDevType" jdbcType="INTEGER" />
+		<result column="nSubtype" property="nSubtype" jdbcType="INTEGER" />
+		<result column="sDevID" property="sDevID" jdbcType="VARCHAR" />
+		<result column="nLocaMode" property="nLocaMode" jdbcType="INTEGER" />
+		<result column="sDevName" property="sDevName" jdbcType="VARCHAR" />
+		<result column="x_pos" property="x_pos" jdbcType="FLOAT" />
+		<result column="y_pos" property="y_pos" jdbcType="FLOAT" />
+		<result column="fHop" property="fHop" jdbcType="FLOAT" />
+		<result column="fBatteryVolt" property="fBatteryVolt" jdbcType="FLOAT" />
+		<result column="nRSOC" property="nRSOC" jdbcType="FLOAT" />
+		<result column="nAlarm" property="nAlarm" jdbcType="INTEGER" />
+		<result column="nState" property="nState" jdbcType="INTEGER" />
+		<result column="SamplingTime" property="SamplingTime" jdbcType="DATE" />
+		<result column="sIPAddr" property="sIPAddr" jdbcType="VARCHAR" />
+		<result column="nPort" property="nPort" jdbcType="INTEGER" />
+		<result column="sRemark" property="sRemark" jdbcType="VARCHAR" />
+		<result column="Spare1" property="Spare1" jdbcType="VARCHAR" />
+		<result column="Spare2" property="Spare2" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		sn,nDevType,nSubtype,sDevID,nLocaMode,sDevName,x_pos,y_pos,fHop,fBatteryVolt,nRSOC,nAlarm,nState,SamplingTime,sIPAddr,nPort,sRemark
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from Tab_nbms_devattr
+		where sn = #{sn,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectDevAttrList" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from Tab_nbms_devattr
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		Tab_nbms_devattr
+		where sn = #{sn,jdbcType=INTEGER}
+	</delete>
+</mapper>

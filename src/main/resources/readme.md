@@ -1,0 +1,3 @@
+jdbc.properties是连接mysql的数据库配置文件
+jdbc2.properties是连接sqlserver的数据库配置文件
+在spring-mybatis中修改即可修改数据库连接
