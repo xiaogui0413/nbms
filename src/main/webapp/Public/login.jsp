@@ -6,7 +6,7 @@
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
     <title>NB-IOT物资定位管理系统</title>
     <link href="${pageContext.request.contextPath }/Public/style/a.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath }/Public/img/abc.ico" rel="shotcut icon"/>
+    <link href="${pageContext.request.contextPath }/Public/img/dianxin.ico" rel="shotcut icon"/>
 </head>
 <body>
 <header>

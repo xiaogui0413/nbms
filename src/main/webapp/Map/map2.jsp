@@ -91,7 +91,10 @@
 			<td>默认</td>
 		</tr>
 </table>
-		
+<%-- <%  
+   //页面每隔30秒自动刷新一遍       
+   response.setHeader("refresh" , "30" );  
+%> 		 --%>
 </div>
 <script type="text/javascript">
 	// 百度地图API功能	
@@ -111,8 +114,8 @@
 	for(var i=0;i<data_info.length;i++){
 		var marker = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]));  // 创建标注
 		var content = data_info[i][2];
-		map.addOverlay(marker);               // 将标注添加到地图中
-		addClickHandler(content,marker); 
+		map.addOverlay(marker);        // 将标注添加到地图中
+		addClickHandler(content,marker);
 	}
 	function addClickHandler(content,marker){
 		marker.addEventListener("click",function(e){
@@ -122,7 +125,7 @@
 	function openInfo(content,e){
 		var p = e.target;
 		var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-		var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象 
+		var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象
 		map.openInfoWindow(infoWindow,point); //开启信息窗口
 	}
 </script>

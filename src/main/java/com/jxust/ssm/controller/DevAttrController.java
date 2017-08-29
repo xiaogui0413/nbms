@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jxust.ssm.controller;
 
 import java.util.List;
@@ -14,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jxust.ssm.pojo.DevAttr;
 import com.jxust.ssm.service.DevAttrService;
+
+import net.sf.json.JSONArray;
 
 /**
  * @author GuiqiHu
@@ -37,7 +36,16 @@ public class DevAttrController {
 	@RequestMapping("/listDevAttr")
 	public String testlistUser(Model model) {
 		List<DevAttr> devAttr = devAttrService.selectDevAttrList();
-		System.out.println(devAttr.size());
+/*	      JSONArray array = null;
+
+	          array = JSONArray.fromObject(devAttr);//能过去 
+*/
+		JSONArray array = null;
+		array = JSONArray.fromObject(devAttr);
+		
+		model.addAttribute("devAttr", array);
+		Long cur = System.currentTimeMillis();
+		model.addAttribute("cur", cur);
 		System.out.println(devAttr);
 		
 		model.addAttribute("devAttr", devAttr);
@@ -50,7 +58,7 @@ public class DevAttrController {
 		List<DevAttr> devAttr = devAttrService.selectDevAttrList();
 		System.out.println(devAttr);
 		model.addAttribute("devAttr", devAttr);
-		System.out.println("************hah*****");
+		System.out.println("******hah*****");
 		return "/index.jsp";
 	}
 

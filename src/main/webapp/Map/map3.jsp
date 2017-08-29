@@ -70,11 +70,16 @@
 		</tr>
 		</c:forEach>
 </table>
-	<div>
-
-       <label>地址"</label>
-       <span id="dizhi"></span>
-    </div>
+<%--  <div>
+    <%  
+    java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat(    
+     "yyyy-MM-dd HH:mm:ss");    
+   java.util.Date currentTime = new java.util.Date();    
+   String time = simpleDateFormat.format(currentTime).toString();  
+   out.println("当前时间为："+time);
+     %> 
+     ${cur}
+</div> --%> 
 </div>
 </div>
 <div id="bellow">
@@ -102,32 +107,6 @@
 </table>
 	
 </div>
-<!-- <script type="text/javascript">
-alert("aaaa");
-/* $(document).ready(function(){ */
-/* 	$.ajax({
-		url: "",
-		type: "post",
-		success: function(data) {	
-		$(data).each(function (i, item) {
-		});	
-		}
-}); */
-/* alert("NIcao");
-<c:forEach var="u" items="${devAttr }">
-	alert(${u.x_pos });
-</c:forEach>
-alert("wocao"); */
-alert("78787");
-for(int i=0; i < devAttr.size() ; i ++)
-	String str = (String)list.get(i);
-out.print("'"+str+"'");
-if( i < list.size() -1){
-out.print(",");
-alert("1111");
-
-</script> -->
-
 
 <script type="text/javascript">
 	// 百度地图API功能
@@ -135,7 +114,35 @@ alert("1111");
 	map.centerAndZoom(new BMap.Point(114.273439,30.674298), 10);
 	map.enableScrollWheelZoom(true);
 	var geoc = new BMap.Geocoder();   
-	map.addEventListener("click", function(e){        
+	
+	 // 添加带有定位的导航控件
+	  var navigationControl = new BMap.NavigationControl({
+	    // 靠左上角位置
+	    anchor: BMAP_ANCHOR_TOP_LEFT,
+	    // LARGE类型
+	    type: BMAP_NAVIGATION_CONTROL_LARGE,
+	    // 启用显示定位
+	    enableGeolocation: true
+	  });
+	  map.addControl(navigationControl);
+	  // 添加定位控件
+	  var geolocationControl = new BMap.GeolocationControl();
+	  geolocationControl.addEventListener("locationSuccess", function(e){
+	    // 定位成功事件
+	    var address = '';
+	    address += e.addressComponent.province;
+	    address += e.addressComponent.city;
+	    address += e.addressComponent.district;
+	    address += e.addressComponent.street;
+	    address += e.addressComponent.streetNumber;
+	    alert("当前定位地址为：" + address);
+	  });
+	  geolocationControl.addEventListener("locationError",function(e){
+	    // 定位失败事件
+	    alert(e.message);
+	  });
+	  map.addControl(geolocationControl);
+/* 	map.addEventListener("click", function(e){        
 		var pt = e.point;
 		geoc.getLocation(pt, function(rs){
 			var addComp = rs.addressComponents;
@@ -143,14 +150,13 @@ alert("1111");
 			 var a = document.getElementById("dizhi");
 		        a.innerHTML= dizhi;
 		});        
-	});
- 	alert("888");
-	<c:forEach var="u" items="${devAttr }">
+	}); */
+/* 	<c:forEach var="u" items="${devAttr }">
 	var obj_arr="${u.x_pos}";
 	alert(${u.x_pos });
 
-	</c:forEach>
-	alert(obj_arr);
+	</c:forEach> */
+/* 	alert(obj_arr); */
 /* 	<c:forEach var="u" items="${devAttr }"> 
 	   array.push(${u}); //生成如 array.push(123)的字符串 这样前台拿到后就是js 
 	</c:forEach>  */
@@ -161,10 +167,14 @@ alert("1111");
 	  }    
 		alert(sinId); */
 	
-/* 	var data_info = [[114.273439,30.674298,"地址：武汉市武昌区区王府井大街88号乐天银泰百货八层"],
+	var data_info = [[114.825862,30.978022,"地址：武汉市武昌区区王府井大街88号乐天银泰百货八层"],
 		 [114.406605,30.921585,"地址：武汉市江汉区东华门大街"],
 		 [114.412222,30.712345,"地址：武汉市汉阳区正义路甲5号"]
-		]; */
+		];
+		
+/* 	for(int i=0;i<devAttr.size();i++){
+		alert("**************");
+	} */
 
  	var opts = {
 				width : 250,     // 信息窗口宽度
@@ -172,15 +182,35 @@ alert("1111");
 				title : "信息窗口" , // 信息窗口标题
 				enableMessage:true//设置允许信息窗发送短息
 			   };
-	for(var i=0;i<myarray.length;i++){
-		var marker = new BMap.Marker(new BMap.Point(myarray[i][0],myarray[i][1]));  // 创建标注
-		var content = myarray[i][2];
+	for(var i=0;i< data_info.length;i++){
+		var marker = new BMap.Marker(new BMap.Point( data_info[i][0],data_info[i][1]));  // 创建标注
+		/* var content =  data_info[i][2]; */
 		map.addOverlay(marker);               // 将标注添加到地图中
 		addClickHandler(content,marker);
 	}
+	var content = $("#dizhi").val();
 	function addClickHandler(content,marker){
 		marker.addEventListener("click",function(e){
-			openInfo(content,e)}
+			/* openInfo(content,e) */
+			var pt = e.point;
+			
+			geoc.getLocation(pt, function(rs){
+				var addComp = rs.addressComponents;
+				var dizhi = addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
+		/* 		 var a = document.getElementById("dizhi");
+			        a.innerHTML= dizhi; 
+			       
+			       /*  alert($("#dizhi").html()); */ 
+			      /*  var aa = $("#dizhi").html(); */
+			      
+			var content = "位置："+dizhi;
+			openInfo(content,e)
+			      
+			}); 
+			var content = "位置："+aa;
+			 /* var content = "位置："+$("#dizhi").html(); */
+			openInfo(content,e) 
+			}
 		);
 	}
 	function openInfo(content,e){
@@ -189,6 +219,28 @@ alert("1111");
 		var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象 
 		map.openInfoWindow(infoWindow,point); //开启信息窗口
 	}
+	
+	
 </script>
+
+<!-- <script>
+$(function(){
+ setInterval(aa,3000);
+ function aa(){
+ 
+   $.ajax({
+		type : "POST",
+		url : "listDevAttr",
+		dataType : 'json',
+		success : function (){
+			
+		}
+	});
+   /*  window.location.reload(true);  */
+
+ }
+
+})
+</script> -->
 </body>
 </html>
