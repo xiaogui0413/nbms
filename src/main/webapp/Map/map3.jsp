@@ -70,7 +70,8 @@
 		</tr>
 		</c:forEach>
 </table>
-
+<% request.getAttribute("devAttr"); %>
+ request.getAttribute(devAttr);
 </div>
 </div>
 <div id="bellow">
@@ -100,8 +101,9 @@
 </div>
 
 <script type="text/javascript">
+$(document).ready(function(){
 	// 百度地图API功能
-			$(function(){
+	$(function(){
 		$.ajax({
 			cache: false,
 		    type: "POST",
@@ -114,14 +116,13 @@
 		    success: function(data) {
 		    	var s="[";
 		    	 for ( var i = 0; i < data.length; i++) {
-		    		 alert(data.length);
 		    		 s +="["+ data[i].x_pos+","+data[i].y_pos+","+data[i].sn+"],";
 		            }  
 		    	s = s.substring(0,s.length-1);
 		    	 s+="]";
-		    	alert(s);
+		    	 alert(s); 
 		    	 var data_info=eval(s);
-	    	alert(data_info);
+	    	
 	map = new BMap.Map("shang");
 	map.centerAndZoom(new BMap.Point(114.273439,30.674298), 10);
 	map.enableScrollWheelZoom(true);
@@ -164,7 +165,7 @@
 	for(var i=0;i< data_info.length;i++){
 		var marker = new BMap.Marker(new BMap.Point( data_info[i][0],data_info[i][1]));  // 创建标注
 		 var content1 =  data_info[i][2]; 
-		alert(content1);
+		
 		map.addOverlay(marker);               // 将标注添加到地图中
 		addClickHandler(content,marker);
 	}
@@ -196,8 +197,27 @@
 		    },
 		    dataType:'json'
 		});
-	});	
-		
+	});		
+});
+</script>
+<script>
+$(function(){
+ setInterval(aa,3000);
+ function aa(){
+ 
+   $.ajax({
+		type : "POST",
+		url : "listDevAttr",
+		dataType : 'json',
+		success : function (){
+			
+		}
+	});
+   /*  window.location.reload(true);  */
+
+ }
+
+})
 </script>
 </body>
 </html>

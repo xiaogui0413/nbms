@@ -37,7 +37,7 @@
 			<!-- <th></th> -->
 			<th>设备列表</th>
 			<th>设备状态</th>
-			<th>经度</th>
+			<!-- <th>经度</th> -->
 			<th>操作</th>
 		</tr>
 	</thead>
@@ -52,16 +52,16 @@
 				<c:when test="${u.nState eq '1' }">在线
 				</c:when>
 				<c:otherwise>
-				<td align="center">--</td>
+				--
 				</c:otherwise>
 			</c:choose>
 			</td>
 		
-			<td>${u.x_pos }</td>
+			<%-- <td>${u.x_pos }</td> --%>
 			<!-- 用于控制浮点数的不同位数按照格式输出 -->
 			<%-- <fmt:formatNumber type="number" value="${u.x_pos } " pattern="000.000000" maxFractionDigits="6"/> --%>
 			
-			<td><a href="#">详情</a></td>
+			<td>详情</td>
 		</tr>
 		</c:forEach>
 </table>
@@ -99,12 +99,48 @@
 <script type="text/javascript">
 	// 百度地图API功能	
 	map = new BMap.Map("shang");
-	map.centerAndZoom(new BMap.Point(114.273439,30.674298), 10);
+	map.centerAndZoom(new BMap.Point(114.273439,30.674298), 9);
 	map.enableScrollWheelZoom(true);
-	var data_info = [[114.273439,30.674298,"地址：湖北省, 武汉市, 硚口区"],
+	var geoc = new BMap.Geocoder();   
+	
+	 // 添加带有定位的导航控件
+	  var navigationControl = new BMap.NavigationControl({
+	    // 靠左上角位置
+	    anchor: BMAP_ANCHOR_TOP_LEFT,
+	    // LARGE类型
+	    type: BMAP_NAVIGATION_CONTROL_LARGE,
+	    // 启用显示定位
+	    enableGeolocation: true
+	  });
+	  map.addControl(navigationControl);
+	  // 添加定位控件
+	  var geolocationControl = new BMap.GeolocationControl();
+	  geolocationControl.addEventListener("locationSuccess", function(e){
+	    // 定位成功事件
+	    var address = '';
+	    address += e.addressComponent.province;
+	    address += e.addressComponent.city;
+	    address += e.addressComponent.district;
+	    address += e.addressComponent.street;
+	    address += e.addressComponent.streetNumber;
+	    alert("当前定位地址为：" + address);
+	  });
+	  geolocationControl.addEventListener("locationError",function(e){
+	    // 定位失败事件
+	    alert(e.message);
+	  });
+	  map.addControl(geolocationControl);
+	/* 	<c:forEach var="u" items="${devAttr }">
+	var obj_arr="${u.x_pos}";
+	alert(${u.x_pos });
+
+	</c:forEach>  */
+	var data_info = ${s};
+/* 	 alert(data_info);  */
+/* 	var data_info = [[114.273439,30.674298,"地址：湖北省, 武汉市, 硚口区"],
 					 [114.406605,30.921585,"地址：湖北省, 武汉市, 黄陂区, 王家河街道"],
 					 [114.412222,30.712345,"地址：湖北省, 武汉市, 黄陂区"]
-					];
+					]; */
 	var opts = {
 				width : 250,     // 信息窗口宽度
 				height: 80,     // 信息窗口高度
@@ -113,13 +149,29 @@
 			   };
 	for(var i=0;i<data_info.length;i++){
 		var marker = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]));  // 创建标注
-		var content = data_info[i][2];
+		var content1 = data_info[i][2];
 		map.addOverlay(marker);        // 将标注添加到地图中
 		addClickHandler(content,marker);
 	}
+
+ 	  var content = $("#di1zhi").val();  
+/* 	  alert(content);  */
+/* 	alert(content); */
 	function addClickHandler(content,marker){
 		marker.addEventListener("click",function(e){
-			openInfo(content,e)}
+			/* openInfo(content,e) */
+			var pt = e.point;			
+			geoc.getLocation(pt, function(rs){
+				var addComp = rs.addressComponents;
+				var dizhi = addComp.province  + addComp.city  + addComp.district  + addComp.street + addComp.streetNumber;
+			      
+			 var content = "位置："+dizhi+"设备ID"+content1;
+			openInfo(content,e)
+			      
+			});
+		/* 	var content = "位置："+aa;
+			openInfo(content,e)  */
+			}
 		);
 	}
 	function openInfo(content,e){
@@ -128,6 +180,26 @@
 		var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象
 		map.openInfoWindow(infoWindow,point); //开启信息窗口
 	}
+</script>
+<script>
+/* alert("ohohohohoh") */
+$(function(){
+ setInterval(aa,3000);
+ function aa(){
+ 
+   $.ajax({
+		type : "POST",
+		url : "listDevAttr",
+		dataType : 'json',
+		success : function (){
+			
+		}
+	});
+   /*   window.location.reload(true);   */
+ /* alert("aaaaaa")  */
+ }
+
+})
 </script>
 </body>
 </html>

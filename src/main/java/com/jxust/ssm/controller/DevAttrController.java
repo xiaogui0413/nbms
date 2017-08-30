@@ -1,7 +1,6 @@
 package com.jxust.ssm.controller;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -16,7 +15,6 @@ import com.jxust.ssm.pojo.DevAttr;
 import com.jxust.ssm.service.DevAttrService;
 
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 /**
  * @author GuiqiHu
@@ -38,33 +36,30 @@ public class DevAttrController {
 	}
 	
 	@RequestMapping("/listDevAttr")
-	public void testlistUser( HttpServletResponse response,Model model) throws IOException{
+	public String testlistUser( HttpServletResponse response,Model model) throws IOException{
 		List<DevAttr> devAttr = devAttrService.selectDevAttrList();
+		model.addAttribute("devAttr", devAttr);
+		String s="[";
 		for(DevAttr d:devAttr){
-			System.out.println(d.getsDevName()+d.getX_pos()+d.getY_pos());
+			 s +="["+ d.getX_pos()+","+d.getY_pos()+","+d.getSn()+"],";
+			/*System.out.println(d.getX_pos()+d.getY_pos());*/
 					
 		}
-/*		JSONArray ja = JSONArray.fromObject(devAttr);
-		 for (int j= 0;j<ja.size();j++){  
-		  JSONObject ja=JSONArray.getJSONObject(j);  
-          String aidName=jsonObject.getString("aidName");  
-          String org=jsonObject.getString("organization");  
-          }
+		s = s.substring(0,s.length()-1);
+   	 s+="]";
+   	model.addAttribute("s", s);
+		System.out.println(s);
 
-		System.out.println(ja.size());
-		System.out.println(ja);*/
 		String json = JSONArray.fromObject(devAttr).toString();
 		System.out.println(json.length());
-
 		System.out.println(devAttr);
-		
-		model.addAttribute("devAttr", devAttr);
-		response.setHeader("Cache-Contrl", "no-cache");
+
+/*		response.setHeader("Cache-Contrl", "no-cache");
 		response.setContentType("text/json;charset=utf-8");
 		response.getWriter().write(json);
-		response.getWriter().flush();
+		response.getWriter().flush();*/
 
-	/*return "/Map/map3.jsp";*/
+	return "/Map/map2.jsp";
 	}
 	
 	@RequestMapping("/login")
