@@ -1,8 +1,11 @@
 package com.jxust.ssm.controller;
 
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import com.jxust.ssm.pojo.DevAttr;
 import com.jxust.ssm.service.DevAttrService;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  * @author GuiqiHu
@@ -34,23 +38,33 @@ public class DevAttrController {
 	}
 	
 	@RequestMapping("/listDevAttr")
-	public String testlistUser(Model model) {
+	public void testlistUser( HttpServletResponse response,Model model) throws IOException{
 		List<DevAttr> devAttr = devAttrService.selectDevAttrList();
-/*	      JSONArray array = null;
+		for(DevAttr d:devAttr){
+			System.out.println(d.getsDevName()+d.getX_pos()+d.getY_pos());
+					
+		}
+/*		JSONArray ja = JSONArray.fromObject(devAttr);
+		 for (int j= 0;j<ja.size();j++){  
+		  JSONObject ja=JSONArray.getJSONObject(j);  
+          String aidName=jsonObject.getString("aidName");  
+          String org=jsonObject.getString("organization");  
+          }
 
-	          array = JSONArray.fromObject(devAttr);//能过去 
-*/
-		JSONArray array = null;
-		array = JSONArray.fromObject(devAttr);
-		
-		model.addAttribute("devAttr", array);
-		Long cur = System.currentTimeMillis();
-		model.addAttribute("cur", cur);
+		System.out.println(ja.size());
+		System.out.println(ja);*/
+		String json = JSONArray.fromObject(devAttr).toString();
+		System.out.println(json.length());
+
 		System.out.println(devAttr);
 		
 		model.addAttribute("devAttr", devAttr);
+		response.setHeader("Cache-Contrl", "no-cache");
+		response.setContentType("text/json;charset=utf-8");
+		response.getWriter().write(json);
+		response.getWriter().flush();
 
-		return "/Map/map3.jsp";
+	/*return "/Map/map3.jsp";*/
 	}
 	
 	@RequestMapping("/login")

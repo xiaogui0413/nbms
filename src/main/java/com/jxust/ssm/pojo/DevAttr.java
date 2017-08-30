@@ -14,8 +14,8 @@ public class DevAttr {
 	private String sDevID;
 	private int nLocaMode;
 	private String sDevName;
-	private Double x_pos;
-	private Double y_pos;
+	private String x_pos;
+	private String y_pos;
 	private Double fHop;
 	private Double fBatteryVolt;
 	private Double nRSOC;
@@ -102,25 +102,25 @@ public class DevAttr {
 	/**
 	 * @return the x_pos
 	 */
-	public Double getX_pos() {
+	public String getX_pos() {
 		return x_pos;
 	}
 	/**
 	 * @param x_pos the x_pos to set
 	 */
-	public void setX_pos(Double x_pos) {
+	public void setX_pos(String x_pos) {
 		this.x_pos = x_pos;
 	}
 	/**
 	 * @return the y_pos
 	 */
-	public Double getY_pos() {
+	public String getY_pos() {
 		return y_pos;
 	}
 	/**
 	 * @param y_pos the y_pos to set
 	 */
-	public void setY_pos(Double y_pos) {
+	public void setY_pos(String y_pos) {
 		this.y_pos = y_pos;
 	}
 	/**
