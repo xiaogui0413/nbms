@@ -11,8 +11,8 @@
 	<style type="text/css">
 		body, html {width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
 		
-		#shang{ float:left;width:80%;height:100%;} 
-        #xia{ float:right;width:20%;height:100%;} 
+		#shang{ float:left;width:80%;height:100%;}
+        #xia{ float:right;width:20%;height:100%;}
         #top{height:80%;}
         #bellow{height:20%;}
 
@@ -35,7 +35,8 @@
 	<thead>
 		<tr>
 			<!-- <th></th> -->
-			<th>设备列表</th>
+			<th>设备ID</th>
+			<th>设备名称</th>
 			<th>设备状态</th>
 			<!-- <th>经度</th> -->
 			<th>操作</th>
@@ -44,6 +45,7 @@
 		<c:forEach var="u" items="${devAttr }">
 		<tr>
 		   <!-- <td><input type="checkbox"></td> -->
+		    <td>${u.sn }</td>
 			<td>${u.sDevName }</td>
 			<td align="center">
 			<c:choose>
@@ -61,7 +63,7 @@
 			<!-- 用于控制浮点数的不同位数按照格式输出 -->
 			<%-- <fmt:formatNumber type="number" value="${u.x_pos } " pattern="000.000000" maxFractionDigits="6"/> --%>
 			
-			<td>详情</td>
+			<td><a href="selectDevAttr">详情</a></td>
 		</tr>
 		</c:forEach>
 </table>
@@ -74,21 +76,33 @@
 	style="padding: 0px; margin: 0px;">
 	<thead>
 		<tr>
+			<th>设备名称</th>
 			<th>在线状态</th>
-			<th>定位</th>
+			<th>定位方式</th>
 			<th>设备名称</th>
 			<th>代理商</th>
-			<th>地址</th>
+			<th>经纬度</th>
+			<th>信息获取时间</th>
 			<th>报警信息</th>
 		</tr>
 	</thead>
 		<tr>
+			<td>发电机01</td>
 			<td>在线</td>
 			<td>GPS</td>
 			<td>HL001</td>
 			<td>中国电信</td>
 			<td>116.417854,39.921988</td>
-			<td>默认</td>
+			<td>    
+			<%  
+			    java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat(    
+			     "yyyy-MM-dd HH:mm:ss");   
+			    java.util.Date currentTime = new java.util.Date();    
+			    String time = simpleDateFormat.format(currentTime).toString();  
+			    out.println(time);  
+            %> 
+            </td>
+			<td>无</td>
 		</tr>
 </table>
 <%-- <%  
@@ -136,6 +150,7 @@
 
 	</c:forEach>  */
 	var data_info = ${s};
+/* 	alert(data_info); */
 /* 	 alert(data_info);  */
 /* 	var data_info = [[114.273439,30.674298,"地址：湖北省, 武汉市, 硚口区"],
 					 [114.406605,30.921585,"地址：湖北省, 武汉市, 黄陂区, 王家河街道"],
@@ -149,26 +164,24 @@
 			   };
 	for(var i=0;i<data_info.length;i++){
 		var marker = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]));  // 创建标注
-		var content1 = data_info[i][2];
+		 var content1 = data_info[i][2]; 
+		content = "设备ID："+content1;
 		map.addOverlay(marker);        // 将标注添加到地图中
 		addClickHandler(content,marker);
 	}
 
- 	  var content = $("#di1zhi").val();  
-/* 	  alert(content);  */
-/* 	alert(content); */
+ 	 /*  var content; */
 	function addClickHandler(content,marker){
-		marker.addEventListener("click",function(e){
-			/* openInfo(content,e) */
-			var pt = e.point;			
-			geoc.getLocation(pt, function(rs){
+ 		 marker.addEventListener("click",function(e){
+   			    var pt = e.point;			
+				geoc.getLocation(pt, function(rs){
 				var addComp = rs.addressComponents;
 				var dizhi = addComp.province  + addComp.city  + addComp.district  + addComp.street + addComp.streetNumber;
+				
+				openInfo(content+"地址："+dizhi,e);
 			      
-			 var content = "位置："+dizhi+"设备ID"+content1;
-			openInfo(content,e)
-			      
-			});
+			 });
+
 		/* 	var content = "位置："+aa;
 			openInfo(content,e)  */
 			}
@@ -180,26 +193,6 @@
 		var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象
 		map.openInfoWindow(infoWindow,point); //开启信息窗口
 	}
-</script>
-<script>
-/* alert("ohohohohoh") */
-$(function(){
- setInterval(aa,3000);
- function aa(){
- 
-   $.ajax({
-		type : "POST",
-		url : "listDevAttr",
-		dataType : 'json',
-		success : function (){
-			
-		}
-	});
-   /*   window.location.reload(true);   */
- /* alert("aaaaaa")  */
- }
-
-})
 </script>
 </body>
 </html>
