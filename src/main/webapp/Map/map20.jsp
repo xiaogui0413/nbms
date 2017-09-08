@@ -86,7 +86,7 @@
 			<%-- <fmt:formatNumber type="number" value="${u.x_pos } " pattern="000.000000" maxFractionDigits="6"/> --%>
 			
 			<td><a href="selectDevAttr">详情</a></td>
-			<td><input type="hidden" name="test" id="test" value="${u.sn }"><a onclick="ajaxTest(this)">定位</a></td>
+			<td><input type="hidden" name="test" id="${vs.count }" value="${u.sn }"><a onclick="ajaxTest()">定位</a></td>
 		</tr>
 		</c:forEach>
 </table>
@@ -94,7 +94,7 @@
 </div>
 </div>
 <div id="bellow">
-<table id="offerTable001"
+<table id="offerTable"
 	class="table table-bordered table-condensed table-hover table-striped"
 	style="padding: 0px; margin: 0px;">
 	<thead>
@@ -109,14 +109,14 @@
 			<th>报警信息</th>
 		</tr>
 	</thead>
-		<tr id="content">
-			<td id ="sn">发电机01</td>
-			<td id = "1">在线</td>
-			<td id = "11">GPS</td>
-			<td id = "111">HL001</td>
-			<td id = "1111">中国电信</td>
-			<td id = "11111">116.417854,39.921988</td>
-			<td id = "111111">
+		<tr>
+			<td>发电机01</td>
+			<td>在线</td>
+			<td>GPS</td>
+			<td>HL001</td>
+			<td>中国电信</td>
+			<td>116.417854,39.921988</td>
+			<td>    
 			<%  
 			    java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat(    
 			     "yyyy-MM-dd HH:mm:ss");   
@@ -125,7 +125,7 @@
 			    out.println(time);  
             %> 
             </td>
-			<td id = "1111111">>无</td>
+			<td>无</td>
 		</tr>
 </table>
 <%-- <%  
@@ -135,10 +135,28 @@
 </div>
 <script type="text/javascript">
 	// 百度地图API功能	
+	$(document).ready(function(){
+	 $.ajax({
+			type : "POST",
+			url : "listDevAttr2",
+			dataType : 'json',
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			success : function (data){
+				var s="[";
+				for(var i=0;i<data.length;i++){
+					 s +="["+ data[i].x_pos+","+data[i].y_pos+","+data[i].sn+"],";
+					
+				}
+				s = s.substring(0,s.length-1);
+		    	 s+="]";
+		    	  alert(s); 
+		    	 var data_info=eval(s);
+				 alert(data_info);
 	map = new BMap.Map("shang");
+	alert("aaa");
 	map.centerAndZoom(new BMap.Point(114.273439,30.674298), 9);
 	map.enableScrollWheelZoom(true);
-	var geoc = new BMap.Geocoder();   
+	var geoc = new BMap.Geocoder(); 
 	
 	 // 添加带有定位的导航控件
 	  var navigationControl = new BMap.NavigationControl({
@@ -172,10 +190,8 @@
 	alert(${u.x_pos });
 
 	</c:forEach>  */
-	var data_info = ${s};
- 	alert(data_info); 
- 	/* var data_info1 = ${sa}; */
- 	/* alert(data_info1);  */
+/* 	var data_info = ${s};
+ 	alert(data_info);  */
  	/* alert("aa"); */
  	/*	alert(data_info+"hehe");  */
 /* 	 alert(data_info);  */
@@ -192,7 +208,7 @@
 			   };
 	for(var i=0;i<data_info.length;i++){
 		var marker = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]));  // 创建标注
-		 var content1 = data_info[i][2];
+		 var content1 = data_info[i][2]; 
 		content = "设备ID："+content1;
 		map.addOverlay(marker);        // 将标注添加到地图中
 		addClickHandler(content,marker);
@@ -221,85 +237,44 @@
 		var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象
 		map.openInfoWindow(infoWindow,point); //开启信息窗口
 	}
+			}
+		});
+
+});
 </script>
 <script type="text/javascript">
 
 $(function(){
- setInterval(aa,700000);
+ setInterval(aa,30000);
  function aa(){
    $.ajax({
-		type : "post",
-		url : "selectDevAttr1",
+		type : "POST",
+		url : "listDevAttr2",
 		dataType : 'json',
 		contentType: "application/x-www-form-urlencoded; charset=utf-8",
 		success : function (data){
-
-			/* for(var i=0;i<data.length;i++){
-				alert(data[0].sn+data[0].sDevName);
+			/* alert(eval(data)); */
+			/* eval('(' +data + ')') */
+			/* alert(data); */
+			/* var dataObj=eval("("+data+")");    */
+			for(var i=0;i<data.length;i++){
+				alert(data[i].sn+data[i].sDevName+"hah");
+			}
+/* 			console.log(data);
+			alert(data.length);
+			var a= JSON.stringify(data);
+			alert(a);
+			alert(a.length);
+			for(var i=0;i<a.length;i++){
+				alert("hah");
 			} */
-			/* alert(data[0].sn+data[0].sDevName); */
-			alert(data[0].sn+data[0].sDevName+data[0].x_pos+data[0].y_pos);
-			var obj=eval(data);
-			alert(obj);
-			alert(obj[0].sn);
-			  $("#offerTable001 tbody tr").remove();
-			 var row = $("#content").clone();
-			 console.log("JJJJJJJJ"+row.find("#sn").text(obj[0].sn));
-             alert("JJJJJJJJ"+row.find("#sn").text(obj[0].sn));
-             alert("JQQQQ"+row.find("#sn").attr(obj[0].sn));
-             alert("sn"+obj[0].sn);
-             row.find("#sn").text(哈哈);
-             row.find("#sn").text(obj[0].sn);
-             row.find("#1").text(obj[0].sDevName);
-             row.find("#11").text(obj[0].x_pos);
-             row.find("#111").text(obj[0].y_pos);
-             row.find("#1111").text(obj[0].y_pos);
-             row.find("#11111").text(obj[0].y_pos);
-             row.find("#111111").text(obj[0].y_pos);
-             row.find("#1111111").text(obj[0].y_pos);
-             alert("?????");
-             alert("&*&**"+row);
-             row.appendTo("#offerTable001");
-             alert("yossss");
-/* 			  $("#offerTable001 tbody tr").remove();
-			  for (var i = 0; i < obj.length; i++) {
-                  var row = $("#content").clone();
-                  row.find("#sn").text(obj[i].sn);
-                  row.find("#1").text(obj[i].sDevName);
-                  row.find("#11").text(obj[i].x_pos);
-                  row.find("#111").text(obj[i].y_pos);
-                  row.appendTo("#offerTable001");
-              } */
- 		/* 	var tr=$('<tr></tr>');
-			tr.append('<td>'+ obj[0].sn + '</td>' + '<td>'+ obj[0].sDevName + '</td>' +'<td>'+ obj[0].x_pos + '</td>' + obj[0].y_pos +'</td>');
-			tbody.append(tr);
-			$('#offerTable001').replaceWith(tbody);  */
-
+			/* alert(a); */
 		}
 	});
    /*   window.location.reload(true);   */
  /* alert("aaaaaa")  */
  }
 })
-</script>
-<script type="text/javascript">
-function ajaxTest(obj){
-	alert($(obj).parent().prev().prev().prev().prev().text());
-	/* var a = $("#test").val();
-	alert(a); */
-	$.ajax({
-		type : "post",
-		url : "selectDevAttr1",
-		dataType : 'json',
-		contentType: "application/x-www-form-urlencoded; charset=utf-8",
-		success : function (data){
-			alert(data[0].sn+data[0].sDevName+data[0].x_pos+data[0].y_pos);
-			var obj=eval(data);
-			alert(obj);
-			alert(obj[0].sn);
-		}
-	});
-}
 </script>
 </body>
 </html>

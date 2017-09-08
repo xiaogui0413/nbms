@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- 新 Bootstrap 核心 CSS 文件 -->
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+ 
+<!-- 可选的Bootstrap主题文件（一般不使用） -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"></script>
+ 
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+ 
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<title>收缩</title>
+<script type="text/javascript">
+	$(document).ready(function() {	
+		$('#queryOfferForm').on('show.bs.collapse', function() {
+			$('#offerFormUpIcon').hide();
+			$('#offerFormDownIcon').show();
+		});
+		$('#queryOfferForm').on('hide.bs.collapse', function() {
+			$('#offerFormDownIcon').hide();
+			$('#offerFormUpIcon').show();
+		});
+		selectChange();
+	});
+</script>
+</head>
+<body>
+<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="panel panel-default divtop">
+					<div class="panel-heading">
+						<a data-toggle="collapse" href="#queryOfferForm"
+							aria-expanded="true" aria-controls="queryOfferForm"> <span
+							id="offerFormUpIcon" class="glyphicon glyphicon-triangle-right"
+							style="display: none"></span> <span id="offerFormDownIcon"
+							class="glyphicon glyphicon-triangle-bottom"></span> <label
+							style="font-size: 15px;">查询条件</label>
+						</a>
+					</div>
+					<div id="queryOfferForm"
+						class="row container-fluid panel-collapse collapse in">
+						<div class="panel-body">
+							<form class="form-horizontal col-xs-11" id="offerForm">
+							     <div class="col-xs-8">
+                                    <div class="row container-fluid">
+                                        <div class="form-group form-group-sm">
+                                            <label for="offerInfo.offerType"
+                                            class="control-label col-xs-2">类型</label>
+                                            <div class="col-xs-4">
+                                                <div class="input-group">
+                                                    <input type="button" class="form-control" id="offerTypeName" onClick="selectOfferType()"/> <span
+                                                        class="input-group-addon"> <span
+                                                        class="glyphicon glyphicon-search"></span>
+                                                    </span>
+                                                    <input type="hidden" id="offerType">
+                                                </div>
+                                            </div>
+                                            <label class="control-label col-xs-2" for="bindSlot">适用栏位</label>
+                                        <div class="col-xs-4">
+                                            <select class="form-control" id="bindSlot">
+                                                    <option value="" selected>不限</option>
+                                                   <c:forEach var="slot" items="${defaultSlotList}">
+                                                      <option value="${slot.slotCode}">${slot.slotName}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            <input type="hidden" id="saveStatus" value="${saveStatus}" >
+                                            <input type="hidden" id="processStatus" value="" >
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="row container-fluid">
+                                        <div class="form-group form-group-sm">
+                                        <label class="control-label col-xs-2" for="searchContent">offer关键字</label>
+                                        <div class="col-xs-4">
+                                            <input type="text" id="searchContent" class="form-control" />
+                                        </div>
+                                            <label class="control-label col-xs-2" for="frozenSelect">offer状态</label>
+                                            <div class="col-xs-4">
+                                                <select class="form-control" name="frozenSelect"
+                                                    id="frozenSelect">
+                                                    <option value="" selected>不限</option>
+                                                    <option value="0">启用</option>
+                                                    <option value="1">禁用</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row container-fluid">
+                                        <div class="form-group form-group-sm">
+                                        <label class="control-label col-xs-2" for="scope">适用机构</label>
+                                        <div class="col-xs-4">
+                                            <div class="input-group">
+                                                <input type="button" class="form-control" id="scopeName" onClick="selectScope()"/> <span
+                                                    class="input-group-addon"> <span
+                                                    class="glyphicon glyphicon-search"></span>
+                                                </span>
+                                                <input type="hidden" id="scope">
+                                            </div>
+                                        </div>
+                                            <label class="control-label col-xs-2" for="fullStatus">样式状态</label>
+                                            <div class="col-xs-4">
+                                                <select class="form-control" name="fullStatus"
+                                                    id="fullStatus">
+                                                    <option value="" selected>不限</option>
+                                                    <option value="0">不完整</option>
+                                                    <option value="1">完整</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+								<div class="col-xs-4">
+								    <div class="form-group form-group-sm">
+                                        <label class="control-label col-xs-5" for="userSearchContent">维护人员关键字</label>
+                                        <div class="col-xs-7">
+                                            <input type="text" id="userSearchContent"class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <label class="control-label col-xs-5" for="ownerSearchContent">创建者关键字</label>
+                                        <div class="col-xs-7">
+                                            <input type="text" id="ownerSearchContent"class="form-control" />
+                                        </div>
+                                    </div>
+									<div class="modal fade" id="offerTypeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none"> 
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header" >
+													<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+														 <span class="glyphicon glyphicon-type"></span> offer类型
+												</div>
+												<div class="modal-body" id="modalBody">
+													<div id="offerTypetree"></div>
+												</div>
+												<div class="modal-footer" align="center">
+													<button class="btn btn-primary btn-sm" type="button" data-dismiss="modal">
+														<span class="glyphicon glyphicon-ok"></span> 选择
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal fade" id="selectVersionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none"> 
+						            <div class="modal-dialog">
+						                <div class="modal-content">
+						                    <div class="modal-header" >
+						                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						                             <span class="glyphicon glyphicon-type"></span>选择需要编辑的版本：
+						                    </div>
+						                    <div class="modal-body" id="modalBody">
+						                            <button class="btn btn-primary btn-sm" type="button" id="delete"
+								                    onClick="editOffer(0)">
+									                    <span class="glyphicon glyphicon-minus-sign"></span>
+									                原offer
+									                </button>
+									                <button class="btn btn-primary btn-sm" type="button" id="publish"
+									                    onClick="editOffer(1)">
+									                    <span class="glyphicon glyphicon-globe" ></span>
+									                    草稿
+									                </button>
+						                    </div>
+						                </div>
+						            </div>
+						        </div>
+								<div class="col-xs-8">
+								<div class="form-group form-group-sm">
+                                   <label class="control-label col-xs-2"
+                                            for="offerInfo.beginTime">offer有效期</label>
+                                        <div class="col-xs-7">
+                                            <div class="input-group">
+                                                <input type="button" class="form_datetime form-control"
+                                                    name="offerInfo.beginTime" id="beginTime" style="min-width:100px;"/>
+                                                <div class="input-group-addon">至</div>
+                                                <input type="button" class="form_datetime form-control"
+                                                    name="offerInfo.endTime" id="endTime" style="min-width:100px;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+								</div>
+							</form>
+							<div class="col-xs-1">
+								<button type="button" class="btn btn-primary btn-sm" id="search"
+									onClick="filterOffer(1)" style="text-shadow:black 5px 3px 3px">
+									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+									搜索
+								</button>
+							</div>
+							<div class="col-xs-1" style="margin-top: 5px;">
+								<button type="button" class="btn btn-primary btn-sm" id="clear"
+									onClick="clearInput()" style="text-shadow:black 5px 3px 3px">
+									<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+									清空
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	 <!-- 下一级审批人 -->
+     <div class="modal fade" id="appointAuditorModal" tabindex="-1"
+	 role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	 <div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">&times;</button>
+				<span class="glyphicon glyphicon-edit"></span> 下一环节审批人绑定
+			</div>
+			<div class="modal-body" id="modalBody">
+			<div id="commonAppointAuditorTableDiv">
+			<%@ include file="commonAppointAuditorTable.jsp"%>
+			</div>
+			</div>
+			<div class="modal-footer" align="right">
+			<button class="btn btn-primary btn-sm" type="button"  
+                     id="startProcessBtn" onclick="startProcess()">
+                    <span class="glyphicon glyphicon-ok"></span> 启动审批
+                </button>
+				<button class="btn btn-primary btn-sm" type="button"
+					data-dismiss="modal">
+					<span class="glyphicon glyphicon-remove"></span> 返回
+				</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+</body>
+</html>

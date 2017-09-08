@@ -11,7 +11,7 @@
 	<style type="text/css">
 		body, html {width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
 		
-		#shang{ float:left;width:80%;height:100%;}
+		#shang{ float:left;width:80%;height:100%;} 
         #xia{ float:right;width:20%;height:100%;}
         #top{height:80%;}
         #bellow{height:20%;}
@@ -22,26 +22,6 @@
 	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
 	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<title>给多个点添加信息窗口</title>
-<!-- 	<script type="text/javascript">
-	   $.ajax({
-			type : "POST",
-			url : "listDevAttr2",
-			dataType : 'json',
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function (data){
-				var s="[";
-				for(var i=0;i<data.length;i++){
-					 s +="["+ data[i].x_pos+","+data[i].y_pos+","+data[i].sn+"],";
-					
-				}
-				s = s.substring(0,s.length-1);
-		    	 s+="]";
-		    	 alert(s); 
-		    	 var data_info=eval(s);
-
-			}
-		});
-	</script> -->
 </head>
 <body>
 <div id="top">
@@ -55,19 +35,15 @@
 	<thead>
 		<tr>
 			<!-- <th></th> -->
-			<th>设备ID</th>
-			<th>设备名称</th>
-			<th>状态</th>
+			<th>设备列表</th>
+			<th>设备状态</th>
 			<!-- <th>经度</th> -->
-			<th>操作</th>
 			<th>操作</th>
 		</tr>
 	</thead>
 		<c:forEach var="u" items="${devAttr }">
 		<tr>
 		   <!-- <td><input type="checkbox"></td> -->
-		   
-		    <td>${u.sn }</td>
 			<td>${u.sDevName }</td>
 			<td align="center">
 			<c:choose>
@@ -85,8 +61,7 @@
 			<!-- 用于控制浮点数的不同位数按照格式输出 -->
 			<%-- <fmt:formatNumber type="number" value="${u.x_pos } " pattern="000.000000" maxFractionDigits="6"/> --%>
 			
-			<td><a href="selectDevAttr">详情</a></td>
-			<td><input type="hidden" name="test" id="test" value="${u.sn }"><a onclick="ajaxTest(this)">定位</a></td>
+			<td>详情</td>
 		</tr>
 		</c:forEach>
 </table>
@@ -94,7 +69,7 @@
 </div>
 </div>
 <div id="bellow">
-<table id="offerTable001"
+<table id="offerTable"
 	class="table table-bordered table-condensed table-hover table-striped"
 	style="padding: 0px; margin: 0px;">
 	<thead>
@@ -109,23 +84,23 @@
 			<th>报警信息</th>
 		</tr>
 	</thead>
-		<tr id="content">
-			<td id ="sn">发电机01</td>
-			<td id = "1">在线</td>
-			<td id = "11">GPS</td>
-			<td id = "111">HL001</td>
-			<td id = "1111">中国电信</td>
-			<td id = "11111">116.417854,39.921988</td>
-			<td id = "111111">
+		<tr>
+			<td>发电机01</td>
+			<td>在线</td>
+			<td>GPS</td>
+			<td>HL001</td>
+			<td>中国电信</td>
+			<td>116.417854,39.921988</td>
+			<td>    
 			<%  
 			    java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat(    
-			     "yyyy-MM-dd HH:mm:ss");   
+			     "yyyy-MM-dd HH:mm:ss");    
 			    java.util.Date currentTime = new java.util.Date();    
-			    String time = simpleDateFormat.format(currentTime).toString();
+			    String time = simpleDateFormat.format(currentTime).toString();  
 			    out.println(time);  
             %> 
             </td>
-			<td id = "1111111">>无</td>
+			<td>无</td>
 		</tr>
 </table>
 <%-- <%  
@@ -173,17 +148,12 @@
 
 	</c:forEach>  */
 	var data_info = ${s};
- 	alert(data_info); 
- 	/* var data_info1 = ${sa}; */
- 	/* alert(data_info1);  */
- 	/* alert("aa"); */
- 	/*	alert(data_info+"hehe");  */
+/* 	alert(data_info); */
 /* 	 alert(data_info);  */
 /* 	var data_info = [[114.273439,30.674298,"地址：湖北省, 武汉市, 硚口区"],
 					 [114.406605,30.921585,"地址：湖北省, 武汉市, 黄陂区, 王家河街道"],
 					 [114.412222,30.712345,"地址：湖北省, 武汉市, 黄陂区"]
 					]; */
-
 	var opts = {
 				width : 250,     // 信息窗口宽度
 				height: 80,     // 信息窗口高度
@@ -192,26 +162,28 @@
 			   };
 	for(var i=0;i<data_info.length;i++){
 		var marker = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]));  // 创建标注
-		 var content1 = data_info[i][2];
-		content = "设备ID："+content1;
+		 var content1 = data_info[i][2]; 
+		alert(content1);
 		map.addOverlay(marker);        // 将标注添加到地图中
 		addClickHandler(content,marker);
 	}
 
- 	 /*  var content; */
+ 	  var content;
 	function addClickHandler(content,marker){
- 		 marker.addEventListener("click",function(e){
-   			    var pt = e.point;			
-				geoc.getLocation(pt, function(rs){
+		marker.addEventListener("click",function(e){
+			alert("aa");
+			content = "地址"+content1;
+			/* openInfo(content,e) */
+/* 			var pt = e.point;			
+			geoc.getLocation(pt, function(rs){
 				var addComp = rs.addressComponents;
 				var dizhi = addComp.province  + addComp.city  + addComp.district  + addComp.street + addComp.streetNumber;
-				
-				openInfo(content+"地址："+dizhi,e);
+ alert(dizhi);
+			 var content = "位置："+dizhi+"设备ID"+content1; */
+			openInfo(content,e)
 			      
-			 });
+			/* }); */
 
-		/* 	var content = "位置："+aa;
-			openInfo(content,e)  */
 			}
 		);
 	}
@@ -222,84 +194,6 @@
 		map.openInfoWindow(infoWindow,point); //开启信息窗口
 	}
 </script>
-<script type="text/javascript">
 
-$(function(){
- setInterval(aa,700000);
- function aa(){
-   $.ajax({
-		type : "post",
-		url : "selectDevAttr1",
-		dataType : 'json',
-		contentType: "application/x-www-form-urlencoded; charset=utf-8",
-		success : function (data){
-
-			/* for(var i=0;i<data.length;i++){
-				alert(data[0].sn+data[0].sDevName);
-			} */
-			/* alert(data[0].sn+data[0].sDevName); */
-			alert(data[0].sn+data[0].sDevName+data[0].x_pos+data[0].y_pos);
-			var obj=eval(data);
-			alert(obj);
-			alert(obj[0].sn);
-			  $("#offerTable001 tbody tr").remove();
-			 var row = $("#content").clone();
-			 console.log("JJJJJJJJ"+row.find("#sn").text(obj[0].sn));
-             alert("JJJJJJJJ"+row.find("#sn").text(obj[0].sn));
-             alert("JQQQQ"+row.find("#sn").attr(obj[0].sn));
-             alert("sn"+obj[0].sn);
-             row.find("#sn").text(哈哈);
-             row.find("#sn").text(obj[0].sn);
-             row.find("#1").text(obj[0].sDevName);
-             row.find("#11").text(obj[0].x_pos);
-             row.find("#111").text(obj[0].y_pos);
-             row.find("#1111").text(obj[0].y_pos);
-             row.find("#11111").text(obj[0].y_pos);
-             row.find("#111111").text(obj[0].y_pos);
-             row.find("#1111111").text(obj[0].y_pos);
-             alert("?????");
-             alert("&*&**"+row);
-             row.appendTo("#offerTable001");
-             alert("yossss");
-/* 			  $("#offerTable001 tbody tr").remove();
-			  for (var i = 0; i < obj.length; i++) {
-                  var row = $("#content").clone();
-                  row.find("#sn").text(obj[i].sn);
-                  row.find("#1").text(obj[i].sDevName);
-                  row.find("#11").text(obj[i].x_pos);
-                  row.find("#111").text(obj[i].y_pos);
-                  row.appendTo("#offerTable001");
-              } */
- 		/* 	var tr=$('<tr></tr>');
-			tr.append('<td>'+ obj[0].sn + '</td>' + '<td>'+ obj[0].sDevName + '</td>' +'<td>'+ obj[0].x_pos + '</td>' + obj[0].y_pos +'</td>');
-			tbody.append(tr);
-			$('#offerTable001').replaceWith(tbody);  */
-
-		}
-	});
-   /*   window.location.reload(true);   */
- /* alert("aaaaaa")  */
- }
-})
-</script>
-<script type="text/javascript">
-function ajaxTest(obj){
-	alert($(obj).parent().prev().prev().prev().prev().text());
-	/* var a = $("#test").val();
-	alert(a); */
-	$.ajax({
-		type : "post",
-		url : "selectDevAttr1",
-		dataType : 'json',
-		contentType: "application/x-www-form-urlencoded; charset=utf-8",
-		success : function (data){
-			alert(data[0].sn+data[0].sDevName+data[0].x_pos+data[0].y_pos);
-			var obj=eval(data);
-			alert(obj);
-			alert(obj[0].sn);
-		}
-	});
-}
-</script>
 </body>
 </html>

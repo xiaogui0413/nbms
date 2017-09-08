@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace的值就是dao接口的完整路径，就这个demo而言namespace 就是userDao.java的完整路径-->
+<mapper namespace="com.jxust.ssm.dao.StockOutDao">
+	<resultMap id="BaseResultMap" type="com.jxust.ssm.pojo.StockOut">
+		<id column="sn" property="sn" jdbcType="INTEGER" />
+		<result column="nDevType" property="nDevType" jdbcType="INTEGER" />
+		<result column="nSubtype" property="nSubtype" jdbcType="INTEGER" />
+		<result column="sDevID" property="sDevID" jdbcType="VARCHAR" />
+		<result column="sDevLabel" property="sDevLabel" jdbcType="VARCHAR" />
+		<result column="sDevName" property="sDevName" jdbcType="VARCHAR" />
+		<result column="sStockOutType" property="sStockOutType" jdbcType="VARCHAR" />
+		<result column="sStorageName" property="sStorageName" jdbcType="VARCHAR" />		
+		<result column="sUnitName" property="sUnitName" jdbcType="VARCHAR" />
+		<result column="sResponsiblePerson" property="sResponsiblePerson" jdbcType="VARCHAR" />
+		<result column="sTelphone" property="sTelphone" jdbcType="VARCHAR" />
+		<result column="sRegistrant" property="sRegistrant" jdbcType="VARCHAR" />
+		<result column="StockOutTime" property="StockOutTime" jdbcType="DATE" />
+		<result column="sRemark" property="sRemark" jdbcType="VARCHAR" />
+		<result column="Spare1" property="Spare1" jdbcType="VARCHAR" />
+		<result column="Spare2" property="Spare2" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		sn,nDevType,nSubtype,sDevID,sDevLabel,sDevName,sStockOutType,sStorageName,sUnitName,sResponsiblePerson,sTelphone,sRegistrant,StockOutTime,sRemark
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from Tab_DevStockOutMngt
+		where sn = #{sn,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectStockOutList" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from Tab_DevStockOutMngt
+	</select>
+	
+	<select id="selectByDevName" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from Tab_DevStockOutMngt
+		where 
+		sDevName
+                LIKE '%${value}%'
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		Tab_DevStockOutMngt
+		where sn = #{sn,jdbcType=INTEGER}
+	</delete>
+	
+	<update id="updateStockOut" parameterType="com.jxust.ssm.pojo.StockOut">
+		update
+		Tab_DevStockOutMngt
+		set
+		   nDevType = #{nDevType}
+	      ,nSubtype = #{nSubtype}
+	      ,sDevID = #{sDevID}
+	      ,sDevLabel = #{sDevLabel}
+	      ,sDevName = #{sDevName}
+	      ,sStockOutType = #{sStockOutType}
+	      ,sStorageName = #{sStorageName}
+	      ,sUnitName = #{sUnitName}
+		  ,sResponsiblePerson = #{sResponsiblePerson}
+		  ,sTelphone = #{sTelphone}
+	      ,sRegistrant = #{sRegistrant}
+	      ,StockOutTime = #{StockOutTime}
+	      ,sRemark = #{sRemark}
+		where sn = #{sn,jdbcType=INTEGER}
+	</update>
+	
+	<insert id="insertStockOut" parameterType="com.jxust.ssm.pojo.StockOut">
+		insert into
+		Tab_DevStockOutMngt
+<!-- 		(nDevType,nSubtype,sDevID,sDevLabel,sDevName,sStockOutType,sStorageName,sUnitName,sResponsiblePerson,sTelphone,sRegistrant,StockOutTime,sRemark) -->
+		(sDevName,nDevType,sStockOutType,sStorageName,sUnitName,sResponsiblePerson,sTelphone,sRegistrant,StockOutTime,sRemark)
+		values
+			(
+			<!-- 	#{nDevType},
+		        #{nSubtype},
+		        #{sDevID},
+		   		#{sDevLabel},
+		        #{sDevName},
+		        #{sStockOutType},
+		        #{sStorageName},
+		        #{sUnitName}
+		        #{sResponsiblePerson}
+		        #{sTelphone}
+		        #{sRegistrant},
+		        #{StockOutTime},
+		        #{sRemark}	 -->
+		        
+
+		        #{sDevName},
+		        #{nDevType},
+		        #{sStockOutType},
+		        #{sStorageName},
+		        #{sUnitName},
+		        #{sResponsiblePerson},
+		        #{sTelphone},
+		        #{sRegistrant},
+		        #{StockOutTime},
+		        #{sRemark}	
+			)
+	</insert>
+	
+</mapper>
