@@ -17,7 +17,7 @@
 <div id="content">
     <img src="${pageContext.request.contextPath }/Public/img/jian.png" />
     <h1>物资定位管理系统</h1>
-    <form method="post" action="${pageContext.request.contextPath }/login3">
+    <form method="post" action="${pageContext.request.contextPath }/userLogin">
     	<label class="error" id="msg">${msg }</label><br>
         <input  id="usename" type="text" name="username" placeholder="用户名"/><br/>
         <input  id="password" type="password" name="password" placeholder="密码"/>

@@ -10,17 +10,28 @@
 		<result column="gsm_Phone" property="gsm_Phone" jdbcType="VARCHAR" />
 		<result column="contact" property="contact" jdbcType="VARCHAR" />
 		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="emailAddr" property="emailAddr" jdbcType="VARCHAR" />
 		<result column="memo" property="memo" jdbcType="VARCHAR" />
+		<result column="last_login" property="last_login" jdbcType="VARCHAR" />
+		<result column="del_state" property="del_state" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Column_List">
-        id ,clerkName ,clerkType ,password ,gsm_Phone ,contact, address, memo
+        id ,clerkName ,clerkType ,password ,gsm_Phone ,contact, address, emailAddr, memo,last_login,del_state
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.String">
 		select
 		*
 		from Tab_userdata
-		where clerkName = #{clerkName,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}}
+		where clerkName = #{0} and password = #{1}
+	</select>
+	
+	<select id="selectById" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		*
+		from Tab_userdata
+		where id =#{id}
 	</select>
 	
 	<!-- 查询用户列表 -->
@@ -29,80 +40,42 @@
 		select
 		<include refid="Base_Column_List" />
 		from Tab_userdata
+		where
+		del_state = 0
 	</select>
 	
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from
+	<!-- 删除用户 -->
+	<update id="deleteByPrimaryKey" parameterType="java.lang.String">
+		update
 		Tab_userdata
-		where id = #{id,jdbcType=VARCHAR}
-	</delete>
-	
-	<insert id="insert" parameterType="com.jxust.ssm.pojo.UserData">
-		insert into Tab_userdata (id,
-		user_name, password,
-		age)
-		values (#{id,jdbcType=INTEGER},
-		#{userName,jdbcType=VARCHAR},
-		#{password,jdbcType=VARCHAR},
-		#{age,jdbcType=INTEGER})
-	</insert>
-	
-	<insert id="insertSelective" parameterType="com.jxust.ssm.pojo.UserData">
-		insert into Tab_userdata
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null">
-				id,
-			</if>
-			<if test="userName != null">
-				user_name,
-			</if>
-			<if test="password != null">
-				password,
-			</if>
-			<if test="age != null">
-				age,
-			</if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null">
-				#{id,jdbcType=INTEGER},
-			</if>
-			<if test="userName != null">
-				#{userName,jdbcType=VARCHAR},
-			</if>
-			<if test="password != null">
-				#{password,jdbcType=VARCHAR},
-			</if>
-			<if test="age != null">
-				#{age,jdbcType=INTEGER},
-			</if>
-		</trim>
-	</insert>
-	
-	<update id="updateByPrimaryKeySelective" parameterType="com.jxust.ssm.pojo.UserData">
-		update Tab_userdata
-		<set>
-			<if test="userName != null">
-				user_name = #{userName,jdbcType=VARCHAR},
-			</if>
-			<if test="password != null">
-				password = #{password,jdbcType=VARCHAR},
-			</if>
-			<if test="age != null">
-				age = #{age,jdbcType=INTEGER},
-			</if>
-		</set>
-		where id = #{id,jdbcType=INTEGER}
-	</update>
-	
-	<update id="updateByPrimaryKey" parameterType="com.jxust.ssm.pojo.UserData">
-		update Tab_userdata
 		set
-		user_name = #{userName,jdbcType=VARCHAR},
-		password =
-		#{password,jdbcType=VARCHAR},
-		age = #{age,jdbcType=INTEGER}
-		where id =
-		#{id,jdbcType=INTEGER}
+		del_state = 1
+		where id = #{id,jdbcType=VARCHAR}
 	</update>
+	
+	<!-- 添加用户 -->
+	<insert id="insertUser" parameterType="com.jxust.ssm.pojo.UserData">
+		insert into 
+		Tab_userdata
+		(ID,clerkName,clerkType,password,contact,address,emailAddr,memo,del_state)
+		values 
+		(#{id},#{clerkName},1,#{password},#{contact},#{address},#{emailAddr},#{memo},0)
+	</insert>
+	
+	<!-- 修改用户 -->
+	<update id="updateUser" parameterType="com.jxust.ssm.pojo.UserData">
+		update
+		Tab_userdata
+		set
+		 clerkName = #{clerkName}
+		,clerkType = #{clerkType}
+		,password = #{password}
+		,contact = #{contact}
+		,address = #{address}
+		,emailAddr = #{emailAddr}
+		,memo = #{memo}
+		where
+		id = #{id}
+	</update>
+
 </mapper>

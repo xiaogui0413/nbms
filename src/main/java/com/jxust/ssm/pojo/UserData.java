@@ -8,7 +8,10 @@ public class UserData {
 	private String gsm_Phone;
 	private String contact;
 	private String address;
+	private String emailAddr;
 	private String memo;
+	private String last_login;
+	private int del_state;
 	
 	public String getId() {
 		return id;
@@ -58,10 +61,30 @@ public class UserData {
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
+	public String getLast_login() {
+		return last_login;
+	}
+	public void setLast_login(String last_login) {
+		this.last_login = last_login;
+	}
+	public int getDel_state() {
+		return del_state;
+	}
+	public void setDel_state(int del_state) {
+		this.del_state = del_state;
+	}
+	public String getEmailAddr() {
+		return emailAddr;
+	}
+	public void setEmailAddr(String emailAddr) {
+		this.emailAddr = emailAddr;
+	}
+	
 	@Override
 	public String toString() {
 		return "UserData [id=" + id + ", clerkName=" + clerkName + ", clerkType=" + clerkType + ", password=" + password
-				+ ", gsm_Phone=" + gsm_Phone + ", contact=" + contact + ", address=" + address + ", memo=" + memo + "]";
+				+ ", gsm_Phone=" + gsm_Phone + ", contact=" + contact + ", address=" + address + ", emailAddr="
+				+ emailAddr + ", memo=" + memo + ", last_login=" + last_login + ", del_state=" + del_state + "]";
 	}
 	
 	

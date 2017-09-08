@@ -1,5 +1,7 @@
 package com.jxust.ssm.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -17,8 +19,34 @@ public class UserDateServiceImpl implements UserDataService{
 	UserDataDao userDataDao;
 	@Override
 	public UserData selectByPrimaryKey(String clerkName,String password) {
-		System.out.println("执行了seevice");
+		
 		return userDataDao.selectByPrimaryKey(clerkName, password);
 	}
+	@Override
+	public List<UserData> selectUserList() {
+		
+		return userDataDao.selectUserList();
+	}
+	@Override
+	public void deleteByPrimaryKey(String id) {
+		
+		userDataDao.deleteByPrimaryKey(id);
+	}
+	@Override
+	public void updateUser(UserData userData) {
+		
+		userDataDao.updateUser(userData);
+	}
+	@Override
+	public void insertUser(UserData userData) {
+		
+		userDataDao.insertUser(userData);
+	}
+	@Override
+	public UserData selectById(String id) {
+		
+		return userDataDao.selectById(id);
+	}
+	
 
 }

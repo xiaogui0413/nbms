@@ -1,9 +1,20 @@
 package com.jxust.ssm.service;
 
+import java.util.List;
+
 import com.jxust.ssm.pojo.UserData;
 
 public interface UserDataService {
 	
 	UserData selectByPrimaryKey(String clerkName,String password);
+	
+	UserData selectById(String id);
 
+	List<UserData> selectUserList();
+	
+	void deleteByPrimaryKey(String id);
+	 
+	void updateUser(UserData userData);
+	 
+	void insertUser(UserData userData);
 }

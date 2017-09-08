@@ -35,8 +35,8 @@ public class UserController {
 		return "showUser";
 	}
 
-	@RequestMapping("/insertUser")
-	public String testinsertUser() {
+	@RequestMapping("/insertUser1")
+	public String testinsertUser1() {
 		User user = new User();
 		user.setUserName("李清照");
 		user.setPassword("3232322");
