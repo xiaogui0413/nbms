@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,7 +33,6 @@ public class DevAttrController {
 	
 	@RequestMapping("/showDevAttr")
 	public String testtoshowUser(@RequestParam(value = "id") Integer id, Model model) {
-		System.out.println("id:" + id);
 		DevAttr devAttr = devAttrService.getDevAttrById(id);
 		model.addAttribute("devAttr", devAttr);
 		return "/WEB-INF/views/";
@@ -45,7 +45,6 @@ public class DevAttrController {
 		
 		DevAttr devAttr1 = devAttrService.getDevAttrById(1);
 		model.addAttribute("devAttr1", devAttr1);
-		System.out.println("hah"+devAttr1.getsDevName());
 		String s="[";
 		for(DevAttr d:devAttr){
 			 s +="["+ d.getX_pos()+","+d.getY_pos()+","+d.getSn()+"],";
@@ -61,37 +60,31 @@ public class DevAttrController {
 		sa = sa.substring(0,s.length()-1);
 		sa+="]";
 		model.addAttribute("sa", sa);
-		System.out.println(sa);
    	 	model.addAttribute("s", s);
-		System.out.println(s);
 
-		JSONArray json = JSONArray.fromObject(devAttr);
-		System.out.println(json);
+	/*	JSONArray json = JSONArray.fromObject(devAttr);*/
 
 /*		response.setHeader("Cache-Contrl", "no-cache");
 		response.setContentType("text/json;charset=utf-8");
 		response.getWriter().write(json);
 		response.getWriter().flush();*/
 
-	return "/Map/map2.jsp";
+	return "/Map/map2_1.jsp";
 	}
 	
-	@RequestMapping("/selectDevAttr")
-	public String selectDevAttr(Model model) {
-		DevAttr devAttr1 = devAttrService.getDevAttrById(1);
-		System.out.println(devAttr1);
-		String zuobiao = devAttr1.getX_pos()+devAttr1.getY_pos();
-		model.addAttribute("devAttr", devAttr1);
-		System.out.println(zuobiao);
-		return "/Map/map0.jsp";
+	@RequestMapping(value = "/selectDevAttr",produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String selectDevAttr(HttpServletResponse response,@RequestBody int id,Model model) {
+		DevAttr devAttr1 = devAttrService.getDevAttrById(id);
+		String json = JSONArray.fromObject(devAttr1).toString();
+		return json.toString();
 	}
 	
 	@RequestMapping(value="/selectDevAttr1",produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String selectDevAttr1(HttpServletResponse response) throws IOException{
-		DevAttr dev = devAttrService.getDevAttrById(2);
+	public String selectDevAttr1(HttpServletResponse response,@RequestBody int id) throws IOException{
+		DevAttr dev = devAttrService.getDevAttrById(id);
 		String json = JSONArray.fromObject(dev).toString();
-		System.out.println(json);
 		return json.toString();
 	/*	response.setHeader("Cache-Contrl", "no-cache");
 		response.setContentType("text/json;charset=utf-8");
@@ -103,7 +96,6 @@ public class DevAttrController {
 	@RequestMapping("/login")
 	public String login(Model model) {
 		List<DevAttr> devAttr = devAttrService.selectDevAttrList();
-		System.out.println(devAttr);
 		model.addAttribute("devAttr", devAttr);
 		return "/index.jsp";
 	}
@@ -118,8 +110,6 @@ public class DevAttrController {
 		 
 		    response.setCharacterEncoding("utf-8");
 		JSONArray json = JSONArray.fromObject(devAttr);
-		System.out.println(json);
-		System.out.println("%%%%%%"+json.toString());
 		return json.toString();
 	}
 	
@@ -148,7 +138,6 @@ public class DevAttrController {
 	@RequestMapping("/testJson1")
 	@ResponseBody
 	public User jsonSource(User user){
-		System.out.println("huhude");
 		return user;
 	}
 

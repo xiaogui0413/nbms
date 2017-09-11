@@ -5,6 +5,7 @@
 <head>
     <title></title>
     <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap-responsive.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/style.css" />
@@ -21,6 +22,10 @@
     <style type="text/css">
         body {
             padding-bottom: 40px;
+        }
+        input {
+        	border: none;
+        	border-style:none;
         }
         .sidebar-nav {
             padding: 9px 0;
@@ -42,45 +47,45 @@
     </style>
 </head>
 <body>
-<form action="updateStockIn" method="post" class="definewidth m20">
-<input type="hidden" name="id" value="{$user.id}" />
+<div class="form-group">
+<form action="updateStockIn" method="post">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">设备ID</td>
-            <td><input type="text" name="sn" readonly="readonly" value="${stock.sn}"/></td>
+            <td><input style="border-style:none" type="text" name="sn" readonly="readonly" value="${stock.sn}" class="form-control"/></td>
         </tr>
         <tr>
             <td class="tableleft">设备名称</td>
-            <td><input type="text" name="sDevName" value="${stock.sDevName }"/></td>
+            <td><input style="border-style:none" type="text" name="sDevName" value="${stock.sDevName }" class="form-control"/></td>
         </tr>
         <tr>
             <td class="tableleft">设备类型</td>
-            <td><input type="text" name="nDevType" value="${stock.nDevType }"/></td>
+            <td><input style="border-style:none" type="text" name="nDevType" value="${stock.nDevType }" class="form-control"/></td>
         </tr>
         <tr>
             <td class="tableleft">入库类型</td>
-            <td><input type="text" name="sStockOutType" value="${stock.sStockIntType }"/></td>
+            <td><input style="border-style:none" type="text" name="sStockOutType" value="${stock.sStockIntType }" class="form-control"/></td>
         </tr>
         <tr>
             <td class="tableleft">仓库名称</td>
-             <td><input type="text" name="sStorageName" value="${stock.sStorageName }"/></td>
+             <td><input style="border-style:none" type="text" name="sStorageName" value="${stock.sStorageName }" class="form-control"/></td>
         </tr>
         <tr>
             <td class="tableleft">供应商名称</td>
-             <td><input type="text" name="sUnitName" value="${stock.sSupplierName }"/></td>
+             <td><input style="border-style:none" type="text" name="sUnitName" value="${stock.sSupplierName }" class="form-control"/></td>
         </tr>
         <tr>
             <td class="tableleft">登记人员</td>
-             <td><input type="text" name="sRegistrant" value="${stock.sRegistrant }"/></td>
+             <td><input style="border-style:none" style="border-style:none" type="text" name="sRegistrant" value="${stock.sRegistrant }" class="form-control"/></td>
         </tr>
         
         <tr>
             <td align="center" class ="tableleft">入库时间</td>
-            <td><input type="text" name="stockOutTime" value="${stock.storageTime }" class="form_datetime"/></td>
+            <td><input style="border-style:none" type="text" name="stockOutTime" value="${stock.storageTime }" class="form_datetime"/></td>
         </tr>
         <tr>
             <td align="right" class="tableleft">备注</td>
-             <td><input type="text" name="sRemark" value="${stock.sRemark }"/></td>
+             <td><input style="border-style:none" type="text" name="sRemark" value="${stock.sRemark }" class="form-control"/></td>
         </tr>
         <tr>
             <td class="tableleft"></td>
@@ -91,6 +96,7 @@
         </tr>
     </table>
 </form>
+</div>
 <script>
     $(function () {
 		$('#backid').click(function(){

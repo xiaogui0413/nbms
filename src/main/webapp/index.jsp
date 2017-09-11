@@ -63,7 +63,7 @@
 <script type="text/javascript" src="assets/js/config-min.js"></script>
 <script>
     BUI.use('common/main',function(){
-       var config = [{id:'1',homePage : '4',menu:[{text:'系统管理',items:[{id:'3',text:'角色管理',href:'Role/index.html'},{id:'4',text:'用户管理',href:'selectUserList'},{id:'6',text:'菜单管理',href:'Menu/index.html'}]}]}
+       var config = [{id:'1',homePage : '4',menu:[{text:'系统管理',items:[{id:'4',text:'用户管理',href:'selectUserList'}]}]}
 			        ,{id:'7',homePage : '9',menu:[{text:'地图站点',items:[{id:'9',text:'查询站点',href:'listDevAttr'}]}]}
 			        ,{id:'11',homePage : '11',menu:[{text:'告警管理',items:[{id:'11',text:'当前告警',href:'Warning/index.html'},{id:'31',text:'历史告警',href:'Warning/index1.html'},{id:'41',text:'告警配置',href:'Warning/index2.html'}]}]}
 			        ,{id:'13',homePage : '13',menu:[{text:'统计分析',items:[{id:'13',text:'图形曲线',href:'chart.jsp'},{id:'33',text:'统计报表',href:'Warning/index1.html'}]}]}

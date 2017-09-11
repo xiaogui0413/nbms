@@ -23,8 +23,6 @@ public class UserDataController {
 	//用户登录
 	@RequestMapping("/userLogin")
 	public String userLogin(@RequestParam("username") String clerkName,@RequestParam("password") String password,Model model) {
-			System.out.println(clerkName);
-			System.out.println(password);
 		UserData userData = userDataService.selectByPrimaryKey(clerkName, password);
 			if(userData == null){
 				model.addAttribute("msg", "用户名或密码错误！");

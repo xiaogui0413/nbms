@@ -151,7 +151,7 @@
 	}
 
 	function addClickHandler(content,marker){
- 		 marker.addEventListener("click",function(e){
+  		 marker.addEventListener("click",function(e){
    			    var pt = e.point;			
 				geoc.getLocation(pt, function(rs){
 				var addComp = rs.addressComponents;
@@ -171,25 +171,7 @@
 		map.openInfoWindow(infoWindow,point); //开启信息窗口
 	}
 </script>
-<script type="text/javascript">
 
-$(function(){
- setInterval(aa,700000);
- function aa(){
-   $.ajax({
-		type : "post",
-		url : "selectDevAttr1",
-		dataType : 'json',
-		contentType: "application/x-www-form-urlencoded; charset=utf-8",
-		success : function (data){
-
-		}
-	});
-   /*   window.location.reload(true);   */
- /* alert("aaaaaa")  */
- }
-})
-</script>
 <script type="text/javascript">
 function ajaxTest(obj){
 	/* alert($(obj).parent().prev().prev().prev().prev().text()); */
@@ -230,23 +212,49 @@ function locate(obj){
 	});	
 }
 
-function aa(a,b){	
+function aa(a,b){
 	var map = new BMap.Map("shang");
 	var point = new BMap.Point(a,b);
-	var marker = new BMap.Marker(point);  // 创建标注
-	map.addOverlay(marker);              // 将标注添加到地图中
-	map.centerAndZoom(point, 15);
+	map.enableScrollWheelZoom(true);
+	var marker = new BMap.Marker(point); // 创建标注
+	map.addOverlay(marker);       // 将标注添加到地图中
+	map.centerAndZoom(point, 17);
+	var geoc = new BMap.Geocoder(); 
 	var opts = {
 	  width : 200,     // 信息窗口宽度
 	  height: 100,     // 信息窗口高度
-	  title : "设备窗口信息" , // 信息窗口标题
+	  title : "窗口信息" , // 信息窗口标题
 	  enableMessage:true,//设置允许信息窗发送短息
 	}
-	var infoWindow = new BMap.InfoWindow("地址：北京市东城区王府井大街88号乐天银泰百货八层", opts);  // 创建信息窗口对象 
-	marker.addEventListener("click", function(){          
-		map.openInfoWindow(infoWindow,point); //开启信息窗口
+	marker.addEventListener("click",function(e){     
+		var pt = e.point;
+		geoc.getLocation(pt, function(rs){
+			var addComp = rs.addressComponents;
+			var dizhi = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+			var infoWindow = new BMap.InfoWindow(dizhi, opts);
+			map.openInfoWindow(infoWindow,point);
+
+		});  
 	});
+	 
 	}
+	
+$(function(){
+	 setInterval(aa,700000);
+	 function aa(){
+	   $.ajax({
+			type : "post",
+			url : "selectDevAttr1",
+			dataType : 'json',
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			success : function (data){
+
+			}
+		});
+	   /*   window.location.reload(true);   */
+	 /* alert("aaaaaa")  */
+	 }
+	})
 </script>
 </body>
 </html>
