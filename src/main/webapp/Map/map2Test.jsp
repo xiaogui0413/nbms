@@ -103,7 +103,8 @@
 	// 百度地图API功能	
 	map = new BMap.Map("shang");
 /* 	map.centerAndZoom("深圳",9); */
-	map.centerAndZoom(new BMap.Point(114.273439,30.674298), 9);
+	/* map.centerAndZoom(new BMap.Point(114.273439,30.674298), 9); */
+	map.centerAndZoom(new BMap.Point(113.955893,22.547656), 9);
 	map.enableScrollWheelZoom(true);
 	var geoc = new BMap.Geocoder();  
 	
@@ -135,7 +136,8 @@
 	  });
 	  map.addControl(geolocationControl);
 	  
-	var data_info = ${s};
+	var data_info = ${online};
+	var data_info2 = ${offline};
  	/*  alert(data_info); */
 
 	var opts = {
@@ -144,12 +146,28 @@
 				title : "信息窗口" , // 信息窗口标题
 				enableMessage:true//设置允许信息窗发送短息
 			   };
+ 	//遍历在线设备
 	for(var i=0;i<data_info.length;i++){
 		var marker = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]));  // 创建标注
 		 var content1 = data_info[i][2];
 		content = "设备ID："+content1;
 		map.addOverlay(marker);        // 将标注添加到地图中
 		addClickHandler(content,marker);
+	}
+ 	
+ 	//遍历离线设备
+ 	
+ 	for(var i=0;i<data_info2.length;i++){
+ 		/* var myIcon = new BMap.Icon("Images/blue.png", new BMap.Size(23,25)); */
+ 		var myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png", new BMap.Size(23, 25), {  
+            offset: new BMap.Size(10, 25), // 指定定位位置  
+            imageOffset: new BMap.Size(0, 0 - 10 * 25) // 设置图片偏移  
+        });
+		var pt = new BMap.Marker(new BMap.Point(data_info2[i][0],data_info2[i][1]),{icon:myIcon});  // 创建标注
+		 var content1 = data_info2[i][2];
+		content = "设备ID："+content1;
+		map.addOverlay(pt);
+		addClickHandler(content,pt);
 	}
 
 	function addClickHandler(content,marker){

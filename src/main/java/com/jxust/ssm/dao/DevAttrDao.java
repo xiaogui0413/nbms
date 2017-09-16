@@ -13,5 +13,9 @@ public interface DevAttrDao {
 	DevAttr selectByPrimaryKey(Integer id);
 	
 	List<DevAttr> selectDevAttrList();
+	
+	List<DevAttr> selectDevAttrOnline();
+	
+	List<DevAttr> selectDevAttrOffline();
 
 }

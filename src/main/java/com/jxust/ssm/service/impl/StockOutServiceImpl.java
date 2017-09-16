@@ -44,6 +44,7 @@ public class StockOutServiceImpl implements StockOutService{
 
 	@Override
 	public void insertStockOut(StockOut stockOut) {
+		System.out.println("zhixingle ");
 		stockOutDao.insertStockOut(stockOut);
 		
 	}

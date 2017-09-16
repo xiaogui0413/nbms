@@ -48,7 +48,7 @@
         </tr>
         <tr>
             <td class="tableleft">手机</td>
-            <td><input type="text" name="clerkName" value="${userData.contact }"/></td>
+            <td><input type="text" name="contact" value="${userData.contact }"/></td>
         </tr>
         <tr>
             <td class="tableleft">邮箱</td>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript">
+var map=new BMap.Map("map");
+var point=new BMap.Point(108.404,37.99);
+map.centerAndZoom(point,5);
+map.enableScrollWheelZoom();
+
+var p=new BMap.Point(116.404,39.915);
+function addMarker(point){
+var myIcon=new BMap.Icon("http://i04.pic.sogou.com/06321d518e11eb7c",new BMap.Size(256,256),{
+//BMap.Size类表示以指定的宽度和高度创建一个矩形区域大小，有的时候图标太大，Size太小，可能不能显示图标或显示一部分图标
+  imageSize:new BMap.Size(25.6,25.6)//设置显示图像的大小，因为256*256太大，所以可以设置它实际显示的长宽比例为25.6*25.6，相当于缩小十倍了
+  anchor:new BMap.Size(13,25.6),//标注指向的地理位置距离图标左上角各偏移13和25.6像素(一般宽度是照片宽的一般，长度是照片的长，这样图标的尖角就能刚好点在坐标点上，否则是图标的中心点在坐标点上)，本例中该位置即是图标中央下端的尖角位置
+});
+var marker=new BMap.Marker(point,{icon:myIcon});
+map.addOverlay(marker);
+}
+addMarker(p);
+</script>
+</body>
+</html>

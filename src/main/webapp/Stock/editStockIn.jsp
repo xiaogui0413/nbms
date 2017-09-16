@@ -72,7 +72,7 @@
         </tr>
         <tr>
             <td class="tableleft">供应商名称</td>
-             <td><input style="border-style:none" type="text" name="sUnitName" value="${stock.sSupplierName }" class="form-control"/></td>
+             <td><input style="border-style:none" type="text" name="sSupplierName" value="${stock.sSupplierName }" class="form-control"/></td>
         </tr>
         <tr>
             <td class="tableleft">登记人员</td>
@@ -81,7 +81,7 @@
         
         <tr>
             <td align="center" class ="tableleft">入库时间</td>
-            <td><input style="border-style:none" type="text" name="stockOutTime" value="${stock.storageTime }" class="form_datetime"/></td>
+            <td><input style="border-style:none" type="text" name="StorageTime" value="${stock.storageTime }" class="form_datetime"/></td>
         </tr>
         <tr>
             <td align="right" class="tableleft">备注</td>
@@ -106,12 +106,12 @@
     });
     
     $(function () {
-      	 $(".form_datetime").datetimepicker({
-      		 		autoclose : true,
-   				minView : "month",
-   				format : "yyyy-mm-dd",
-   				language : "zh-CN"
-      		 });
+    	$(".form_datetime").datetimepicker({
+		 	autoclose : true,
+			minView : 0,
+			format : "yyyy-mm-dd hh:ii:ss",
+			language : "zh-CN"
+		 });
        });
 /*     $(function () {       
 		$('#saveid').click(function(){

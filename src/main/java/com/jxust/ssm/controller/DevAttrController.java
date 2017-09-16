@@ -69,7 +69,7 @@ public class DevAttrController {
 		response.getWriter().write(json);
 		response.getWriter().flush();*/
 
-	return "/Map/map2_1.jsp";
+	return "/Map/map2.jsp";
 	}
 	
 	@RequestMapping(value = "/selectDevAttr",produces = "application/json; charset=utf-8")
@@ -139,6 +139,46 @@ public class DevAttrController {
 	@ResponseBody
 	public User jsonSource(User user){
 		return user;
+	}
+	
+	@RequestMapping("/listDevAttrTest")
+	public String listDevAttrTest( HttpServletResponse response,Model model) throws IOException{
+		List<DevAttr> devAttr = devAttrService.selectDevAttrList();
+		model.addAttribute("devAttr", devAttr);
+		
+		List<DevAttr> devAttrOnline = devAttrService.selectDevAttrOnline();
+		
+		List<DevAttr> devAttrOffline = devAttrService.selectDevAttrOffline();
+
+		//所有设备
+		String s="[";
+		for(DevAttr d:devAttr){
+			 s +="["+ d.getX_pos()+","+d.getY_pos()+","+d.getSn()+"],";				
+		}
+		s = s.substring(0,s.length()-1);
+		s+="]";
+   	 	model.addAttribute("s", s);
+   	 	
+   	 	//在线设备
+   	 	String online="[";
+		for(DevAttr d:devAttrOnline){
+			online +="["+ d.getX_pos()+","+d.getY_pos()+","+d.getSn()+"],";				
+		}
+		online = online.substring(0,online.length()-1);
+		online+="]";
+		System.out.println(online);
+	 	model.addAttribute("online", online);
+   	 	//离线设备
+	 	String offline="[";
+		for(DevAttr d:devAttrOffline){
+			offline +="["+ d.getX_pos()+","+d.getY_pos()+","+d.getSn()+"],";				
+		}
+		offline = offline.substring(0,offline.length()-1);
+		offline+="]";
+		System.out.println(offline);
+   	 	model.addAttribute("offline", offline);
+
+	return "/Map/map2Test.jsp";
 	}
 
 }

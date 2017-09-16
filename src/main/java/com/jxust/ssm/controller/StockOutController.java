@@ -30,7 +30,6 @@ public class StockOutController{
 
 	@RequestMapping("/selectgStockOutByDevName")
 	public String selectgStockOutByDevName(@RequestParam("selectItem")String sDevName,Model model) throws IOException{
-		System.out.println(sDevName);
 		List<StockOut> stockOut = stockOutService.selectByDevName(sDevName);
 		model.addAttribute("stockOut", stockOut);
 	return "/Stock/listStockOut.jsp";

@@ -104,8 +104,8 @@
     $(function () {
     	 $(".form_datetime").datetimepicker({
     		 	autoclose : true,
-				minView : "month",
-				format : "yyyy-mm-dd",
+				minView : 0,
+				format : "yyyy-mm-dd HH:ii:ss",
 				language : "zh-CN"
     		 });
     });

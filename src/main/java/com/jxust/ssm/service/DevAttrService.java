@@ -16,7 +16,10 @@ public interface DevAttrService {
 	//根据id查找
 	public DevAttr getDevAttrById(Integer id);
 	
-	
 	List<DevAttr> selectDevAttrList();
+	
+	List<DevAttr> selectDevAttrOnline();
+	
+	List<DevAttr> selectDevAttrOffline();
 
 }

@@ -97,11 +97,15 @@
    //页面每隔30秒自动刷新一遍       
    response.setHeader("refresh" , "30" );  
 %> 		 --%>
+<div style="text-align:center;">
+ <p><span>© 2017 深圳意格尔数字技术有限公司</span></p>
+</div>
 </div>
 <script type="text/javascript">
 	// 百度地图API功能	
 	map = new BMap.Map("shang");
-	map.centerAndZoom(new BMap.Point(114.273439,30.674298), 9);
+	map.centerAndZoom("深圳",9);
+	/* map.centerAndZoom(new BMap.Point(114.273439,30.674298), 9); */
 	map.enableScrollWheelZoom(true);
 	var geoc = new BMap.Geocoder();   
 	
@@ -226,7 +230,7 @@ function aa(a,b){
 	  title : "窗口信息" , // 信息窗口标题
 	  enableMessage:true,//设置允许信息窗发送短息
 	}
-	marker.addEventListener("click",function(e){     
+	marker.addEventListener("mouseover",function(e){     
 		var pt = e.point;
 		geoc.getLocation(pt, function(rs){
 			var addComp = rs.addressComponents;
@@ -246,7 +250,7 @@ $(function(){
 			type : "post",
 			url : "selectDevAttr1",
 			dataType : 'json',
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			contentType: "application/json; charset=utf-8",
 			success : function (data){
 
 			}

@@ -23,7 +23,7 @@
 		select
 		*
 		from Tab_userdata
-		where clerkName = #{0} and password = #{1}
+		where clerkName = #{0} and password = #{1} and del_state = 0
 	</select>
 	
 	<select id="selectById" resultMap="BaseResultMap"

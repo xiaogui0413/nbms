@@ -37,4 +37,16 @@ public class DevAttrServiceImpl implements DevAttrService{
 		return devAttrDao.selectDevAttrList();
 	}
 
+	@Override
+	public List<DevAttr> selectDevAttrOnline() {
+		
+		return devAttrDao.selectDevAttrOnline();
+	}
+
+	@Override
+	public List<DevAttr> selectDevAttrOffline() {
+		
+		return devAttrDao.selectDevAttrOffline();
+	}
+
 }

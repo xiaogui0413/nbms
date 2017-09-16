@@ -42,14 +42,14 @@
     <tr>
         <th>设备ID</th>
         <th>设备名称</th>
-        <th>设备类型</th>
-        <th>入库类型</th>
+        <th>设备类型</th>
+        <th>入库类型</th>
         <th>仓库名称</th>
         <th>供应商名称</th>
-        <th>登记人员</th>
+        <th>登记人员</th>
         <th>入库时间</th>
         <th>备注</th>
-        <th colspan=2 align="center">操作</th>
+        <th colspan=3 align="center">操作</th>
     </tr>
     </thead>
 	<c:forEach var="s" items="${stockIn }">
@@ -72,10 +72,13 @@
             </td> --%>
             <td>${s.sRemark }</td>
             <td>
-                <a href="updateStockInView?id=${s.sn }">编辑</a>
+                <a href="updateStockInView?id=${s.sn }">编辑</a>                
             </td>
             <td>
-                <a href="deleteStockIn?id=${s.sn }" onClick="return delConfirm();">删除</a> 
+                <a href="outStockInView?id=${s.sn }">出库</a>          
+            </td>
+            <td>
+                <a href="deleteStockIn?id=${s.sn }" onClick="return delConfirm();">删除</a>       
             </td>
           </tr>
 	</c:forEach>

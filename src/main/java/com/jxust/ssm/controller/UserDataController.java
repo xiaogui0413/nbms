@@ -29,7 +29,7 @@ public class UserDataController {
 				return "/Public/login.jsp";
 			}
 			else{
-				model.addAttribute("username", clerkName); 
+				model.addAttribute("username", clerkName);
 				return "index.jsp";
 			}
 	}
@@ -46,7 +46,6 @@ public class UserDataController {
 	public String updateUserView(String id,Model model) {
 		 UserData userData = userDataService.selectById(id);
 		model.addAttribute("userData", userData);
-		System.out.println("执行了，ID为："+id);
 		return "User/editUser.jsp";
 	}
 	
@@ -70,7 +69,6 @@ public class UserDataController {
 				userData.setPassword(password);
 				userData.setMemo(memo);				
 			userDataService.updateUser(userData);
-			System.out.println("执行了修改操作，修改ID为"+id);
 			return "selectUserList";
 		}
 	
@@ -78,7 +76,6 @@ public class UserDataController {
 	@RequestMapping("/deleteUser")
 	public String deleteUser(String id,Model model) {
 		userDataService.deleteByPrimaryKey(id);
-		System.out.println("删除成功，删除的ID为："+id);
 		return "selectUserList";
 	}
 	
@@ -104,7 +101,6 @@ public class UserDataController {
 		userData.setDel_state(0);
 		userData.setMemo(memo);
 		userDataService.insertUser(userData);
-		System.out.println("插入成功，id为"+uuid);
 		return "selectUserList";
 	}	
 }

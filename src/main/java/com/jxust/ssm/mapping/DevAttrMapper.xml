@@ -35,11 +35,30 @@
 		where sn = #{sn,jdbcType=INTEGER}
 	</select>
 	
+	<!-- 查询所有设备 -->
 	<select id="selectDevAttrList" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
 		from Tab_nbms_devattr
+	</select>
+	
+	<!-- 查询在线设备 -->
+	<select id="selectDevAttrOnline" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from Tab_nbms_devattr 
+		where nState = 1
+	</select>
+	
+	<!-- 查询离线设备 -->
+	<select id="selectDevAttrOffline" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from Tab_nbms_devattr
+		where nState = -1
 	</select>
 	
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
