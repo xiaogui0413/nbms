@@ -17,5 +17,9 @@ public interface StockOutDao {
 	void updateStockOut(StockOut stockOut);
 	
 	void insertStockOut(StockOut stockOut);
+	
+	StockOut selectByDevLabel(String sDevLabel);
+	
+	void updateStockOutState(Integer id);
 
 }

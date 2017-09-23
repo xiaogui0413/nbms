@@ -18,7 +18,6 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath }/Js/bootstrap-datetimepicker.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath }/Js/bootstrap-datetimepicker.zh-CN.js"></script>
  
-
     <style type="text/css">
         body {
             padding-bottom: 40px;
@@ -42,7 +41,6 @@
                 padding-right: 5px;
             }
         }
-
 
     </style>
 </head>
@@ -121,22 +119,21 @@
 			language : "zh-CN"
 		 });
        });
-/*     $(function () {       
+/*     $(function () {    
 		$('#saveid').click(function(){
 				window.location.href="index.html";
 		 });
 
     }); */
 /*     $(function(){  
-        $('#backid').click(function(){ 
+        $('#backid').click(function(){
         	alert("hah");
-             $.ajax({  
+             $.ajax({
                  type: "post",  
                  url: "listStockIn", 
-                 dataType: "json",  
+                 dataType: "json",
                  success: function(){  
-                          alert("提交成功！");
-                           
+                          alert("提交成功！");                          
                           }  
              });  
         });  

@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jxust.ssm.pojo.DevAttr;
+import com.jxust.ssm.pojo.StockOut;
 import com.jxust.ssm.pojo.User;
 import com.jxust.ssm.service.DevAttrService;
+import com.jxust.ssm.service.StockOutService;
+//import com.jxust.ssm.udpserver.UDPServer;
 
 import net.sf.json.JSONArray;
 
@@ -30,6 +33,8 @@ public class DevAttrController {
 	
 	@Resource
 	private DevAttrService devAttrService;
+	@Resource
+	private StockOutService stockOutService;
 	
 	@RequestMapping("/showDevAttr")
 	public String testtoshowUser(@RequestParam(value = "id") Integer id, Model model) {
@@ -43,8 +48,6 @@ public class DevAttrController {
 		List<DevAttr> devAttr = devAttrService.selectDevAttrList();
 		model.addAttribute("devAttr", devAttr);
 		
-		DevAttr devAttr1 = devAttrService.getDevAttrById(1);
-		model.addAttribute("devAttr1", devAttr1);
 		String s="[";
 		for(DevAttr d:devAttr){
 			 s +="["+ d.getX_pos()+","+d.getY_pos()+","+d.getSn()+"],";
@@ -61,6 +64,7 @@ public class DevAttrController {
 		sa+="]";
 		model.addAttribute("sa", sa);
    	 	model.addAttribute("s", s);
+   	 	System.out.println("sa"+sa);
 
 	/*	JSONArray json = JSONArray.fromObject(devAttr);*/
 
@@ -180,5 +184,73 @@ public class DevAttrController {
 
 	return "/Map/map2Test.jsp";
 	}
+	
+	@RequestMapping("/listDevAttrTest2")
+	public String listDevAttrTest2( HttpServletResponse response,Model model) throws IOException{
+		List<DevAttr> devAttr = devAttrService.selectDevAttrList();
+		model.addAttribute("devAttr", devAttr);
+		
+		DevAttr devAttr1 = devAttrService.getDevAttrById(1);
+		model.addAttribute("devAttr1", devAttr1);
+		String s="[";
+		for(DevAttr d:devAttr){
+			 s +="["+ d.getX_pos()+","+d.getY_pos()+","+d.getSn()+"],";
+			/*System.out.println(d.getX_pos()+d.getY_pos());*/				
+		}
+		s = s.substring(0,s.length()-1);
+		s+="]";
+		String sa="[";
+		for(DevAttr d:devAttr){
+			 sa +="["+ d.getX_pos()+","+d.getY_pos()+","+d.getsDevName()+"],";
+			/*System.out.println(d.getX_pos()+d.getY_pos());*/				
+		}
+		sa = sa.substring(0,s.length()-1);
+		sa+="]";
+		model.addAttribute("sa", sa);
+   	 /*	model.addAttribute("s", s);*/
+
+	/*	JSONArray json = JSONArray.fromObject(devAttr);*/
+
+/*		response.setHeader("Cache-Contrl", "no-cache");
+		response.setContentType("text/json;charset=utf-8");
+		response.getWriter().write(json);
+		response.getWriter().flush();*/
+System.out.println("@woyiijgnzhiixng ");
+	return "/Map/map2Test1.jsp";
+	}
+	
+	@RequestMapping("/insertToDevAttr")
+	@ResponseBody
+	public String insertToDevAttr(@RequestBody int id,Model model) throws IOException{
+		StockOut stockOut = stockOutService.selectByPrimaryKey(id);
+		int devType = stockOut.getnDevType();
+		int devSubType = stockOut.getnSubtype();
+		String devName = stockOut.getsDevName();		
+		String devID = stockOut.getsDevID();
+		DevAttr dev = new DevAttr();
+		dev.setnDevType(devType);
+		dev.setnSubtype(devSubType);
+		dev.setsDevName(devName);
+		dev.setsDevID(devID);
+		int state = stockOut.getState();
+		if(state == 1){
+			JSONArray json = JSONArray.fromObject(state);
+			return json.toString();
+		}
+		else{
+			devAttrService.insertDevAttr(dev);
+			stockOutService.updateStockOutState(id);
+			JSONArray json = JSONArray.fromObject(state);
+			return json.toString();
+			}
+
+	}
+	
+	@RequestMapping("/getUdpData")
+	public String getUdpData(Model model) throws IOException{
+		/*UDPServer udp = new UDPServer();*/
+	return null;
+	}
+	
 
 }

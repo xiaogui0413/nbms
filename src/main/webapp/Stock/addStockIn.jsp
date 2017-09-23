@@ -58,10 +58,10 @@
         <td class="tableleft">入库类型</td>
         <td>
        	 	<select name="sStockIntType">
-			  <option value="入库类型1">入库类型1</option>
-			  <option value="入库类型1">入库类型2</option>
-			  <option value="入库类型1">入库类型3</option>
-			  <option value="入库类型1">入库类型4</option>
+			  <option value="入库类型1">外购入库</option>
+			  <option value="入库类型1">受托代理入库</option>
+			  <option value="入库类型1">退还入库</option>
+			  <option value="入库类型1">赠送入库</option>
 			</select>
         </td>
     </tr>

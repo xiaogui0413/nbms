@@ -22,7 +22,6 @@ public class StockInController{
 	
 	@Resource
 	private StockInService stockInService;
-	private StockOutService stockOutService;
 	
 	@RequestMapping("/listStockIn")
 	public String testlidevser( HttpServletResponse response,Model model) throws IOException{
@@ -93,10 +92,10 @@ public class StockInController{
 	return "/listStockIn";
 	}
 	
-	@RequestMapping("/outStockIn")
+/*	@RequestMapping("/outStockIn")
 	public String outStockIn(HttpServletRequest request,Model model) throws IOException{
 
-		/*int id = Integer.parseInt(request.getParameter("sn"));
+		int id = Integer.parseInt(request.getParameter("sn"));
 		String sDevName = request.getParameter("sDevName");
 		int  nDevType = Integer.parseInt(request.getParameter("nDevType"));
 		String  sStockIntType = request.getParameter("sStockIntType");
@@ -104,9 +103,9 @@ public class StockInController{
 		String sSupplierName = request.getParameter("sSupplierName");
 		String sRegistrant = request.getParameter("sRegistrant");
 		String StorageTime = request.getParameter("StorageTime");
-		String sRemark = request.getParameter("sRemark");*/
+		String sRemark = request.getParameter("sRemark");
 				
-/*		StockIn stock = new StockIn();
+		StockIn stock = new StockIn();
 		stock.setSn(id);
 		stock.setsDevName(sDevName);
 		stock.setnDevType(nDevType);
@@ -118,9 +117,9 @@ public class StockInController{
 		stock.setsRemark(sRemark);
 				
 		stockInService.updateStockIn(stock);
-		model.addAttribute("stock",stock);*/
+		model.addAttribute("stock",stock);
 		
-	/*	int id = Integer.parseInt(request.getParameter("sn"));*/
+		int id = Integer.parseInt(request.getParameter("sn"));
 		String sDevName = request.getParameter("sDevName");
 		int  nDevType = Integer.parseInt(request.getParameter("nDevType"));
 		String sStockOutType = request.getParameter("sStockOutType");
@@ -134,7 +133,7 @@ public class StockInController{
 		
 		StockOut stock = new StockOut();
 		
-		/*stock.setSn(id);*/
+		stock.setSn(id);
 		stock.setsDevName(sDevName);
 		stock.setnDevType(nDevType);
 		stock.setsStockOutType(sStockOutType);
@@ -147,8 +146,8 @@ public class StockInController{
 		stock.setsRemark(sRemark);
 		System.out.println(stock);
 		stockOutService.insertStockOut(stock);
-		/*stockOutService.selectStockOutList();*/
-/*		System.out.println(id);
+		stockOutService.selectStockOutList();
+		System.out.println(id);
 		System.out.println(sDevName);
 		System.out.println(nDevType);
 		System.out.println(sStockOutType);
@@ -158,11 +157,11 @@ public class StockInController{
 		System.out.println(sTelphone);
 		System.out.println(sRegistrant);
 		System.out.println(stockOutTime);
-		System.out.println(sRemark);*/
+		System.out.println(sRemark);
 		
 		
 		return "/listStockIn";
-	}
+	}*/
 	
 	@RequestMapping("/updateStockIn")
 	public String updateStockIn(HttpServletRequest request,Model model) throws IOException{
@@ -187,7 +186,7 @@ public class StockInController{
 		stock.setsRegistrant(sRegistrant);
 		stock.setStorageTime(StorageTime);
 		stock.setsRemark(sRemark);
-				
+			System.out.println(stock);	
 		stockInService.updateStockIn(stock);
 		model.addAttribute("stock",stock);
 		return "/listStockIn";

@@ -22,7 +22,7 @@
 		parameterType="java.lang.String">
 		select
 		*
-		from Tab_userdata
+		from tab_userdata
 		where clerkName = #{0} and password = #{1} and del_state = 0
 	</select>
 	
@@ -30,7 +30,7 @@
 		parameterType="java.lang.String">
 		select
 		*
-		from Tab_userdata
+		from tab_userdata
 		where id =#{id}
 	</select>
 	
@@ -39,7 +39,7 @@
 		parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
-		from Tab_userdata
+		from tab_userdata
 		where
 		del_state = 0
 	</select>
@@ -47,7 +47,7 @@
 	<!-- 删除用户 -->
 	<update id="deleteByPrimaryKey" parameterType="java.lang.String">
 		update
-		Tab_userdata
+		tab_userdata
 		set
 		del_state = 1
 		where id = #{id,jdbcType=VARCHAR}
@@ -56,7 +56,7 @@
 	<!-- 添加用户 -->
 	<insert id="insertUser" parameterType="com.jxust.ssm.pojo.UserData">
 		insert into 
-		Tab_userdata
+		tab_userdata
 		(ID,clerkName,clerkType,password,contact,address,emailAddr,memo,del_state)
 		values 
 		(#{id},#{clerkName},1,#{password},#{contact},#{address},#{emailAddr},#{memo},0)
@@ -65,7 +65,7 @@
 	<!-- 修改用户 -->
 	<update id="updateUser" parameterType="com.jxust.ssm.pojo.UserData">
 		update
-		Tab_userdata
+		tab_userdata
 		set
 		 clerkName = #{clerkName}
 		,clerkType = #{clerkType}

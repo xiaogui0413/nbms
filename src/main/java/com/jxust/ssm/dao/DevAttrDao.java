@@ -17,5 +17,9 @@ public interface DevAttrDao {
 	List<DevAttr> selectDevAttrOnline();
 	
 	List<DevAttr> selectDevAttrOffline();
+	
+	List<DevAttr> selectDevAttrByDevType();
+	
+	void insertDevAttr(DevAttr devAttr);
 
 }

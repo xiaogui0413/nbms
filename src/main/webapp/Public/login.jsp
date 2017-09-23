@@ -30,7 +30,7 @@
     </form>
 </div>
 <div id="footer">
-    <p><span>© 2017 深圳意格尔数字技术有限公司</span></p>
+    <p><span>© 2017 深圳市意格尔数字技术有限公司</span></p>
 </div>
 </body>
 </html>

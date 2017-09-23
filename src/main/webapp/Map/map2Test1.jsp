@@ -21,8 +21,8 @@
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Qied2a3vURUG89hlnnvVodf3"></script>
 	<!-- <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script> -->
 	<script src="http://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>	
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
-	<title>给多个点添加信息窗口</title>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<title>自定义定位图标</title>
 
 </head>
 <body>
@@ -37,7 +37,7 @@
 	<thead>
 		<tr>
 			<!-- <th></th> -->
-			<th>编号</th>
+			<th>设备ID</th>
 			<th>设备名称</th>
 			<th>状态</th>
 			<!-- <th>经度</th> -->
@@ -96,12 +96,12 @@
 <!--    //页面每隔30秒自动刷新一遍       
    response.setHeader("refresh" , "30" );   -->
 <div style="text-align:center;">
- <p><span>© 2017 深圳市意格尔数字技术有限公司</span></p>
+ <p><span>© 2017 深圳意格尔数字技术有限公司</span></p>
 </div>
 </div>
 <script type="text/javascript">
-
 	// 百度地图API功能	
+	alert("aaaa");
 	map = new BMap.Map("shang");
 /* 	map.centerAndZoom("深圳",9); */
 	map.centerAndZoom(new BMap.Point(114.273439,30.674298), 9);
@@ -117,7 +117,7 @@
 	    // 启用显示定位
 	    enableGeolocation: true
 	  });
-	   map.addControl(navigationControl); 
+	  map.addControl(navigationControl);
 	  // 添加定位控件
 	  var geolocationControl = new BMap.GeolocationControl();
 	  geolocationControl.addEventListener("locationSuccess", function(e){
@@ -135,14 +135,9 @@
 	    alert(e.message);
 	  });
 	  map.addControl(geolocationControl);
-	/*   var data_info1 = ${devAttr}; */
-	 /*   alert("wocao"); */
-	/* 	 var data_info1 = ${sa}; 
-		 console.log(data_info1);  */
-	 	var data_info = ${s};
-/* 	 	console.log(data_info);
-		alert(data_info); */
-
+	  
+	var data_info = ${s};
+ 	/*  alert(data_info); */
 
 	var opts = {
 				width : 250,     // 信息窗口宽度
@@ -151,15 +146,18 @@
 				enableMessage:true//设置允许信息窗发送短息
 			   };
 	for(var i=0;i<data_info.length;i++){
-		var marker = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]));  // 创建标注
+		var myIcon = new BMap.Icon("Images/qiyoufadianji.png", new BMap.Size(64,64));
+		var marker2 = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]),{icon:myIcon});  // 创建标注
 		 var content1 = data_info[i][2];
 		content = "设备ID："+content1;
-		map.addOverlay(marker);        // 将标注添加到地图中
-		addClickHandler(content,marker);
+		/* var marker2 = new BMap.Marker(marker,{icon:myIcon});  // 创建标注 */
+		map.addOverlay(marker2);              // 将标注添加到地图中
+		
+		addClickHandler(content,marker2);
 	}
 
 	function addClickHandler(content,marker){
- 		 marker.addEventListener("mouseover",function(e){
+ 		 marker.addEventListener("click",function(e){
    			    var pt = e.point;			
 				geoc.getLocation(pt, function(rs){
 				var addComp = rs.addressComponents;
@@ -263,34 +261,6 @@ function locate(obj){
 		map.addOverlay(marker);       // 将标注添加到地图中
 		map.centerAndZoom(point, 17);
 		var geoc = new BMap.Geocoder(); 
-		
-		 // 添加带有定位的导航控件
-		  var navigationControl = new BMap.NavigationControl({
-		    // 靠左上角位置
-		    anchor: BMAP_ANCHOR_TOP_LEFT,
-		    // LARGE类型
-		    type: BMAP_NAVIGATION_CONTROL_LARGE,
-		    // 启用显示定位
-		    enableGeolocation: true
-		  });
-		   map.addControl(navigationControl); 
-		  // 添加定位控件
-		  var geolocationControl = new BMap.GeolocationControl();
-		  geolocationControl.addEventListener("locationSuccess", function(e){
-		    // 定位成功事件
-		    var address = '';
-		    address += e.addressComponent.province;
-		    address += e.addressComponent.city;
-		    address += e.addressComponent.district;
-		    address += e.addressComponent.street;
-		    address += e.addressComponent.streetNumber;
-		    alert("当前定位地址为：" + address);
-		  });
-		  geolocationControl.addEventListener("locationError",function(e){
-		    // 定位失败事件
-		    alert(e.message);
-		  });
-		  map.addControl(geolocationControl);
 		var opts = {
 		  width : 200,     // 信息窗口宽度
 		  height: 100,     // 信息窗口高度

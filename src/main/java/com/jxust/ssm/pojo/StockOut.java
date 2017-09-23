@@ -15,7 +15,7 @@ public class StockOut {
 	private String sRegistrant;
 	private String StockOutTime;
 	private String sRemark;
-	private String Spare1;
+	private int state;
 	private String Spare2;
 	public int getSn() {
 		return sn;
@@ -101,11 +101,11 @@ public class StockOut {
 	public void setsRemark(String sRemark) {
 		this.sRemark = sRemark;
 	}
-	public String getSpare1() {
-		return Spare1;
+	public int getState() {
+		return state;
 	}
-	public void setSpare1(String spare1) {
-		Spare1 = spare1;
+	public void setState(int state) {
+		this.state = state;
 	}
 	public String getSpare2() {
 		return Spare2;
@@ -119,7 +119,7 @@ public class StockOut {
 				+ ", sDevLabel=" + sDevLabel + ", sDevName=" + sDevName + ", sStockOutType=" + sStockOutType
 				+ ", sStorageName=" + sStorageName + ", sUnitName=" + sUnitName + ", sResponsiblePerson="
 				+ sResponsiblePerson + ", sTelphone=" + sTelphone + ", sRegistrant=" + sRegistrant + ", StockOutTime="
-				+ StockOutTime + ", sRemark=" + sRemark + ", Spare1=" + Spare1 + ", Spare2=" + Spare2 + "]";
+				+ StockOutTime + ", sRemark=" + sRemark + ", state=" + state + ", Spare2=" + Spare2 + "]";
 	}
 
 }

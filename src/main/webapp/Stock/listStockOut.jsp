@@ -5,6 +5,7 @@
 <head>
 	<title>出库</title>
 	<meta charset="UTF-8">
+	<link href="${pageContext.request.contextPath }/Public/style/a.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap-responsive.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/style.css" />
@@ -35,7 +36,8 @@
     设备名称：
     <input type="text" name="selectItem" id="username"class="abc input-default" value="">&nbsp;&nbsp;  
     <button type="submit" class="btn btn-primary">查询</button>&nbsp;&nbsp; 
-    <button type="button" class="btn btn-success" id="addnew">新增设备</button>
+  	<label class="error" id="msg">${msg }</label><br>
+   <!--  <button type="button" class="btn btn-success" id="addnew">新增设备</button> -->
 </form>
 <table class="table table-bordered table-hover table-condensed table-striped definewidth m10">
     <thead>
@@ -55,44 +57,75 @@
     </tr>
     </thead>
     <c:forEach var="so" items="${stockOut }">
-	     <tr>
-            <td>${so.sn }</td>
-            <td>${so.sDevName }</td>
-            <td>${so.nDevType }</td>
-            <td>${so.sStockOutType }</td>
-            <td>${so.sStorageName }</td>
-            <td>${so.sUnitName }</td>
-            <td>${so.sResponsiblePerson }</td>
-            <td>${so.sTelphone }</td>
-            <td>${so.sRegistrant }</td>
-            <td>${so.stockOutTime }</td>
-            <td>${so.sRemark }</td>
-            <td>
-                <a href="updateStockOutView?id=${so.sn }">编辑</a>                
-            </td>
-             <td>
-                <a href="deleteStockOut?id=${so.sn }" onClick="return delConfirm();">删除</a>       
-            </td>
-        </tr>
+    <tr>
+       <td>${so.sn }</td>
+       <td>${so.sDevName }</td>
+       <td>${so.nDevType }</td>
+       <td>${so.sStockOutType }</td>
+       <td>${so.sStorageName }</td>
+       <td>${so.sUnitName }</td>
+       <td>${so.sResponsiblePerson }</td>
+       <td>${so.sTelphone }</td>
+       <td>${so.sRegistrant }</td>
+       <td>${so.stockOutTime }</td>
+       <td>${so.sRemark }</td>
+       <td>
+           <a href="updateStockOutView?id=${so.sn }">编辑</a>
+       </td>
+       <td>
+          <%--  <a href="insertToDevAttr?id=${so.sn }">监控</a> --%>
+           <a onclick="monitor(this)">监控</a>
+       </td>
+        <td>
+           <a href="deleteStockOut?id=${so.sn }" onClick="return delConfirm();">删除</a>       
+       </td>
+      </tr>
 	</c:forEach>
 </table>
 <div class="inline pull-right page">
          741条记录 1/50 页  <a href='#'>下一页</a><span class='current'>1</span><a href='#'>2</a><a href='#'>3</a><a href='#'>4</a><a href='#'>5</a>  <a href='#' >下5页</a> <a href='#' >最后一页</a>   
 </div>
 <script>
-    $(function () {        
+    $(function () {      
 		$('#addnew').click(function(){
 				window.location.href="Stock/addStockOut.jsp";
 		 });
     });
 	function delConfirm()
-	{				
+	{
 		if(confirm("确定要删除吗？"))
-		{					
+		{				
 		}
 		else{
 			return false;
 		}
+	}
+	function monitor(obj){
+		var id = $(obj).parent().prev().prev().prev().prev().prev().prev().prev().prev().prev().prev().prev().prev().text();
+		$.ajax({
+			type : "post",
+			url : "insertToDevAttr",
+			data: id, 
+			dataType : 'json',
+			contentType: "application/json; charset=utf-8",
+			success : function (data){
+				/*	if(state == 1){
+				model.addAttribute("msg", "已监控，请勿重复操作！");
+			}
+			else{
+				devAttrService.insertDevAttr(dev);
+				stockOutService.updateStockOutState(id);
+				model.addAttribute("msg", "监控成功！");
+			}*/
+				if(data == 1){
+					alert("已监控，请勿重复操作！");
+				}
+				else{
+					alert("操作成功！");
+				}				
+			}
+		});	
+		
 	}
 </script>
 </body>

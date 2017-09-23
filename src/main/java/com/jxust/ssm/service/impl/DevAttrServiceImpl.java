@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jxust.ssm.service.impl;
 
 import java.util.List;
@@ -47,6 +44,19 @@ public class DevAttrServiceImpl implements DevAttrService{
 	public List<DevAttr> selectDevAttrOffline() {
 		
 		return devAttrDao.selectDevAttrOffline();
+	}
+
+	@Override
+	public List<DevAttr> selectDevAttrByDevType() {
+		
+		return devAttrDao.selectDevAttrByDevType();
+	}
+
+	@Override
+	public void insertDevAttr(DevAttr devAttr) {
+		
+		devAttrDao.insertDevAttr(devAttr);
+		
 	}
 
 }

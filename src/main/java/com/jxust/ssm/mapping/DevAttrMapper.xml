@@ -27,11 +27,12 @@
 	<sql id="Base_Column_List">
 		sn,nDevType,nSubtype,sDevID,nLocaMode,sDevName,x_pos,y_pos,fHop,fBatteryVolt,nRSOC,nAlarm,nState,SamplingTime,sIPAddr,nPort,sRemark
 	</sql>
+	<!-- 根据sn查询ID -->
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
-		from Tab_nbms_devattr
+		from tab_nbms_devattr
 		where sn = #{sn,jdbcType=INTEGER}
 	</select>
 	
@@ -40,7 +41,7 @@
 		parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
-		from Tab_nbms_devattr
+		from tab_nbms_devattr
 	</select>
 	
 	<!-- 查询在线设备 -->
@@ -48,7 +49,7 @@
 		parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
-		from Tab_nbms_devattr 
+		from tab_nbms_devattr 
 		where nState = 1
 	</select>
 	
@@ -57,13 +58,35 @@
 		parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
-		from Tab_nbms_devattr
+		from tab_nbms_devattr
 		where nState = -1
+	</select>
+	
+	<!-- 根据设备类型来查询设备 -->
+	<select id="selectDevAttrByDevType" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tab_nbms_devattr
+		where nDevType = #{nDevType}
 	</select>
 	
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from
-		Tab_nbms_devattr
+		tab_nbms_devattr
 		where sn = #{sn,jdbcType=INTEGER}
 	</delete>
+	
+	<insert id="insertDevAttr" parameterType="com.jxust.ssm.pojo.DevAttr">
+		insert into
+		tab_nbms_devattr
+		(nDevType,nSubtype,sDevID,sDevName)
+		values
+			(
+				#{nDevType},
+		        #{nSubtype},
+		        #{sDevID},
+		        #{sDevName}
+			)
+	</insert>
 </mapper>

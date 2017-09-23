@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <!-- namespace的值就是dao接口的完整路径，就这个demo而言namespace 就是userDao.java的完整路径-->
-<mapper namespace="com.jxust.ssm.dao.StockInDao">
-	<resultMap id="BaseResultMap" type="com.jxust.ssm.pojo.StockIn">
-		<id column="sn" property="sn" jdbcType="INTEGER" />
-		<result column="nDevType" property="nDevType" jdbcType="INTEGER" />
-		<result column="nSubtype" property="nSubtype" jdbcType="INTEGER" />
-		<result column="sDevID" property="sDevID" jdbcType="VARCHAR" />
-		<result column="sDevLabel" property="sDevLabel" jdbcType="VARCHAR" />
-		<result column="sDevName" property="sDevName" jdbcType="VARCHAR" />
-		<result column="sStockIntType" property="sStockIntType" jdbcType="VARCHAR" />
-		<result column="sStorageName" property="sStorageName" jdbcType="VARCHAR" />
-		<result column="sSupplierName" property="sSupplierName" jdbcType="VARCHAR" />
-		<result column="sRegistrant" property="sRegistrant" jdbcType="VARCHAR" />
-		<result column="StorageTime" property="StorageTime" jdbcType="DATE" />
-		<result column="sRemark" property="sRemark" jdbcType="VARCHAR" />
-		<result column="Spare1" property="Spare1" jdbcType="VARCHAR" />
-		<result column="Spare2" property="Spare2" jdbcType="VARCHAR" />
+<mapper namespace="com.jxust.ssm.dao.DevRealtimeDataDao">
+	<resultMap id="BaseResultMap" type="com.jxust.ssm.pojo.DevRealtimeData">
+		<id column="sn" property="sn"/>
+		<result column="nDevType" property="nDevType" />
+		<result column="nSubtype" property="nSubtype" />
+		<result column="sDevAddr" property="sDevAddr" />
+		<result column="sDevID" property="sDevID" />
+		<result column="nLocaMode" property="nLocaMode" />
+		<result column="sDevName" property="sDevName" />
+		<result column="x_pos" property="x_pos" />
+		<result column="y_pos" property="y_pos" />
+		<result column="fHop" property="fHop" />
+		<result column="fBatteryVolt" property="fBatteryVolt" />
+		<result column="fRSOC" property="fRSOC" />
+		<result column="fVolt" property="fVolt" />
+		<result column="nAlarm" property="nAlarm" />
+		<result column="nState" property="nState" />
+		<result column="SamplingTime" property="SamplingTime" />
+		<result column="sIPAddr" property="sIPAddr" />
+		<result column="nPort" property="nPort" />       
+		<result column="sRemark" property="sRemark" />
+		<result column="Spare1" property="Spare1" />
+		<result column="Spare2" property="Spare2" />
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		sn,nDevType,nSubtype,sDevID,sDevLabel,sDevName,sStockIntType,sStorageName,sSupplierName,sRegistrant,StorageTime,sRemark
+	sn,nDevType,nSubtype,nDevAddr,sDevID, nLocaMode,sDevName,x_pos,y_pos,fHop, fBatteryVolt,
+	fRSOC,fVolt,nState,SamplingTime,sIPAddr,nPort,sRemark
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
-		from tab_devstockinmngt
-		where sn = #{sn,jdbcType=INTEGER}
+		from tab_nbms_dev_rtdata
+		where sn = #{sn}
 	</select>
 	
-	<select id="selectStockInList" resultMap="BaseResultMap"
+	<select id="selectDevRealtimeDataList" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
-		from tab_devstockinmngt
+		from tab_nbms_dev_rtdata
 	</select>
 	
 	<select id="selectByDevName" resultMap="BaseResultMap"
@@ -53,7 +61,7 @@
 		where sn = #{sn,jdbcType=INTEGER}
 	</delete>
 	
-	<update id="updateStockIn" parameterType="com.jxust.ssm.pojo.StockIn">
+	<update id="updateStockIn" parameterType="com.jxust.ssm.pojo.DevRealtimeData">
 		update
 		tab_devstockinmngt
 		set
@@ -71,7 +79,7 @@
 		where sn = #{sn,jdbcType=INTEGER}
 	</update>
 	
-	<insert id="insertStockIn" parameterType="com.jxust.ssm.pojo.StockIn">
+	<insert id="insertStockIn" parameterType="com.jxust.ssm.pojo.DevRealtimeData">
 		insert into
 		tab_devstockinmngt
 		(nDevType,nSubtype,sDevID,sDevLabel,sDevName,sStockIntType,sStorageName,sSupplierName,sRegistrant,StorageTime,sRemark)
