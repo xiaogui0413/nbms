@@ -34,6 +34,15 @@
 		where id =#{id}
 	</select>
 	
+	<!-- 根据用户名查询，用于校验用户名是否被注册 -->
+	<select id="selectByClerkName" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		*
+		from tab_userdata
+		where clerkName =#{clerkName} and del_state = 0
+	</select>
+	
 	<!-- 查询用户列表 -->
 	<select id="selectUserList" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
@@ -51,6 +60,15 @@
 		set
 		del_state = 1
 		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 修改密码 -->
+	<update id="changePassword" parameterType="com.jxust.ssm.pojo.UserData">
+		update
+		tab_userdata
+		set
+		password = #{password}
+		where clerkName = #{clerkName}
 	</update>
 	
 	<!-- 添加用户 -->

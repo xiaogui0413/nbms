@@ -9,10 +9,13 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap-responsive.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap-datetimepicker.min.css" />
     <script type="text/javascript" src="${pageContext.request.contextPath }/Js/jquery.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath }/Js/bootstrap.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath }/Js/ckform.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath }/Js/common.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/Js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath }/Js/bootstrap-datetimepicker.zh-CN.js"></script>
      <style type="text/css">
         body {
             padding-bottom: 40px;
@@ -29,18 +32,18 @@
             }
         }
     </style>
-</head>
+</head>    
 <body>
-<form class="form-inline definewidth m20" action="selectgStockInByDevName1" method="post">    
+<form class="form-inline definewidth m20" action="selectStockInMap2" method="post">    
 	&nbsp;&nbsp;&nbsp;设备ID：
-    <input type="text" name="selectItem" id="selectItem"class="abc input-default" value="">&nbsp;&nbsp;
+    <input type="text" name="devID" id="selectItem" class="abc input-default" value="${devID }">&nbsp;&nbsp;
 	设备名称：
-    <input type="text" name="selectItem" id="selectItem"class="abc input-default" value="">&nbsp;&nbsp;
-    <button type="submit" class="btn btn-primary">查询</button>&nbsp;&nbsp;<br> 
+    <input type="text" name="devName" id="selectItem" class="abc input-default" value="${devName }">&nbsp;&nbsp;
+    <button type="submit" class="btn btn-primary">查询</button>&nbsp;&nbsp;<br>
 	开始时间：
-    <input type="text" name="selectItem" id="selectItem"class="abc input-default" value="">&nbsp;&nbsp;
+    <input type="text" name="beginTime" id="selectItem" class="form_datetime" value="${beginTime }">&nbsp;&nbsp;
 	结束时间：
-    <input type="text" name="selectItem" id="selectItem"class="abc input-default" value="">&nbsp;&nbsp;     
+    <input type="text" name="endTime" id="selectItem" class="form_datetime" value="${endTime }">&nbsp;&nbsp;     
     <button type="button" class="btn btn-success" id="addnew">导出</button>
 </form>
 <table class="table table-bordered table-hover definewidth m10">
@@ -61,6 +64,8 @@
 	        <th>数据采集时间</th>
 	    </tr>
     </thead>
+    <c:choose>
+			<c:when test="${not empty requestScope.devHisData }">
 	<c:forEach var="s" items="${devHisData }">
 	    <tr>
             <td>${s.nDevType }</td>
@@ -75,10 +80,26 @@
             <td>${s.fBatteryVolt }</td>
             <td>${s.fRSOC }</td>
             <td>${s.fVolt }</td>
-            <td>0</td>
-          <%--   <td>${s.SamplingTime }</td> --%>
+			<td>${s.samplingTime }</td>
         </tr>
      </c:forEach>
+     </c:when>
+	     <c:otherwise>
+	     	<tr class="success">
+				<td colspan=13>没有你要找的内容!</td>
+			</tr>
+	     </c:otherwise>
+     </c:choose>
 </table>
+<script type="text/javascript">
+$(function () {
+	$(".form_datetime").datetimepicker({
+	 	autoclose : true,
+		minView : 0,
+		format : "yyyy-mm-dd HH:ii:ss",
+		language : "zh-CN"
+	 });
+});
+</script>
 </body>
 </html>

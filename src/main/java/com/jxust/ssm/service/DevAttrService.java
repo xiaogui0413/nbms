@@ -25,5 +25,7 @@ public interface DevAttrService {
 	List<DevAttr> selectDevAttrByDevType();
 	
 	void insertDevAttr(DevAttr devAttr);
+	
+	void deleteByPrimaryKey(Integer id);
 
 }

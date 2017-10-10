@@ -61,6 +61,14 @@
             <td><input style="border-style:none" type="text" name="nDevType" readonly="readonly" value="${stock.nDevType }" class="form-control"/></td>
         </tr>
         <tr>
+            <td class="tableleft">设备子类型</td>
+            <td><input style="border-style:none" type="text" name="nSubtype" readonly="readonly" value="${stock.nSubtype }" class="form-control"/></td>
+        </tr>
+        <tr>
+            <td class="tableleft">设备ID</td>
+            <td><input style="border-style:none" type="text" name="sDevID" readonly="readonly" value="${stock.sDevID }" class="form-control"/></td>
+        </tr>
+        <tr>
             <td class="tableleft">出库类型</td>
             <td><input style="border-style:none" type="text" name="sStockOutType" value="" class="form-control"/></td>
         </tr>

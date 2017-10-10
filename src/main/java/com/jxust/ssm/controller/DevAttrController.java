@@ -64,7 +64,6 @@ public class DevAttrController {
 		sa+="]";
 		model.addAttribute("sa", sa);
    	 	model.addAttribute("s", s);
-   	 	System.out.println("sa"+sa);
 
 	/*	JSONArray json = JSONArray.fromObject(devAttr);*/
 
@@ -73,7 +72,7 @@ public class DevAttrController {
 		response.getWriter().write(json);
 		response.getWriter().flush();*/
 
-	return "/Map/map2.jsp";
+	return "/Map/map5.jsp";
 	}
 	
 	@RequestMapping(value = "/selectDevAttr",produces = "application/json; charset=utf-8")
@@ -81,14 +80,26 @@ public class DevAttrController {
 	public String selectDevAttr(HttpServletResponse response,@RequestBody int id,Model model) {
 		DevAttr devAttr1 = devAttrService.getDevAttrById(id);
 		String json = JSONArray.fromObject(devAttr1).toString();
+		System.out.println(json);
 		return json.toString();
+	}
+	
+	/*取消对设备的监控*/
+	@RequestMapping(value = "/recallDevAttr",produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public void recallDevAttr(HttpServletResponse response,@RequestBody int id,Model model) {
+		 devAttrService.deleteByPrimaryKey(id);
+		
 	}
 	
 	@RequestMapping(value="/selectDevAttr1",produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String selectDevAttr1(HttpServletResponse response,@RequestBody int id) throws IOException{
 		DevAttr dev = devAttrService.getDevAttrById(id);
+		System.out.println(dev);
+
 		String json = JSONArray.fromObject(dev).toString();
+		System.out.println(json);
 		return json.toString();
 	/*	response.setHeader("Cache-Contrl", "no-cache");
 		response.setContentType("text/json;charset=utf-8");
@@ -138,7 +149,6 @@ public class DevAttrController {
         return list;  //直接返回list对象  
     }
 	
-	
 	@RequestMapping("/testJson1")
 	@ResponseBody
 	public User jsonSource(User user){
@@ -170,7 +180,6 @@ public class DevAttrController {
 		}
 		online = online.substring(0,online.length()-1);
 		online+="]";
-		System.out.println(online);
 	 	model.addAttribute("online", online);
    	 	//离线设备
 	 	String offline="[";
@@ -179,7 +188,6 @@ public class DevAttrController {
 		}
 		offline = offline.substring(0,offline.length()-1);
 		offline+="]";
-		System.out.println(offline);
    	 	model.addAttribute("offline", offline);
 
 	return "/Map/map2Test.jsp";
@@ -215,7 +223,6 @@ public class DevAttrController {
 		response.setContentType("text/json;charset=utf-8");
 		response.getWriter().write(json);
 		response.getWriter().flush();*/
-System.out.println("@woyiijgnzhiixng ");
 	return "/Map/map2Test1.jsp";
 	}
 	
@@ -225,9 +232,11 @@ System.out.println("@woyiijgnzhiixng ");
 		StockOut stockOut = stockOutService.selectByPrimaryKey(id);
 		int devType = stockOut.getnDevType();
 		int devSubType = stockOut.getnSubtype();
+		String sDevID = stockOut.getsDevID();
 		String devName = stockOut.getsDevName();		
 		String devID = stockOut.getsDevID();
 		DevAttr dev = new DevAttr();
+		dev.setsDevID(sDevID);
 		dev.setnDevType(devType);
 		dev.setnSubtype(devSubType);
 		dev.setsDevName(devName);

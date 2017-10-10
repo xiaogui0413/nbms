@@ -59,4 +59,13 @@ public class DevAttrServiceImpl implements DevAttrService{
 		
 	}
 
+	@Override
+	public void deleteByPrimaryKey(Integer id) {
+		
+		devAttrDao.deleteByPrimaryKey(id);
+		
+	}
+	
+	
+
 }

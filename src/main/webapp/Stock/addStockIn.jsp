@@ -54,6 +54,21 @@
 			</select>
         </td>
     </tr>
+     <tr>
+        <td class="tableleft">设备子类型</td>
+        <td>
+        	<select name="nSubtype">
+			  <option value="1">子类型1</option>
+			  <option value="2">子类型2</option>
+			  <option value="3">子类型3</option>
+			  <option value="4">子类型4</option>
+			</select>
+        </td>
+    </tr>
+	<tr>
+        <td width="10%" class="tableleft">设备ID</td>
+        <td><input type="text" name="sDevID"/></td>
+    </tr>
     <tr>
         <td class="tableleft">入库类型</td>
         <td>

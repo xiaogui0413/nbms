@@ -8,7 +8,7 @@ img { border:none; vertical-align:top; }
 body { font-size:12px; font-family:"微软雅黑";overflow: hidden; }
 
 .clear{*zoom:1;}
-.clear:after{ content:'';display: block;clear: both;}
+.clear:after{ content:'';display: block;clear: both; }
 .fl{ float: left;}
 .fr{ float: right;}
 
@@ -43,6 +43,6 @@ header .text em,header .text span{padding:0 1%;}
 p span{position: relative;top: 70px;}
 
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 700px){
     .text{display: none;}
 }

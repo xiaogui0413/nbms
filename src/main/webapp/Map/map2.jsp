@@ -11,8 +11,8 @@
 	<style type="text/css">
 		body, html {width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
 		
-		#shang{ float:left;width:80%;height:100%;}
-        #xia{ float:right;width:20%;height:100%;}
+		#shang{ float:left;width:75%;height:100%;}
+        #xia{ float:right;width:25%;height:100%;}
         #top{height:80%;}
         #bellow{height:20%;}
 
@@ -20,8 +20,8 @@
 	</style>
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Qied2a3vURUG89hlnnvVodf3"></script>
 	<!-- <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script> -->
-	<script src="http://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>	
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+	<script src="http://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<title>给多个点添加信息窗口</title>
 
 </head>
@@ -38,6 +38,7 @@
 		<tr>
 			<!-- <th></th> -->
 			<th>编号</th>
+			<th style="display:none">id</th>
 			<th>设备名称</th>
 			<th>状态</th>
 			<!-- <th>经度</th> -->
@@ -48,8 +49,8 @@
 		<c:forEach var="u" items="${devAttr }">
 		<tr>
 		   <!-- <td><input type="checkbox"></td> -->
-		   
-		    <td>${u.sn }</td>
+		    <td>${u.sDevID }</td>
+		    <td style="display:none">${u.sn }</td>
 			<td>${u.sDevName }</td>
 			<td align="center">
 			<c:choose>
@@ -73,7 +74,6 @@
 		</tr>
 		</c:forEach>
 </table>
-
 </div>
 </div>
 <div id="bellow">
@@ -99,12 +99,79 @@
  <p><span>© 2017 深圳市意格尔数字技术有限公司</span></p>
 </div>
 </div>
+<!-- 模态框开始 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<!-- 设置模态框宽度，加在<div class="modal-dialog"> 中         style="width:450px" -->
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					设备信息
+				</h4>
+			</div>
+			<div class="modal-body">
+<table class="table table-bordered table-condensed table-hover table-striped"> 
+        <tr>
+            <td rowspan="6" width="200px"></td>
+            <td width="70px">名称</td>
+            <td id="sDevName"></td>
+        </tr>
+        <tr>      
+            <td width="70px">类型</td>
+            <td id="sDevType"></td>
+        </tr>
+        <tr>
+            <td width="70px">设备SN</td>
+            <td id="sn"></td>
+        </tr>
+        <tr>         
+            <td width="70px">关联ID</td>
+            <td id="sDevID"></td>
+        </tr>
+        <tr>
+            <td width="70px">电池电压</td>
+            <td id="fBatteryVolt">3.3</td>
+        </tr>
+        <tr> 
+            <td width="70px">报警信息</td>
+            <td id="nAlarm"></td>
+        </tr>    
+</table> 
+			</div>
+			<div class="modal-footer">
+			<table class="table table-bordered table-condensed table-hover">
+				<tr>
+					<td>定位地址:</td>
+					<td align="left" colspan=3 id="address"></td>
+				</tr>
+				<tr>
+					<td>经度:</td>
+					<td align="left" id="x_pos"></td>
+					<td>纬度:</td>
+					<td align="left" id="y_pos"></td>
+				</tr>
+				<tr>
+					<td>可信度:</td>
+					<td align="left" id="fHop"></td>
+					<td>定位方式:</td>
+					<td align="left" id="nLocaMode"></td>
+				</tr>
+			</table>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<!-- 模态框结束 -->
+
 <script type="text/javascript">
 
 	// 百度地图API功能	
 	map = new BMap.Map("shang");
 /* 	map.centerAndZoom("深圳",9); */
-	map.centerAndZoom(new BMap.Point(114.273439,30.674298), 9);
+	map.centerAndZoom(new BMap.Point(114.273439,30.674298), 5);
 	map.enableScrollWheelZoom(true);
 	var geoc = new BMap.Geocoder();  
 	
@@ -159,13 +226,13 @@
 	}
 
 	function addClickHandler(content,marker){
- 		 marker.addEventListener("mouseover",function(e){
+ 		 marker.addEventListener("click",function(e){
    			    var pt = e.point;			
 				geoc.getLocation(pt, function(rs){
 				var addComp = rs.addressComponents;
 				var dizhi = addComp.province  + addComp.city  + addComp.district  + addComp.street + addComp.streetNumber;
 				
-				openInfo(content+"地址："+dizhi,e);
+				//openInfo(content+"地址："+dizhi,e);
 			      
 			 });
 
@@ -200,13 +267,14 @@ $(function(){
 </script> -->
 <script type="text/javascript">
 function ajaxTest(obj){
+	$("#myModal").modal('show');
 	/* alert($(obj).parent().prev().prev().prev().prev().text()); */
  	var id = $(obj).parent().prev().prev().prev().prev().text();
  	/* alert("我的ID是："+id); */
 	$.ajax({
 		type : "post",
 		url : "selectDevAttr1",
-		data: id, 
+		data: id,
 		dataType : 'json',
 		contentType: "application/json; charset=utf-8",
 		success : function (data){
@@ -214,28 +282,45 @@ function ajaxTest(obj){
 			var obj=eval(data);
 			alert(obj);
 			alert(obj[0].sn); */
-			var trs = '';			
-			$("#table001 tr td").remove();			 
+			var trs = '';
+			$("#table001 tr td").remove();
 			for(var i=0;i<data.length;i++){
-			 trs+='<tr><td>'+data[i].sn+'</td><td>'+data[i].sDevName+'</td><td>'+data[i].nState+'</td><td>'+data[i].nLocaMode+'</td><td>'+data[i].x_pos+'&nbsp;'+data[i].y_pos+'</td><td>'+data[i].nAlarm+'</td><td>'+'</td></tr>'
-		}
+				$("#sDevName").text(data[i].sDevName);
+			    $("#sDevID").text(data[i].sDevID);
+			    $("#x_pos").text(data[i].x_pos);
+			    $("#y_pos").text(data[i].y_pos);
+			    $("#fHop").text(data[i].fHop);
+			    $("#nLocaMode").text(data[i].nLocaMode);
+			trs+='<tr><td>'+data[i].sDevID+'</td><td>'+data[i].sDevName+'</td><td>'+data[i].nState+'</td><td>'+data[i].nLocaMode+'</td><td>'+data[i].x_pos+'&nbsp;'+data[i].y_pos+'</td><td>'+data[i].nAlarm+'</td><td>'+'</td></tr>'
+		
 			console.log(trs);
-			 $('#table001').append(trs);
+			 $('#table001').append(trs);		 
 		}
+		}
+		
 	});
 }
 function locate(obj){
+	
 	var id = $(obj).parent().prev().prev().prev().text();
 	$.ajax({
 		type : "post",
 		url : "selectDevAttr",
-		data: id, 
+		data: id,
 		dataType : 'json',
 		contentType: "application/json; charset=utf-8",
 		success : function (data){
 			aa(data[0].x_pos,data[0].y_pos);
+			for(var i=0;i<data.length;i++){
+				$("#sDevName").text(data[i].sDevName);
+			    $("#sDevID").text(data[i].sDevID);
+			    $("#x_pos").text(data[i].x_pos);
+			    $("#y_pos").text(data[i].y_pos);
+			    $("#fHop").text(data[i].fHop);
+			    $("#nLocaMode").text(data[i].nLocaMode);	 
 		}
-	});	
+		}
+	});
 }
 /* function aa(a,b){
 	var map = new BMap.Map("shang");
@@ -273,7 +358,7 @@ function locate(obj){
 		    // 启用显示定位
 		    enableGeolocation: true
 		  });
-		   map.addControl(navigationControl); 
+		   map.addControl(navigationControl);
 		  // 添加定位控件
 		  var geolocationControl = new BMap.GeolocationControl();
 		  geolocationControl.addEventListener("locationSuccess", function(e){
@@ -297,13 +382,15 @@ function locate(obj){
 		  title : "窗口信息" , // 信息窗口标题
 		  enableMessage:true,//设置允许信息窗发送短息
 		}
-		marker.addEventListener("mouseover",function(e){
+		marker.addEventListener("click",function(e){
+			$("#myModal").modal('show');
 			var pt = e.point;
 			geoc.getLocation(pt, function(rs){
 				var addComp = rs.addressComponents;
 				var dizhi = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+				 $("#address").text(dizhi);
 				var infoWindow = new BMap.InfoWindow(dizhi, opts);
-				map.openInfoWindow(infoWindow,point);
+				//map.openInfoWindow(infoWindow,point);
 
 			});
 		});

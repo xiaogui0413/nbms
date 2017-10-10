@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace的值就是dao接口的完整路径，就这个demo而言namespace 就是userDao.java的完整路径-->
+<mapper namespace="com.jxust.ssm.dao.DevAlarmDao">
+	<resultMap id="BaseResultMap" type="com.jxust.ssm.pojo.DevAlarm">
+		<id column="sn" property="sn"/>
+		<result column="nDevType" property="nDevType" />
+		<result column="nSubtype" property="nSubtype" />
+		<result column="sDevAddr" property="sDevAddr" />
+		<result column="sDevID" property="sDevID" />
+		<result column="nLocaMode" property="nLocaMode" />
+		<result column="sDevName" property="sDevName" />
+		<result column="alarmId" property="alarmId" />
+		<result column="signalName" property="signalName" />
+		<result column="meanings" property="meanings" />
+		<result column="levelFlag" property="levelFlag" />
+		<result column="tmOccured" property="tmOccured" />
+		<result column="value" property="value" />
+		<result column="state" property="state" />
+		<result column="tmRestored" property="tmRestored" />
+		<result column="sRemark" property="sRemark" />
+		<result column="Spare1" property="Spare1" />
+		<result column="Spare2" property="Spare2" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	sn, nDevType, nSubtype, nDevAddr, sDevID, nLocaMode, sDevName, alarmId, signalName, meanings, levelFlag,
+	tmOccured, value, state, tmRestored, sRemark, Spare1, Spare2
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tab_alarm_data
+		where sn = #{sn}
+	</select>
+	
+	<select id="selectDevAlarmList" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tab_alarm_data
+	</select>
+	
+	<select id="selectByDevName" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from tab_alarm_data
+		where 
+		sDevName
+                LIKE '%${value}%'
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		tab_devstockinmngt
+		where sn = #{sn,jdbcType=INTEGER}
+	</delete>
+
+	
+	<!-- 多条件组合查询 -->
+	<select id="selectDevAlarmMap" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	SELECT * FROM tab_alarm_data 
+	<where>
+	
+		<if test="devID!=null and devID!=''">
+                and sDevID = #{devID}
+        </if>
+        
+        <if test="devName!=null and devName!=''">
+                and sDevName = #{devName}
+        </if>
+        
+        <if test="beginTime!=null and beginTime!=''">
+                and tmOccured &gt;= #{beginTime}
+        </if>
+        
+        <if test="endTime!=null and endTime!=''">
+                and tmOccured &lt;= #{endTime}
+        </if>
+        
+	</where>
+	</select>
+</mapper>

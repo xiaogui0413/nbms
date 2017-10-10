@@ -1,6 +1,7 @@
 package com.jxust.ssm.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -23,5 +24,17 @@ public class DevHisDataServiceImpl implements DevHisDataService{
 		
 		return devHisDataDao.selectDevHisDataList();
 	}
+
+	@Override
+	public List<DevHisData> selectDevHisDataMap(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return devHisDataDao.selectDevHisDataMap(paramMap);
+	}
+
+	/*@Override
+	public List<DevHisData> selectStockInMap(DevHisData dev) {
+		
+		return devHisDataDao.selectStockInMap(dev);
+	}*/
 
 }

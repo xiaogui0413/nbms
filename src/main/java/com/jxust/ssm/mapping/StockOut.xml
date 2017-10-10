@@ -98,7 +98,7 @@
 		insert into
 		tab_devstockoutmngt
 <!-- 		(nDevType,nSubtype,sDevID,sDevLabel,sDevName,sStockOutType,sStorageName,sUnitName,sResponsiblePerson,sTelphone,sRegistrant,StockOutTime,sRemark) -->
-		(sDevName,nDevType,sStockOutType,sStorageName,sUnitName,sResponsiblePerson,sTelphone,sRegistrant,StockOutTime,sRemark)
+		(sDevName,nDevType,nSubtype,sDevID,sStockOutType,sStorageName,sUnitName,sResponsiblePerson,sTelphone,sRegistrant,StockOutTime,sRemark)
 		values
 			(
 			<!-- 	#{nDevType},
@@ -118,6 +118,8 @@
 
 		        #{sDevName},
 		        #{nDevType},
+		        #{nSubtype},
+		        #{sDevID},		   
 		        #{sStockOutType},
 		        #{sStorageName},
 		        #{sUnitName},

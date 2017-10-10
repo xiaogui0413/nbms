@@ -24,7 +24,6 @@ public class StockOutController{
 	@RequestMapping("/listStockOut")
 	public String listStockOut( HttpServletResponse response,Model model) throws IOException{
 		List<StockOut> stockOut = stockOutService.selectStockOutList();
-		System.out.println(stockOut);
 		model.addAttribute("stockOut", stockOut);
 	return "/Stock/listStockOut.jsp";
 	}
@@ -55,6 +54,8 @@ public class StockOutController{
 		int id = Integer.parseInt(request.getParameter("sn"));
 		String sDevName = request.getParameter("sDevName");
 		int  nDevType = Integer.parseInt(request.getParameter("nDevType"));
+		int nSubtype = Integer.parseInt(request.getParameter("nSubtype"));
+		String sDevID = request.getParameter("sDevID");
 		String sStockOutType = request.getParameter("sStockOutType");
 		String sStorageName = request.getParameter("sStorageName");
 		String sUnitName = request.getParameter("sUnitName");
@@ -68,6 +69,8 @@ public class StockOutController{
 		stock.setSn(id);
 		stock.setsDevName(sDevName);
 		stock.setnDevType(nDevType);
+		stock.setnSubtype(nSubtype);
+		stock.setsDevID(sDevID);
 		stock.setsStockOutType(sStockOutType);
 		stock.setsStorageName(sStorageName);
 		stock.setsUnitName(sUnitName);
@@ -111,6 +114,8 @@ public class StockOutController{
 	/*	int id = Integer.parseInt(request.getParameter("sn"));*/
 		String sDevName = request.getParameter("sDevName");
 		int  nDevType = Integer.parseInt(request.getParameter("nDevType"));
+		int  nsubtype = Integer.parseInt(request.getParameter("nSubtype"));
+		String sDevID = request.getParameter("sDevID");
 		String sStockOutType = request.getParameter("sStockOutType");
 		String sStorageName = request.getParameter("sStorageName");
 		String sUnitName = request.getParameter("sUnitName");
@@ -119,12 +124,13 @@ public class StockOutController{
 		String sRegistrant = request.getParameter("sRegistrant");
 		String stockOutTime = request.getParameter("stockOutTime");
 		String sRemark = request.getParameter("sRemark");
-		
 		StockOut stock = new StockOut();
 		
 		/*stock.setSn(id);*/
 		stock.setsDevName(sDevName);
 		stock.setnDevType(nDevType);
+		stock.setnSubtype(nsubtype);
+		stock.setsDevID(sDevID);
 		stock.setsStockOutType(sStockOutType);
 		stock.setsStorageName(sStorageName);
 		stock.setsUnitName(sUnitName);

@@ -21,5 +21,7 @@ public interface DevAttrDao {
 	List<DevAttr> selectDevAttrByDevType();
 	
 	void insertDevAttr(DevAttr devAttr);
+	
+	void deleteByPrimaryKey(Integer id);
 
 }

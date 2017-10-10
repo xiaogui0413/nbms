@@ -7,7 +7,7 @@
 		<result column="nDevType" property="nDevType" jdbcType="INTEGER" />
 		<result column="nSubtype" property="nSubtype" jdbcType="INTEGER" />
 		<result column="sDevID" property="sDevID" jdbcType="VARCHAR" />
-		<result column="nLocaMode" property="nLocaMode" jdbcType="INTEGER" />
+		<result column="nLocaMode" property="nLocaMode" jdbcType="VARCHAR" />
 		<result column="sDevName" property="sDevName" jdbcType="VARCHAR" />
 		<result column="x_pos" property="x_pos" jdbcType="FLOAT" />
 		<result column="y_pos" property="y_pos" jdbcType="FLOAT" />

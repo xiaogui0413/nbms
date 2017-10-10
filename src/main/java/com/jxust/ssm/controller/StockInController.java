@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jxust.ssm.pojo.StockIn;
-import com.jxust.ssm.pojo.StockOut;
 import com.jxust.ssm.service.StockInService;
-import com.jxust.ssm.service.StockOutService;
 
 @Controller
 public class StockInController{
@@ -27,7 +25,7 @@ public class StockInController{
 	public String testlidevser( HttpServletResponse response,Model model) throws IOException{
 		List<StockIn> stockIn = stockInService.selectStockInList();
 		model.addAttribute("stockIn", stockIn);
-	return "/Stock/listStockIn2.jsp";
+	return "/Stock/listStockIn.jsp";
 	}
 	
 	@RequestMapping("/selectgStockInByDevName")
@@ -63,7 +61,7 @@ public class StockInController{
 	public String outStockInView(int id,Model model) throws IOException{
 		StockIn stock = stockInService.selectByPrimaryKey(id);
 		model.addAttribute("stock",stock);
-	return "/Stock/editStockIn2.jsp";
+	return "/Stock/editStockIn.jsp";
 	}
 	
 	@RequestMapping("/insertStockIn")
@@ -71,7 +69,9 @@ public class StockInController{
 
 		String sDevName = request.getParameter("sDevName");
 		int  nDevType = Integer.parseInt(request.getParameter("nDevType"));
+		int  nSubtype = Integer.parseInt(request.getParameter("nSubtype"));
 		String  sStockIntType = request.getParameter("sStockIntType");
+		String  sDevID = request.getParameter("sDevID");
 		String sStorageName = request.getParameter("sStorageName");
 		String sSupplierName = request.getParameter("sSupplierName");
 		String sRegistrant = request.getParameter("sRegistrant");
@@ -81,8 +81,10 @@ public class StockInController{
 		StockIn stock = new StockIn();
 		stock.setsDevName(sDevName);
 		stock.setnDevType(nDevType);
+		stock.setnSubtype(nSubtype);
 		stock.setsStockIntType(sStockIntType);
 		stock.setsStorageName(sStorageName);
+		stock.setsDevID(sDevID);
 		stock.setsSupplierName(sSupplierName);
 		stock.setsRegistrant(sRegistrant);
 		stock.setStorageTime(StorageTime);
@@ -186,7 +188,6 @@ public class StockInController{
 		stock.setsRegistrant(sRegistrant);
 		stock.setStorageTime(StorageTime);
 		stock.setsRemark(sRemark);
-			System.out.println(stock);	
 		stockInService.updateStockIn(stock);
 		model.addAttribute("stock",stock);
 		return "/listStockIn";

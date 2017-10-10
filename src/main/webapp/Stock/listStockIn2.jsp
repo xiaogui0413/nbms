@@ -40,9 +40,11 @@
 <table class="table table-bordered table-hover definewidth m10">
     <thead>
     <tr>
-        <th>设备ID</th>
+        <th>编号</th>
         <th>设备名称</th>
         <th>设备类型</th>
+        <th>设备子类型</th>
+        <th>设备ID</th>
         <th>入库类型</th>
         <th>仓库名称</th>
         <th>供应商名称</th>
@@ -57,6 +59,8 @@
             <td>${s.sn }</td>
             <td>${s.sDevName }</td>
             <td>${s.nDevType }</td>
+            <td>${s.nSubtype }</td>
+            <td>${s.sDevID }</td>
             <td>${s.sStockIntType }</td>
             <td>${s.sStorageName }</td>
             <td>${s.sSupplierName }</td>

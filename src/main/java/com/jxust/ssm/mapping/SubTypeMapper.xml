@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jxust.ssm.dao.SubTypeDao">
+	<resultMap id="BaseResultMap" type="com.jxust.ssm.pojo.SubType">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="detail" property="detail" jdbcType="VARCHAR" />
+		<result column="image_path" property="image_path" jdbcType="VARCHAR" />
+		<result column="parentCode" property="parentCode" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, code, name, detail, image_path, parentCode
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tab_subtype
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 查询类别列表 -->
+	<select id="selectSubTypeList" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from
+		tab_subtype
+	</select>
+	
+	<!-- 删除类别列表 -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		tab_subtype
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<insert id="insertSubType" parameterType="com.jxust.ssm.pojo.SubType">
+		insert into tab_subtype (id,
+		code, name,
+		detail)
+		values (#{id,jdbcType=INTEGER},
+		#{code,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{detail,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="insertSelective" parameterType="com.jxust.ssm.pojo.SubType">
+		insert into tb_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="age != null">
+				age,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="age != null">
+				#{age,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.jxust.ssm.pojo.SubType">
+		update tb_user
+		<set>
+			<if test="userName != null">
+				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="age != null">
+				age = #{age,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="updateByPrimaryKey" parameterType="com.jxust.ssm.pojo.SubType">
+		update tb_user
+		set
+		user_name = #{userName,jdbcType=VARCHAR},
+		password =
+		#{password,jdbcType=VARCHAR},
+		age = #{age,jdbcType=INTEGER}
+		where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+</mapper>

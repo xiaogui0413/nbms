@@ -20,10 +20,8 @@ public class DevRealtimeDataController {
 	
 	@RequestMapping("/listDevRealtimeData")
 	public String listDevRealtimeData(Model model) throws IOException{
-		System.out.println("收到请求！！！");
 		List<DevRealtimeData> devRealtimeData = devRealtimeService.selectDevRealtimeDataList();
 		model.addAttribute("devRealtimeData", devRealtimeData);
-		System.out.println("数据为："+devRealtimeData);
 		return "DevData/listRealtime.jsp";
 
 	}

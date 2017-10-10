@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jxust.ssm.dao.DevAttrDao;
 import com.jxust.ssm.dao.StockOutDao;
 import com.jxust.ssm.pojo.StockOut;
 import com.jxust.ssm.service.StockOutService;

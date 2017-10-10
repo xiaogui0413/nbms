@@ -2,9 +2,11 @@ package com.jxust.ssm.udpserver;
 
 import java.io.*;
 import java.net.*;
-import org.json.*;
 import java.sql.*;
-import java.util.Date;  
+import java.util.Date;
+
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 
 class UDPThread implements Runnable{
@@ -63,7 +65,8 @@ class UDPThread implements Runnable{
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//修改日期格式
             sDateTime = dateFormat.format(now);
             System.out.println(sXpos1+sYpos1+sHop1+sBattVolt1);
-            String strsql = "update tab_nbms_dev_rtdata set nLocaMode=?,x_pos=?,y_pos=?,fHop=?,fBatteryVolt=?,nState=?,SamplingTime=?,sIPAddr=?,nPort=? where sDevID=?";  
+           // String strsql = "update tab_nbms_dev_rtdata set nLocaMode=?,x_pos=?,y_pos=?,fHop=?,fBatteryVolt=?,nState=?,SamplingTime=?,sIPAddr=?,nPort=? where sDevID=?";
+            String strsql = "update tab_nbms_devattr set nLocaMode=?,x_pos=?,y_pos=?,fHop=?,fBatteryVolt=?,nState=?,SamplingTime=?,sIPAddr=?,nPort=? where sDevID=?";
             PreparedStatement pstmt = dbConn.prepareStatement(strsql);
 //          pstmt.setInt(1, Integer.parseInt(sLoca));
 //          pstmt.setFloat(2, Float.parseFloat(sXpos));
@@ -108,10 +111,10 @@ class UDPThread implements Runnable{
         //socket.close();不能关闭    
     }
 
-	private Integer valueOf(String sXpos) {
+/*	private Integer valueOf(String sXpos) {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 }
 
 public class UDPServer1 {
@@ -119,15 +122,20 @@ public class UDPServer1 {
     	Connection dbSQLConn = null;	
     	String driverName = "com.mysql.jdbc.Driver"; //加载数据库驱动
     	// 连接数据库ServletUser
+    	//本地
     	String dbURL = "jdbc:mysql://127.0.0.1:3506/nbms?useUnicode=true&characterEncoding=utf8";
     	String userName = "root"; //用户名
     	String userPwd = "Yge@123#"; //密码
-    	try 
+    	//服务器
+/*    	String dbURL = "jdbc:mysql://47.95.241.111:3506/nbms?useUnicode=true&characterEncoding=utf8";
+    	String userName = "root"; //用户名
+    	String userPwd = "Yge@123##"; //密码
+*/    	try 
     	{
     		Class.forName(driverName);
     		dbSQLConn = DriverManager.getConnection(dbURL, userName, userPwd);
     		System.out.println("数据库连接成功"); // 如果连接成功
-   	} 
+   	}
     	catch (Exception e)
     	{
     		e.printStackTrace();

@@ -47,6 +47,17 @@ public class UserDateServiceImpl implements UserDataService{
 		
 		return userDataDao.selectById(id);
 	}
+	@Override
+	public void changePassword(UserData userData) {
+		
+		userDataDao.changePassword(userData);
+		
+	}
+	@Override
+	public UserData selectByClerkName(String clerkName) {
+		
+		return userDataDao.selectByClerkName(clerkName);
+	}
 	
 
 }

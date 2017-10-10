@@ -17,4 +17,8 @@ public interface UserDataService {
 	void updateUser(UserData userData);
 	 
 	void insertUser(UserData userData);
+	
+	void changePassword(UserData userData);
+	
+	UserData selectByClerkName(String clerkName);
 }

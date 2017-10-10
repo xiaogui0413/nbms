@@ -1,0 +1,8 @@
+SELECT * FROM tab_type
+SELECT * FROM tab_subtype
+SELECT * FROM tab_nbms_devattr
+
+两张表关联
+SELECT * FROM tab_nbms_devattr t1,tab_subtype t2 WHERE t1.nSubtype = t2.id;
+三张表关联
+SELECT * FROM tab_nbms_devattr t1,tab_subtype t2,tab_type t3 WHERE t1.nSubtype = t2.id AND t2.id = t3.id;

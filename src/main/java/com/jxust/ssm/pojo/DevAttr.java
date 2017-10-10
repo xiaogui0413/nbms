@@ -1,7 +1,5 @@
 package com.jxust.ssm.pojo;
 
-import java.util.Date;
-
 /**
  * @author GuiqiHu
  *
@@ -12,7 +10,7 @@ public class DevAttr {
 	private int nDevType;
 	private int nSubtype;
 	private String sDevID;
-	private int nLocaMode;
+	private String nLocaMode;
 	private String sDevName;
 	private String x_pos;
 	private String y_pos;
@@ -21,7 +19,7 @@ public class DevAttr {
 	private Double nRSOC;
 	private int nAlarm;
 	private int nState;
-	private Date SamplingTime;
+	private String SamplingTime;
 	private String sIPAddr;
 	private int nPort;
 	private String sRemark;
@@ -78,20 +76,18 @@ public class DevAttr {
 	/**
 	 * @return the nLocaMode
 	 */
-	public int getnLocaMode() {
-		return nLocaMode;
-	}
-	/**
-	 * @param nLocaMode the nLocaMode to set
-	 */
-	public void setnLocaMode(int nLocaMode) {
-		this.nLocaMode = nLocaMode;
-	}
+
 	/**
 	 * @return the sDevName
 	 */
 	public String getsDevName() {
 		return sDevName;
+	}
+	public String getnLocaMode() {
+		return nLocaMode;
+	}
+	public void setnLocaMode(String nLocaMode) {
+		this.nLocaMode = nLocaMode;
 	}
 	/**
 	 * @param sDevName the sDevName to set
@@ -186,13 +182,13 @@ public class DevAttr {
 	/**
 	 * @return the samplingTime
 	 */
-	public Date getSamplingTime() {
+	public String getSamplingTime() {
 		return SamplingTime;
 	}
 	/**
 	 * @param samplingTime the samplingTime to set
 	 */
-	public void setSamplingTime(Date samplingTime) {
+	public void setSamplingTime(String samplingTime) {
 		SamplingTime = samplingTime;
 	}
 	/**

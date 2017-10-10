@@ -28,7 +28,7 @@ div {
 		http://www.eaglerdigit.com<br /> 版权所有©2017-2030,保留所有权.</font>
 	<br />
 	<br />
-	<font size="3" color=#000093>版本: V1.0 <br />编译时间:20170923</font>
+	<font size="3" color=#000093>版本: V1.0 <br />编译时间:20170925</font>
 	<br />
 	<br />
 	<font size="4" color=#000093>说明:</font>

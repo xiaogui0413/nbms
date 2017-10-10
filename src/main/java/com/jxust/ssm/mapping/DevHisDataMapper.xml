@@ -16,7 +16,7 @@
 		<result column="fBatteryVolt" property="fBatteryVolt" />
 		<result column="fRSOC" property="fRSOC" />
 		<result column="fVolt" property="fVolt" />
-		<result column="SamplingTime" property="SamplingTime" />      
+		<result column="samplingTime" property="samplingTime" />      
 		<result column="sRemark" property="sRemark" />
 		<result column="Spare1" property="Spare1" />
 		<result column="Spare2" property="Spare2" />
@@ -56,43 +56,29 @@
 		tab_devstockinmngt
 		where sn = #{sn,jdbcType=INTEGER}
 	</delete>
+
 	
-	<update id="updateStockIn" parameterType="com.jxust.ssm.pojo.DevRealtimeData">
-		update
-		tab_devstockinmngt
-		set
-		   nDevType = #{nDevType}
-	      ,nSubtype = #{nSubtype}
-	      ,sDevID = #{sDevID}
-	      ,sDevLabel = #{sDevLabel}
-	      ,sDevName = #{sDevName}
-	      ,sStockIntType = #{sStockIntType}
-	      ,sStorageName = #{sStorageName}
-	      ,sSupplierName = #{sSupplierName}
-	      ,sRegistrant = #{sRegistrant}
-	      ,StorageTime = #{StorageTime}
-	      ,sRemark = #{sRemark}
-		where sn = #{sn,jdbcType=INTEGER}
-	</update>
+	<!-- 多条件组合查询 -->
+	<select id="selectDevHisDataMap" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	SELECT * FROM tab_nbms_dev_hisdata 
+	<where>
 	
-	<insert id="insertStockIn" parameterType="com.jxust.ssm.pojo.DevRealtimeData">
-		insert into
-		tab_devstockinmngt
-		(nDevType,nSubtype,sDevID,sDevLabel,sDevName,sStockIntType,sStorageName,sSupplierName,sRegistrant,StorageTime,sRemark)
-		values
-			(
-				#{nDevType},
-		        #{nSubtype},
-		        #{sDevID},
-		   		#{sDevLabel},
-		        #{sDevName},
-		        #{sStockIntType},
-		        #{sStorageName},
-		        #{sSupplierName},
-		        #{sRegistrant},
-		        #{StorageTime},
-		        #{sRemark}		
-			)
-	</insert>
-	
+		<if test="devID!=null and devID!=''">
+                and sDevID = #{devID}
+        </if>
+        
+        <if test="devName!=null and devName!=''">
+                and sDevName = #{devName}
+        </if>
+        
+        <if test="beginTime!=null and beginTime!=''">
+                and samplingTime &gt;= #{beginTime}
+        </if>
+        
+        <if test="endTime!=null and endTime!=''">
+                and samplingTime &lt;= #{endTime}
+        </if>
+        
+	</where>
+	</select>
 </mapper>

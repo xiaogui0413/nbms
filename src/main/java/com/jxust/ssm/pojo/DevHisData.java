@@ -20,7 +20,7 @@ public class DevHisData {
 	private double fBatteryVolt;		/****** 电池电压******/
 	private double fRSOC;				/****** 剩余电量 (百分比)******/
 	private double fVolt;				/****** 供电电压******/
-    private String SamplingTime;		/****** 数据采集时间******/
+    private String samplingTime;		/****** 数据采集时间******/
 	private String sRemark;				/****** 备注******/
 	private String Spare1;				/****** 备用字段1******/
 	private String Spare2;				/****** 备用字段2******/
@@ -103,10 +103,10 @@ public class DevHisData {
 		this.fVolt = fVolt;
 	}
 	public String getSamplingTime() {
-		return SamplingTime;
+		return samplingTime;
 	}
 	public void setSamplingTime(String samplingTime) {
-		SamplingTime = samplingTime;
+		this.samplingTime = samplingTime;
 	}
 	public String getsRemark() {
 		return sRemark;
@@ -131,7 +131,7 @@ public class DevHisData {
 		return "DevHisData [sn=" + sn + ", nDevType=" + nDevType + ", nSubtype=" + nSubtype + ", nDevAddr=" + nDevAddr
 				+ ", sDevID=" + sDevID + ", nLocaMode=" + nLocaMode + ", sDevName=" + sDevName + ", x_pos=" + x_pos
 				+ ", y_pos=" + y_pos + ", fHop=" + fHop + ", fBatteryVolt=" + fBatteryVolt + ", fRSOC=" + fRSOC
-				+ ", fVolt=" + fVolt + ", SamplingTime=" + SamplingTime + ", sRemark=" + sRemark + ", Spare1=" + Spare1
+				+ ", fVolt=" + fVolt + ", samplingTime=" + samplingTime + ", sRemark=" + sRemark + ", Spare1=" + Spare1
 				+ ", Spare2=" + Spare2 + "]";
 	}
 	
