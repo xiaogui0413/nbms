@@ -36,6 +36,15 @@
 		where sn = #{sn,jdbcType=INTEGER}
 	</select>
 	
+	<!-- 根据设备名查询 -->
+	<select id="selectByDevName" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from tab_nbms_devattr
+		where sDevName LIKE '%${value}%'
+	</select>
+	
 	<!-- 查询所有设备 -->
 	<select id="selectDevAttrList" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
@@ -60,6 +69,11 @@
 		<include refid="Base_Column_List" />
 		from tab_nbms_devattr
 		where nState = -1
+	</select>
+	
+	<!-- 查询设备数目 -->
+	<select id="selectCountDevAttr" resultMap="BaseResultMap">
+		SELECT COUNT(*) FROM tab_nbms_devattr
 	</select>
 	
 	<!-- 根据设备类型来查询设备 -->

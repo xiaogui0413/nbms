@@ -62,10 +62,22 @@
             <td class="tableleft">设备类型</td>
             <td><input style="border-style:none" type="text" name="nDevType" value="${stock.nDevType }" class="form-control"/></td>
         </tr>
+        
+        <tr>
+            <td class="tableleft">设备子类型</td>
+            <td><input style="border-style:none" type="text" name="nSubtype" value="${stock.nSubtype }" class="form-control"/></td>
+        </tr>
+        
+        <tr>
+            <td class="tableleft">设备ID</td>
+            <td><input style="border-style:none" type="text" name="sDevID" value="${stock.sDevID }" class="form-control"/></td>
+        </tr>
+        
         <tr>
             <td class="tableleft">入库类型</td>
-            <td><input style="border-style:none" type="text" name="sStockOutType" value="${stock.sStockIntType }" class="form-control"/></td>
+            <td><input style="border-style:none" type="text" name="sStockInType" value="${stock.sStockIntType }" class="form-control"/></td>
         </tr>
+        
         <tr>
             <td class="tableleft">仓库名称</td>
              <td><input style="border-style:none" type="text" name="sStorageName" value="${stock.sStorageName }" class="form-control"/></td>
@@ -81,7 +93,7 @@
         
         <tr>
             <td align="center" class ="tableleft">入库时间</td>
-            <td><input style="border-style:none" type="text" name="StorageTime" value="${stock.storageTime }" class="form_datetime"/></td>
+            <td><input style="border-style:none" type="text" readonly="readonly" name="StorageTime" value="${stock.storageTime }" class="form_datetime"/></td>
         </tr>
         <tr>
             <td align="right" class="tableleft">备注</td>

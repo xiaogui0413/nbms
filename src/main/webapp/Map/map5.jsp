@@ -17,6 +17,7 @@
         #xia{ float:right;width:25%;height:100%;}
         #top{height:80%;}
         #bellow{height:20%;}
+        #myModalLabel{color : #FFFFFF;}
 
 		p{margin-left:5px; font-size:14px;}
 	</style>
@@ -48,6 +49,8 @@
 			<th>操作</th>
 		</tr>
 	</thead>
+	    <c:choose>
+			<c:when test="${not empty requestScope.devAttr }">
 		<c:forEach var="u" items="${devAttr }">
 		<tr>
 		   <!-- <td><input type="checkbox"></td> -->
@@ -76,8 +79,17 @@
 			<td><input type="hidden" name="test" id="test" value="${u.sn }"><a href="javascript:void(0)" onclick="recall(this)">取消监控</a></td>
 		</tr>
 		</c:forEach>
+		     </c:when>
+	     <c:otherwise>
+	     	<tr class="success">
+				<td colspan=13>没有你要找的内容!</td>
+			</tr>
+	     </c:otherwise>
+     </c:choose>
 </table>
-
+<div class="inline pull-right page">
+        共 ${page.total}条记录 /共 ${page.pages}页  <a href='listDevAttrByPage?page=${page.prePage}'>上一页</a><a href="listDevAttrByPage?page=${page.nextPage}">下一页</a><a href='listDevAttrByPage?page=${page.lastPage}'>最后一页</a>   
+</div>
 </div>
 </div>
 <div id="bellow">
@@ -209,7 +221,15 @@
 	  });
 	  map.addControl(geolocationControl);
 
-	 	var data_info = ${s};
+/*  	  if("${s}"!=']'){
+		  alert("hah");
+		  var data_info = "${s}";
+	  }
+	  alert("java");
+	  //alert("${s}"); */
+
+  	 	var data_info = ${s};
+
 
 	var opts = {
 				width : 250,     // 信息窗口宽度
@@ -287,22 +307,41 @@ function detail(obj){
 
 function recall(obj){
  	var id = $(obj).parent().prev().prev().prev().prev().text();
-	$.ajax({
-		type : "post",
-		url : "recallDevAttr",
-		data: id, 
-		dataType : 'json',
-		contentType: "application/json; charset=utf-8",
-		success : function (data){
-		}
-	});
+ 	var sDevID = $(obj).parent().prev().prev().prev().prev().prev().text();
+  	if(confirm("确定要取消监控吗？")){	
+ 		$.ajax({
+ 			type : "post",
+ 			url : "recallDevAttr",
+ 			data: id, 
+ 			dataType : 'json',
+ 			contentType: "application/json; charset=utf-8",
+ 			success : function (data){
+ 				alert(data);
+ 				alert("java");
+ 			}
+ 		});
+/*  		$.ajax({
+ 			type : "post",
+ 			url : "recallDevAttr",
+ 			data: id,
+ 			dataType : 'json',
+ 			contentType: "application/json; charset=utf-8",
+ 			success : function (data){
+ 				alert(data);
+ 				alert("java");
+ 			}
+ 		}); */
+	}
+	else{
+		return false;
+	}
 	alert("取消监控成功！");
-	flush();
+	flush(); 
 }
 
 function flush(){
 	
-	location.href="listDevAttr";
+	location.href="listDevAttrByPage";
 }
 
 function locate(obj){
@@ -321,7 +360,7 @@ function locate(obj){
 			    $("#x_pos").text(data[i].x_pos);
 			    $("#y_pos").text(data[i].y_pos);
 			    $("#fHop").text(data[i].fHop);
-			    $("#nLocaMode").text(data[i].nLocaMode); 
+			    $("#nLocaMode").text(data[i].nLocaMode);
 		}
 		}
 	});
@@ -347,7 +386,7 @@ function locate(obj){
 	function aa(a,b){
 		var map = new BMap.Map("shang");
 		var point = new BMap.Point(a,b);
-		map.enableScrollWheelZoom(true);		
+		//map.enableScrollWheelZoom(true);		
 		
 	    //坐标转换完之后的回调函数
 	    translateCallback = function (data){
@@ -355,8 +394,7 @@ function locate(obj){
 	      if(data.status === 0) {
 	        var marker = new BMap.Marker(data.points[0]);
 	      
-	        map.addOverlay(marker);
-	       
+	        map.addOverlay(marker);	       
 	        
 	        map.setCenter(data.points[0]);
 	       
@@ -414,7 +452,7 @@ function locate(obj){
 	        var convertor = new BMap.Convertor();
 	        var pointArr = [];
 	        pointArr.push(point);
-	        convertor.translate(pointArr, 1, 5, translateCallback);       	 
+	        convertor.translate(pointArr, 1, 5, translateCallback);   	 
 		}
 </script>
 </body>

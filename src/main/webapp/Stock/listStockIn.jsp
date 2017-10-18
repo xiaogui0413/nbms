@@ -35,7 +35,7 @@
     设备名称：
     <input type="text" name="selectItem" id="selectItem"class="abc input-default" placeholder="" value="">&nbsp;&nbsp;  
     <button type="submit" class="btn btn-primary">查询</button>&nbsp;&nbsp;
-    <button type="button" class="btn btn-success" id="addnew">新增设备</button>
+    <button type="button" class="btn btn-success" id="addnew">登记新设备</button>
 </form>
 <div ><!-- style="width:100%;overflow-x:auto;overflow-y:hidden; padding:10px; border:1px solid black" -->
 <table class="table table-bordered table-hover definewidth m10">
@@ -89,13 +89,11 @@
 	</c:forEach>
 </table>
 </div>
-<div class="inline pull-right page">
-         741条记录 1/50 页  <a href='#'>下一页</a><span class='current'>1</span><a href='#'>2</a><a href='#'>3</a><a href='#'>4</a><a href='#'>5</a>  <a href='#' >下5页</a> <a href='#' >最后一页</a>   
-</div>
+
 <script>
     $(function () {        
 		$('#addnew').click(function(){
-				window.location.href="Stock/addStockIn.jsp";
+				window.location.href="addStockInView";
 		 });
     });
 	function delConfirm()

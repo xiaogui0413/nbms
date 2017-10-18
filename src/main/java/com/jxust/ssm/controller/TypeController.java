@@ -1,14 +1,20 @@
 package com.jxust.ssm.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.jxust.ssm.pojo.SubType;
 import com.jxust.ssm.pojo.Type;
@@ -49,4 +55,64 @@ public class TypeController {
 		typeService.deleteByPrimaryKey(id);
 		return "selectTypeList";
 	}
+	
+	/*文件上传到本地*/
+	@RequestMapping("fileUpload")
+    public String fileUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IllegalStateException, IOException {  
+         if (!file.isEmpty()) {  
+             // 取得当前上传文件的文件名称  
+             String myFileName = file.getOriginalFilename();  
+             // 如果名称不为“”,说明该文件存在，否则说明该文件不存在  
+             if (myFileName.trim() != "") {  
+                 // 定义上传路径  
+                 String path = "D:\\pic\\"  
+                         + myFileName;  
+                 File localFile = new File(path);  
+                 file.transferTo(localFile); 
+             } 
+         }	
+        return "fileUpload.jsp";	
+	}
+	
+	/*文件上传到项目路径*/
+	@RequestMapping("fileUpload1")
+    public String fileUpload1(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IllegalStateException, IOException {  
+		 // 判断文件是否为空  
+        if (!file.isEmpty()) {  
+            try {  
+                // 文件保存路径  
+                String filePath = request.getSession().getServletContext().getRealPath("/") + "upload/"  
+                        + file.getOriginalFilename();   
+                // 转存文件  
+                file.transferTo(new File(filePath));  
+            } catch (Exception e) {  
+                e.printStackTrace();  
+            }  
+        }  
+        // 重定向  
+        return "fileUpload.jsp";
+ /*    // 文件保存路径  
+        String filePath = request.getSession().getServletContext().getRealPath("/") + "upload/"  
+                + file.getOriginalFilename();
+        if(!file.isEmpty()){
+        	file.transferTo(new File(filePath));
+        }
+        return filePath;*/
+        
+        
+	}
+	
+    @RequestMapping("listPic")  
+    public ModelAndView listPic(HttpServletRequest request) {  
+        String filePath = request.getSession().getServletContext().getRealPath("/") + "upload/";  
+        ModelAndView mav = new ModelAndView("list");  
+        File uploadDest = new File(filePath);  
+        String[] fileNames = uploadDest.list();  
+        for (int i = 0; i < fileNames.length; i++) {  
+            //打印出文件名  
+            System.out.println(fileNames[i]);  
+        }  
+        return mav;  
+    } 
 }
+	

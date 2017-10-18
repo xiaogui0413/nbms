@@ -21,7 +21,7 @@ public class SubTypeServiceImpl implements SubTypeService{
 	@Override
 	public List<SubType> selectSubTypeList() {
 
-		List<SubType> parent = subTypeDao.selectSubTypeList();
+		//List<SubType> parent = subTypeDao.selectSubTypeList();
 /*		
 		for(SubType parents:parent){
 			// 查询出当前父分类的所有子分类
@@ -38,6 +38,11 @@ public class SubTypeServiceImpl implements SubTypeService{
 	public SubType selectByPrimaryKey(int id) {
 
 		return subTypeDao.selectByPrimaryKey(id);
+	}
+	@Override
+	public List<SubType> selectSubTypeByType(int id) {
+		
+		return subTypeDao.selectSubTypeByType(id);
 	}
 
 }

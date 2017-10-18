@@ -85,7 +85,7 @@
 	</c:forEach>
 </table>
 <div class="inline pull-right page">
-         741条记录 1/50 页  <a href='#'>下一页</a><span class='current'>1</span><a href='#'>2</a><a href='#'>3</a><a href='#'>4</a><a href='#'>5</a>  <a href='#' >下5页</a> <a href='#' >最后一页</a>   
+        共 ${page.total}条记录 /共 ${page.pages}页  <a href='listStockOut?page=${page.prePage}'>上一页</a><a href="listStockOut?page=${page.nextPage}">下一页</a><a href='listStockOut?page=${page.lastPage}'>最后一页</a>   
 </div>
 <script>
     $(function () {      

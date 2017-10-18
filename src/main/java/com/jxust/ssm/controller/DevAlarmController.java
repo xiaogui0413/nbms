@@ -35,9 +35,9 @@ public class DevAlarmController {
 		List<DevAlarm> devAlarm = devAlarmService.selectDevAlarmList();
 		model.addAttribute("devAlarm", devAlarm);
 		System.out.println(devAlarm);
-		return "Alarm/listAlarmhisnow.jsp";
+		return "Alarm/listAlarmnow.jsp";
 	}	
-	
+	/*根据条件查询历史数据*/
 	@RequestMapping("/selectDevAlarmMap")
 	public String selectDevAlarmMap(HttpServletRequest request ,Model model) throws IOException{
 		String devID = request.getParameter("devID");
@@ -59,6 +59,13 @@ public class DevAlarmController {
 		List<DevAlarm> devAlarm = devAlarmService.selectDevAlarmMap(paramMap);
 		model.addAttribute("devAlarm", devAlarm);
 		return "Alarm/listAlarmhis.jsp";
+
+	}
+	
+	@RequestMapping("/alarmDef")
+	public String alarmDef(Model model) throws IOException{	
+
+		return "Alarm/alarmDef.jsp";
 
 	}
 

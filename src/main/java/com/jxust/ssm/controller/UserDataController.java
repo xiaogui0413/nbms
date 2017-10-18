@@ -5,17 +5,20 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jxust.ssm.pojo.UserData;
 import com.jxust.ssm.service.UserDataService;
 import com.jxust.ssm.utils.Md5Utils;
+import com.jxust.ssm.utils.ValidateCode;
 
 import net.sf.json.JSONArray;
 
@@ -48,17 +51,30 @@ public class UserDataController {
 	 */
 	//用户登录
 	@RequestMapping("/userLogin")
-	public String userLogin(@RequestParam("username") String clerkName,@RequestParam("password") String password,Model model) {
+	public String userLogin(Model model,HttpServletRequest request) {
+		String clerkName = request.getParameter("username");
+		String password = request.getParameter("password");
+		String code = request.getParameter("code");
 		String password1 = Md5Utils.md5(password);
+		  HttpSession session = request.getSession(); 	  
+		    String sessionCode = (String) session.getAttribute("code");  
+		    if (!StringUtils.equalsIgnoreCase(code, sessionCode)){
+		    	model.addAttribute("msg", "验证码错误！");
+				return "/Public/login.jsp";
+		    }
+
 		UserData userData = userDataService.selectByPrimaryKey(clerkName, password1);
 			if(userData == null){
+				
 				model.addAttribute("msg", "用户名或密码错误！");
 				return "/Public/login.jsp";
 			}
 			else{
 				model.addAttribute("username", clerkName);
+				request.getSession().setAttribute("username",clerkName); 
 				return "index.jsp";
 			}
+			
 	}
 	
 	@RequestMapping("/selectUserList")
@@ -66,6 +82,14 @@ public class UserDataController {
 		List<UserData> userData = userDataService.selectUserList();
 		model.addAttribute("userData", userData);
 		return "User/listUser.jsp";
+	}
+	
+	
+	//用户退出
+	@RequestMapping("/userLogout")
+	public String userLogout(Model model) {
+
+		return "/Public/login.jsp";
 	}
 	
 	//修改用户信息预览
@@ -120,5 +144,26 @@ public class UserDataController {
 			model.addAttribute("msg", "用户名已被注册！");
 			return "User/addUser.jsp";
 		}		
-	}	
+	}
+	
+    /** 
+     * 响应验证码页面 
+     * @return 
+     */  
+    @RequestMapping(value="/validateCode")  
+    public String validateCode(HttpServletRequest request,HttpServletResponse response) throws Exception{  
+        // 设置响应的类型格式为图片格式  
+        response.setContentType("image/jpeg");  
+        //禁止图像缓存。  
+        response.setHeader("Pragma", "no-cache");  
+        response.setHeader("Cache-Control", "no-cache");  
+        response.setDateHeader("Expires", 0);  
+      
+        HttpSession session = request.getSession();  
+      
+        ValidateCode vCode = new ValidateCode(120,30,4,80);  
+        session.setAttribute("code", vCode.getCode());  
+        vCode.write(response.getOutputStream());  
+        return null;  
+    }
 }

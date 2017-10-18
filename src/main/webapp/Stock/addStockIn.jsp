@@ -6,17 +6,16 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title></title>
-    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css" />
-    <link rel="stylesheet" type="text/css" href="../Css/style.css" />
-    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-datetimepicker.min.css" />
-    <script type="text/javascript" src="../Js/jquery.js"></script>
-    <script type="text/javascript" src="../Js/jquery.sorted.js"></script>
-    <script type="text/javascript" src="../Js/bootstrap.js"></script>
-    <script type="text/javascript" src="../Js/ckform.js"></script>
-    <script type="text/javascript" src="../Js/common.js"></script>
-    <script type="text/javascript" src="../Js/bootstrap-datetimepicker.min.js"></script>
-	<script type="text/javascript" src="../Js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap-datetimepicker.min.css" />
+    <script type="text/javascript" src="${pageContext.request.contextPath }/Js/jquery.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/Js/ckform.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/Js/common.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/Js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath }/Js/bootstrap-datetimepicker.zh-CN.js"></script>
     <style type="text/css">
         body {
             padding-bottom: 40px;
@@ -37,6 +36,15 @@
     </style>
 </head>
 <body>
+
+<%@ page language="java"%> 
+<%@ page import="java.util.*"%>
+<%@ page import="java.text.*"%>
+<% 
+String datetime=new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()); //获取系统时间 
+%>
+<%-- <% out.print(new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date())); %>
+<% out.print(request.getSession().getAttribute("username")); %> --%>
 <form action="${pageContext.request.contextPath }/insertStockIn" method="post" class="definewidth m20">
 <table class="table table-bordered table-hover definewidth m10">
     <tr>
@@ -46,23 +54,26 @@
     <tr>
         <td class="tableleft">设备类型</td>
         <td>
-        	<select name="nDevType">
-			  <option value="1">类型1</option>
-			  <option value="2">类型2</option>
-			  <option value="3">类型3</option>
-			  <option value="4">类型4</option>
-			</select>
+			<select name="nDevType" id="selectType" onchange="change(this.options[this.options.selectedIndex].value)">
+	        	<option selected="selected" value="">---请选择一级分类---</option>
+	        	<c:forEach items="${type }" var="type">
+				<option value="${type.id }">${type.name }</option>
+				</c:forEach>
+			</select> 
         </td>
     </tr>
      <tr>
         <td class="tableleft">设备子类型</td>
         <td>
-        	<select name="nSubtype">
+<!--         	<select name="nSubtype">
 			  <option value="1">子类型1</option>
 			  <option value="2">子类型2</option>
 			  <option value="3">子类型3</option>
 			  <option value="4">子类型4</option>
-			</select>
+			</select> -->
+			
+			<select name="nSubtype" id="selectSubType" >
+			</select> 
         </td>
     </tr>
 	<tr>
@@ -73,10 +84,10 @@
         <td class="tableleft">入库类型</td>
         <td>
        	 	<select name="sStockIntType">
-			  <option value="入库类型1">外购入库</option>
-			  <option value="入库类型1">受托代理入库</option>
-			  <option value="入库类型1">退还入库</option>
-			  <option value="入库类型1">赠送入库</option>
+			  <option value="外购入库">外购入库</option>
+			  <option value="受托代理入库">受托代理入库</option>
+			  <option value="退还入库">退还入库</option>
+			  <option value="赠送入库">赠送入库</option>
 			</select>
         </td>
     </tr>
@@ -91,10 +102,11 @@
     <tr>
         <td class="tableleft">登记人员</td>
          <td><input type="text" name="sRegistrant"/></td>
+        <%--  value = "${sessionScope.username.clerkName}"  --%>
     </tr>
     <tr>
         <td class="tableleft">入库时间</td>
-         <td><input type="text" name="StorageTime" class="form_datetime"/></td>
+         <td><input type="text" readonly="readonly" name="StorageTime" value = "<% out.print(new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date())); %>" class="form_datetime"/></td>
     </tr>
     <tr>
         <td class="tableleft">备注</td>
@@ -124,6 +136,41 @@
 				language : "zh-CN"
     		 });
     });
+    
+    function change(v){
+    	yanzhen();
+    	$.ajax({
+    		type : "post",
+    		url : "selectSubTypeByType",
+    		data:v,
+    		dataType : 'json',
+    		contentType: "application/json; charset=utf-8",
+    		success : function (data){
+     			$("#selectSubType option").remove();
+     			/* for循环类型遍历 */
+/*     			var subType = data[0].subType;
+     			for (var i = 0, len = subType.length; i < len; i ++) {
+    				$("#selectSubType").append("<option value="+subType[i].id+">"+subType[i].name+"</option>");
+    			}  */
+    			
+    			/* each循环类型遍历 */
+    			var subType = data[0].subType;
+     			$.each(subType, function(i, n) {
+ 					$("#selectSubType").append("<option value="+subType[i].id+">"+subType[i].name+"</option>");
+ 				});
+    		}
+    	});
+    }
+    
+    function yanzhen(){
+    	
+    	var a=$("#selectType option:selected").text();
+    	var b=$("#selectType option:selected").val();
+    	if(b==""){
+    		alert("请选择正确的分类");
+    		$("#selectSubType option").remove();
+    	}
+    }
 </script>
 </body>
 </html>

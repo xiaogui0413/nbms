@@ -23,9 +23,10 @@
         .sidebar-nav {
             padding: 9px 0;
         }
-        .tableDiv {
-        	margin-top: 50px;
-        	margin-left: 50px
+        #tableDiv {
+        	margin-top: 30px;
+        	margin-left: 50px;
+/*         	display: inline; */
         }
         @media (max-width: 980px) {
             /* Enable use of floated navbar text */
@@ -38,7 +39,8 @@
     </style>
 </head>    
 <body>
-<div class="tableDiv">
+<div id="tableDiv" class="container-fluid">
+<form action="">
 <table border="1px" width="500px">
 	<tr>
 		<td>设备类型</td>
@@ -67,10 +69,14 @@
 		<td>告警下限</td>
 		<td>1</td>
 	</tr>
-	<tr>
-	</tr>
 </table>
+<br>
+<input type="button" value="修改">
+<input type="button" value="批量修改">
+</form>
 </div>
+<hr>
+<div class="container-fluid">
 <table class="table table-bordered table-hover definewidth m10">
     <thead>
 	    <tr>
@@ -120,6 +126,7 @@
 	     </c:otherwise>
      </c:choose>
 </table>
+</div>
 <script type="text/javascript">
 $(function () {
 	$(".form_datetime").datetimepicker({

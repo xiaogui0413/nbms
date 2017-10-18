@@ -18,7 +18,7 @@ public class DevRealtimeData {
 	private double y_pos;				/****** 纬度******/
 	private double fHop; 				/****** 可信度，米******/
 	private double fBatteryVolt;		/****** 电池电压******/
-	private double fRSOC;				/****** 剩余电量 (百分比)******/
+	private double nRSOC;				/****** 剩余电量 (百分比)******/
 	private double fVolt;				/****** 供电电压******/
 	private int nAlarm;					/****** 告警状态　1:告警  0:正常******/
 	private int nState;					/****** 在线状态　1:在线  0:不在线******/
@@ -94,11 +94,11 @@ public class DevRealtimeData {
 	public void setfBatteryVolt(double fBatteryVolt) {
 		this.fBatteryVolt = fBatteryVolt;
 	}
-	public double getfRSOC() {
-		return fRSOC;
+	public double getnRSOC() {
+		return nRSOC;
 	}
-	public void setfRSOC(double fRSOC) {
-		this.fRSOC = fRSOC;
+	public void setnRSOC(double nRSOC) {
+		this.nRSOC = nRSOC;
 	}
 	public double getfVolt() {
 		return fVolt;
@@ -158,7 +158,7 @@ public class DevRealtimeData {
 	public String toString() {
 		return "DevRealtimeData [sn=" + sn + ", nDevType=" + nDevType + ", nSubtype=" + nSubtype + ", nDevAddr="
 				+ nDevAddr + ", sDevID=" + sDevID + ", nLocaMode=" + nLocaMode + ", sDevName=" + sDevName + ", x_pos="
-				+ x_pos + ", y_pos=" + y_pos + ", fHop=" + fHop + ", fBatteryVolt=" + fBatteryVolt + ", fRSOC=" + fRSOC
+				+ x_pos + ", y_pos=" + y_pos + ", fHop=" + fHop + ", fBatteryVolt=" + fBatteryVolt + ", nRSOC=" + nRSOC
 				+ ", fVolt=" + fVolt + ", nAlarm=" + nAlarm + ", nState=" + nState + ", SamplingTime=" + SamplingTime
 				+ ", sIPAddr=" + sIPAddr + ", nPort=" + nPort + ", sRemark=" + sRemark + ", Spare1=" + Spare1
 				+ ", Spare2=" + Spare2 + "]";

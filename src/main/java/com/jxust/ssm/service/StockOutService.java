@@ -20,4 +20,6 @@ public interface StockOutService {
 	StockOut selectByDevLabel(String sDevLabel);
 	
 	void updateStockOutState(Integer id);
+	
+	void updateStockOutState1(String id);
 }

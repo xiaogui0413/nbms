@@ -83,7 +83,7 @@
     </tr>
     <tr>
         <td class="tableleft">出库时间</td>
-         <td><input type="text" name="StockOutTime" class="form_datetime"/></td>
+         <td><input type="text" readonly="readonly" name="StockOutTime" class="form_datetime"/></td>
     </tr>
     <tr>
         <td class="tableleft">备注</td>

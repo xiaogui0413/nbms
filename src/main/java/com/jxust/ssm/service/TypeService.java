@@ -15,5 +15,7 @@ public interface TypeService {
 	void insertType(Type type);
 	
 	void updateByPrimaryKey();
+	
+	List<Type> selectSubTypeByType(int id);
 
 }

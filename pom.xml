@@ -187,11 +187,18 @@
 		    <classifier>jdk15</classifier>    
 		</dependency>
 		
-<!-- 		<dependency>
+		<dependency>
 		    <groupId>org.apache.poi</groupId>
 		    <artifactId>poi-ooxml</artifactId>
 		    <version>3.9</version>
-		</dependency> -->
+		</dependency>
+		
+      <!--   分页插件 -->
+        <dependency>
+		    <groupId>com.github.pagehelper</groupId>
+		    <artifactId>pagehelper</artifactId>
+		    <version>4.1.6</version>
+		</dependency>
 		
 		<!-- 用于操作office的jar包 -->
 <!-- 		<dependency>

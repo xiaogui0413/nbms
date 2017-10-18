@@ -41,9 +41,9 @@
     <input type="text" name="devName" id="selectItem" class="abc input-default" value="${devName }">&nbsp;&nbsp;
     <button type="submit" class="btn btn-primary">查询</button>&nbsp;&nbsp;<br>
 	开始时间：
-    <input type="text" name="beginTime" id="selectItem" class="form_datetime" value="${beginTime }">&nbsp;&nbsp;
+    <input type="text" name="beginTime" readonly="readonly" id="selectItem" class="form_datetime" value="${beginTime }">&nbsp;&nbsp;
 	结束时间：
-    <input type="text" name="endTime" id="selectItem" class="form_datetime" value="${endTime }">&nbsp;&nbsp;     
+    <input type="text" name="endTime" readonly="readonly" id="selectItem" class="form_datetime" value="${endTime }">&nbsp;&nbsp;     
     <button type="button" class="btn btn-success" id="addnew">导出</button>
 </form>
 <table class="table table-bordered table-hover definewidth m10">

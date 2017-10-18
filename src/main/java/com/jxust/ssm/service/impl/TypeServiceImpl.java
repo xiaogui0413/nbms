@@ -49,5 +49,11 @@ public class TypeServiceImpl implements TypeService{
 		
 	}
 
+	@Override
+	public List<Type> selectSubTypeByType(int id) {
+		
+		return typeDao.selectSubTypeByType(id);
+	}
+
 
 }

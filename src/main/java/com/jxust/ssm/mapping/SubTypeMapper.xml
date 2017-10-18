@@ -1,23 +1,82 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jxust.ssm.dao.SubTypeDao">
-	<resultMap id="BaseResultMap" type="com.jxust.ssm.pojo.SubType">
-		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="code" property="code" jdbcType="VARCHAR" />
-		<result column="name" property="name" jdbcType="VARCHAR" />
-		<result column="detail" property="detail" jdbcType="VARCHAR" />
-		<result column="image_path" property="image_path" jdbcType="VARCHAR" />
-		<result column="parentCode" property="parentCode" jdbcType="INTEGER" />
+	<resultMap id="BaseResultMap1" type="com.jxust.ssm.pojo.SubType">
+		<id column="id" property="id"/>
+		<result column="code" property="code"/>
+		<result column="name" property="name"/>
+		<result column="detail" property="detail"/>
+		<result column="image_path" property="image_path"/>
+		<result column="parentCode" property="parentCode"/>
+		
+		<association property="type"  javaType="com.jxust.ssm.pojo.Type">
+<!-- 			id：关联查询用户的唯 一标识
+			column：指定唯 一标识用户信息的列
+			javaType：映射到user的哪个属性 -->
+			
+			<id column="parentCode" property="id"/>
+			<result column="code" property="code" jdbcType="VARCHAR" />
+			<result column="name" property="name" jdbcType="VARCHAR" />
+			<result column="detail" property="detail" jdbcType="VARCHAR" />	
+		</association>
+		
 	</resultMap>
+	
+	<resultMap id="BaseResultMap" type="com.jxust.ssm.pojo.SubType" extends="BaseResultMap1">
+		<id column="id" property="id"/>
+		<result column="code" property="code"/>
+		<result column="name" property="name"/>
+		<result column="detail" property="detail"/>
+		<result column="image_path" property="image_path"/>
+		<result column="parentCode" property="parentCode"/>
+		
+		<!-- 订单明细信息
+		一个订单关联查询出了多条明细，要使用collection进行映射
+		collection：对关联查询到多条记录映射到集合对象中
+		property：将关联查询到多条记录映射到cn.itcast.mybatis.po.Orders哪个属性
+		ofType：指定映射到list集合属性中pojo的类型
+		 -->
+		 <collection property="devAttr" ofType="com.jxust.ssm.pojo.DevAttr">
+		 	<!-- id：订单明细唯 一标识
+		 	property:要将订单明细的唯 一标识 映射到cn.itcast.mybatis.po.Orderdetail的哪个属性
+		 	  -->
+		 	<id column="nSubtype" property="id"/>
+		<result column="nDevType" property="nDevType" jdbcType="INTEGER" />
+		<result column="nSubtype" property="nSubtype" jdbcType="INTEGER" />
+		<result column="sDevID" property="sDevID" jdbcType="VARCHAR" />
+		<result column="nLocaMode" property="nLocaMode" jdbcType="VARCHAR" />
+		<result column="sDevName" property="sDevName" jdbcType="VARCHAR" />
+		<result column="x_pos" property="x_pos" jdbcType="FLOAT" />
+		<result column="y_pos" property="y_pos" jdbcType="FLOAT" />
+		<result column="fHop" property="fHop" jdbcType="FLOAT" />
+		<result column="fBatteryVolt" property="fBatteryVolt" jdbcType="FLOAT" />
+		<result column="nRSOC" property="nRSOC" jdbcType="FLOAT" />
+		<result column="nAlarm" property="nAlarm" jdbcType="INTEGER" />
+		<result column="nState" property="nState" jdbcType="INTEGER" />
+		<result column="SamplingTime" property="SamplingTime" jdbcType="DATE" />
+		<result column="sIPAddr" property="sIPAddr" jdbcType="VARCHAR" />
+		<result column="nPort" property="nPort" jdbcType="INTEGER" />
+		<result column="sRemark" property="sRemark" jdbcType="VARCHAR" />
+		<result column="Spare1" property="Spare1" jdbcType="VARCHAR" />
+		<result column="Spare2" property="Spare2" jdbcType="VARCHAR" />
+		 </collection>
+		
+	</resultMap>	
+	
 	<sql id="Base_Column_List">
 		id, code, name, detail, image_path, parentCode
 	</sql>
+	
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
 		from tab_subtype
 		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectSubTypeByType" resultMap="BaseResultMap">
+	SELECT * FROM tab_type t1,tab_subtype WHERE tab_subtype.parentCode = t1.id AND t1.id = #{id}
 	</select>
 	
 	<!-- 查询类别列表 -->

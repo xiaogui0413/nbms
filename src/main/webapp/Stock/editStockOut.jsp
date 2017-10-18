@@ -38,7 +38,6 @@
             }
         }
 
-
     </style>
 </head>
 <body>
@@ -56,6 +55,10 @@
         <tr>
             <td class="tableleft">设备类型</td>
             <td><input type="text" name="nDevType" value="${stock.nDevType }"/></td>
+        </tr>
+        <tr>
+            <td class="tableleft">设备子类型</td>
+            <td><input type="text" name="nSubtype" value="${stock.nSubtype }"/></td>
         </tr>
         <tr>
             <td class="tableleft">出库类型</td>
@@ -84,7 +87,7 @@
         
         <tr>
             <td align="center" class ="tableleft">出库时间</td>
-            <td><input type="text" name="stockOutTime" value="${stock.stockOutTime }" class="form_datetime"/></td>
+            <td><input type="text" readonly="readonly" name="stockOutTime" value="${stock.stockOutTime }" class="form_datetime"/></td>
         </tr>
         <tr>
             <td align="right" class="tableleft">备注</td>

@@ -31,12 +31,14 @@
     </style>
 </head>
 <body>
+<br>
+<div class="container-fluid">
 <table class="table table-bordered table-hover definewidth m10">
     <thead>
 	    <tr>
 	        <th>设备类型</th>
 	        <th>设备子类型	</th>
-	        <th>设备地址</th>
+	      <!--   <th>设备地址</th> -->
 	        <th>设备ID</th>
 	        <th>定位方式</th>
 	        <th>设备名称</th>
@@ -45,7 +47,7 @@
 	        <th>可信度(米)</th>
 	        <th>电池电压(V)</th>
 	        <th>剩余电量(%)</th>
-	        <th>供电电压(V)</th>
+	      <!--   <th>供电电压(V)</th> -->
 	        <th>告警状态</th>
 	        <th>在线</th>
 	        <th>数据采集时间</th>
@@ -55,7 +57,7 @@
 	    <tr>
             <td>${s.nDevType }</td>
             <td>${s.nSubtype }</td>
-            <td>${s.nDevAddr }</td>
+           <%--  <td>${s.nDevAddr }</td> --%>
             <td>${s.sDevID }</td>
             <td>${s.nLocaMode }</td>
             <td>${s.sDevName }</td>
@@ -63,8 +65,8 @@
             <td>${s.y_pos }</td>
             <td>${s.fHop }</td>
             <td>${s.fBatteryVolt }</td>
-            <td>${s.fRSOC }</td>
-            <td>${s.fVolt }</td>
+            <td>${s.nRSOC }</td>
+          <%--   <td>${s.fVolt }</td> --%>
             <td>${s.nAlarm }</td>
             <td>${s.nState }</td>
             <td>0</td>
@@ -72,5 +74,6 @@
         </tr>
      </c:forEach>
 </table>
+</div>
 </body>
 </html>

@@ -21,5 +21,7 @@ public interface StockOutDao {
 	StockOut selectByDevLabel(String sDevLabel);
 	
 	void updateStockOutState(Integer id);
+	
+	void updateStockOutState1(String id);
 
 }

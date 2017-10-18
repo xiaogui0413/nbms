@@ -19,7 +19,7 @@ header .text a{ font-size:14px; color:#444444;}
 header .text em:hover,header .text span:hover{text-decoration: underline;cursor:pointer;color: #999;}
 header .text em,header .text span{padding:0 1%;}
 
-#content{text-align: center;height:370px;position: relative;z-index: 1000;background: #fff;}
+#content{text-align: center;height:400px;position: relative;z-index: 1000;background: #fff;}
 #content img{padding-bottom:10px; }
 #content h1{color:#444;font: 200 22px/84px "黑体";}
 
@@ -29,6 +29,7 @@ header .text em,header .text span{padding:0 1%;}
 #usename,#password {width:330px;height:38px;margin: 10px 0;text-indent: 20%; font-size: 14px;color: #a0a0a1;}
 #usename{background: url("../img/usename.png") no-repeat; border: 0;}
 #password{background: url("../img/password.png") no-repeat; border: 0;}
+#code {width:80px; height:30px; border:1px solid #BCBCBC;background-color:transparent;}
 
 
 #content .bt{position:absolute;left:50%;margin-left:-165px;width:330px; font-size: 13px; color: #999999;line-height: 22px;}

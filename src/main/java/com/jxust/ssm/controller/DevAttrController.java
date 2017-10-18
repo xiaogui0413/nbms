@@ -1,10 +1,10 @@
 package com.jxust.ssm.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jxust.ssm.pojo.DevAttr;
 import com.jxust.ssm.pojo.StockOut;
-import com.jxust.ssm.pojo.User;
 import com.jxust.ssm.service.DevAttrService;
 import com.jxust.ssm.service.StockOutService;
 //import com.jxust.ssm.udpserver.UDPServer;
@@ -64,7 +65,6 @@ public class DevAttrController {
 		sa+="]";
 		model.addAttribute("sa", sa);
    	 	model.addAttribute("s", s);
-
 	/*	JSONArray json = JSONArray.fromObject(devAttr);*/
 
 /*		response.setHeader("Cache-Contrl", "no-cache");
@@ -72,6 +72,36 @@ public class DevAttrController {
 		response.getWriter().write(json);
 		response.getWriter().flush();*/
 
+	return "/Map/map5.jsp";
+	}
+	
+	
+	//查询设备列表带分页
+	@RequestMapping("/listDevAttrByPage")
+	public String listDevAttrByPage(Model model,
+			@RequestParam(required=true,defaultValue="1") Integer page,
+            @RequestParam(required=false,defaultValue="8") Integer pageSize) throws IOException{
+		
+		PageHelper.startPage(page, pageSize);
+		
+		List<DevAttr> devAttr = devAttrService.selectDevAttrList();
+		PageInfo<DevAttr> p=new PageInfo<DevAttr>(devAttr);
+		System.out.println(p.getPageNum());
+		if(p.getPageNum()<=0){
+			p.setPageNum(1);
+		}
+		model.addAttribute("page",p);
+		model.addAttribute("devAttr", devAttr);
+		
+		String s="[";
+		for(DevAttr d:devAttr){
+			 s +="["+ d.getX_pos()+","+d.getY_pos()+","+d.getSn()+"],";
+			/*System.out.println(d.getX_pos()+d.getY_pos());*/				
+		}
+		s = s.substring(0,s.length()-1);
+		s+="]";
+		
+   	 	model.addAttribute("s", s);
 	return "/Map/map5.jsp";
 	}
 	
@@ -88,8 +118,19 @@ public class DevAttrController {
 	@RequestMapping(value = "/recallDevAttr",produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public void recallDevAttr(HttpServletResponse response,@RequestBody int id,Model model) {
-		 devAttrService.deleteByPrimaryKey(id);
 		
+		//int count = devAttrService.selectCountDevAttr();
+/*		if(count == 1){
+			model.addAttribute("username", "不能删除最后一个设备");
+			
+		}*/
+		System.out.println(id);
+		
+		 DevAttr dev = devAttrService.getDevAttrById(id);
+		  String devID = dev.getsDevID();
+		stockOutService.updateStockOutState1(devID);
+		 devAttrService.deleteByPrimaryKey(id);
+		System.out.println("已经取消监控了");
 	}
 	
 	@RequestMapping(value="/selectDevAttr1",produces = "application/json; charset=utf-8")
@@ -126,33 +167,6 @@ public class DevAttrController {
 		    response.setCharacterEncoding("utf-8");
 		JSONArray json = JSONArray.fromObject(devAttr);
 		return json.toString();
-	}
-	
-	@RequestMapping("/testJson")
-	@ResponseBody
-	   public List<DevAttr> test(){  
-        List<DevAttr> list = new ArrayList<DevAttr>();  
-          
-        //注入值  
-        DevAttr dev = new DevAttr();  
-        dev.setSn(1);  
-        dev.setsDevName("张三"); 
-        dev.setnState(1);
-        list.add(dev);  
-  
-        DevAttr dev2 = new DevAttr();  
-        dev2.setSn(2);  
-        dev2.setsDevName("李四");  
-        dev2.setnState(1);  
-        list.add(dev2);  
-          
-        return list;  //直接返回list对象  
-    }
-	
-	@RequestMapping("/testJson1")
-	@ResponseBody
-	public User jsonSource(User user){
-		return user;
 	}
 	
 	@RequestMapping("/listDevAttrTest")
@@ -235,6 +249,7 @@ public class DevAttrController {
 		String sDevID = stockOut.getsDevID();
 		String devName = stockOut.getsDevName();		
 		String devID = stockOut.getsDevID();
+		System.out.println("DEVID是"+devID);
 		DevAttr dev = new DevAttr();
 		dev.setsDevID(sDevID);
 		dev.setnDevType(devType);
@@ -255,11 +270,27 @@ public class DevAttrController {
 
 	}
 	
+	@RequestMapping("/selectByDevName")
+	public String selectByDevName(Model model, HttpServletRequest request) {
+		String devName = request.getParameter("devName");
+		List<DevAttr> devAttr = devAttrService.selectByDevName(devName);
+		model.addAttribute("devAttr", devAttr);
+		String s="[";
+		for(DevAttr d:devAttr){
+			 s +="["+ d.getX_pos()+","+d.getY_pos()+","+d.getSn()+"],";
+			/*System.out.println(d.getX_pos()+d.getY_pos());*/					
+		}
+		s = s.substring(0,s.length()-1);
+		s+="]";
+
+   	 	model.addAttribute("s", s);
+   	 	return "/Map/map5.jsp";
+	}
+	
 	@RequestMapping("/getUdpData")
 	public String getUdpData(Model model) throws IOException{
 		/*UDPServer udp = new UDPServer();*/
 	return null;
 	}
 	
-
 }

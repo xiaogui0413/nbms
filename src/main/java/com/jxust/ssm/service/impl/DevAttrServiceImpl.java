@@ -65,6 +65,18 @@ public class DevAttrServiceImpl implements DevAttrService{
 		devAttrDao.deleteByPrimaryKey(id);
 		
 	}
+
+	@Override
+	public int selectCountDevAttr() {
+		
+		return devAttrDao.selectCountDevAttr();
+	}
+
+	@Override
+	public List<DevAttr> selectByDevName(String devName) {
+		
+		return devAttrDao.selectByDevName(devName);
+	}
 	
 	
 

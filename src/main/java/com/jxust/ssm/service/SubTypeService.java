@@ -9,5 +9,7 @@ public interface SubTypeService {
 	List<SubType> selectSubTypeList();
 	
 	SubType selectByPrimaryKey(int id);
+	
+	List<SubType> selectSubTypeByType(int id);
 
 }

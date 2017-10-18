@@ -12,7 +12,7 @@ public class DevHisData {
 	private int nSubtype;				/****** 设备子类型******/ 
 	private int nDevAddr;				/****** 设备地址******/ 
 	private String sDevID;              /****** 设备ID******/ 
-	private int nLocaMode;              /****** 定位方式 1:LBS基站定位 2:GPS定位 ******/
+	private String nLocaMode;              /****** 定位方式 1:LBS基站定位 2:GPS定位 ******/
 	private String sDevName;            /****** 设备名称 ******/
 	private double x_pos;				/****** 经度******/
 	private double y_pos;				/****** 纬度******/
@@ -54,10 +54,10 @@ public class DevHisData {
 	public void setsDevID(String sDevID) {
 		this.sDevID = sDevID;
 	}
-	public int getnLocaMode() {
+	public String getnLocaMode() {
 		return nLocaMode;
 	}
-	public void setnLocaMode(int nLocaMode) {
+	public void setnLocaMode(String nLocaMode) {
 		this.nLocaMode = nLocaMode;
 	}
 	public String getsDevName() {

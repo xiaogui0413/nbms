@@ -27,5 +27,9 @@ public interface DevAttrService {
 	void insertDevAttr(DevAttr devAttr);
 	
 	void deleteByPrimaryKey(Integer id);
+	
+	int selectCountDevAttr();
+	
+	List<DevAttr> selectByDevName(String devName);
 
 }

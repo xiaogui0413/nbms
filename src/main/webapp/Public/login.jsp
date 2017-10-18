@@ -21,16 +21,44 @@
     	<label class="error" id="msg">${msg }</label><br>
         <input  id="usename" type="text" name="username" placeholder="用户名"/><br/>
         <input  id="password" type="password" name="password" placeholder="密码"/><br/>
-        <div class="bt clear">
+        <div class="bt clear"style="display: inline" align="left">
             <!-- <input class="check fl" type="checkbox" value=""/> -->
             <!-- <span class="fl">记住密码</span>
             <em class="fl">忘记密码？</em> -->
-            <center><input id="submit" type="submit" value="登录"/></center><br/>
+        <input type="text" id="code" name="code" class="form-control"/>  
+        <img id="imgObj" alt="验证码" src="validateCode" onclick="changeImg()"/>  
+        <a href="#" onclick="changeImg()">换一张</a>
+            <input id="submit" type="submit" value="登录"/><br/>
         </div>
     </form>
 </div>
 <div style="text-align:center;width:100%;height:170px;background:#27a9e3;color:#fff;position:absolute;bottom:0;">
     <p><span>© 2017 深圳市意格尔数字技术有限公司</span></p>
 </div>
+
+<script type="text/javascript">  
+    // 刷新图片  
+    function changeImg() {  
+/*         var imgSrc = $("#imgObj");  
+        var src = imgSrc.attr("src");  
+        imgSrc.attr("src", changeUrl(src));  */
+       // $("#imgObj").attr("src", "validateCode");
+        location.reload();
+    }  
+    //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳  
+    function changeUrl(url) {  
+        var timestamp = (new Date()).valueOf();  
+        var index = url.indexOf("?",url);  
+        if (index > 0) {  
+            url = url.substring(0, url.indexOf(url, "?"));  
+        }  
+        if ((url.indexOf("&") >= 0)) {  
+            url = url + "×tamp=" + timestamp;  
+        } else {  
+            url = url + "?timestamp=" + timestamp;  
+        }  
+        return url;  
+    }  
+</script>
 </body>
 </html>

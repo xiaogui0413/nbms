@@ -67,4 +67,12 @@ public class StockOutServiceImpl implements StockOutService{
 		
 	}
 
+
+	@Override
+	public void updateStockOutState1(String id) {
+		
+		stockOutDao.updateStockOutState1(id);
+		
+	}
+
 }

@@ -1,18 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-  <head>
-    <title>分类列表</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>用户列表</title>
-	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<!--     <link href="resources/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet" type="text/css" /> -->
-	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	     <style type="text/css">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>入库</title>
+<link rel="stylesheet" href="resources/bootstrap-3.3.7/css/bootstrap.min.css">
+   <%--  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap.css" /> --%>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/style.css" />
+    <script type="text/javascript" src="${pageContext.request.contextPath }/Js/jquery.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/Js/ckform.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/Js/common.js"></script>
+     <style type="text/css">
         body {
             padding-bottom: 40px;
         }
@@ -28,9 +30,8 @@
             }
         }
     </style>
-  </head>
-  
-  <body>
+</head>
+<body>
 <div class="container-fluid">
 <br>
 <form class="form-inline definewidth m20" action="selectUserList" method="post">    
@@ -61,14 +62,15 @@
     		<td>${subType.name }</td>
     		<td>${subType.detail }</td>
     		<td width="200px;" align="right">
-    		  <a href="<c:url value='/admin/AdminCategoryServlet?method=editChildPre&cid=${child.cid }'/>">修改</a>
-    		  <a onclick="return confirm('您是否真要删除该二级分类？')" href="<c:url value='/admin/AdminCategoryServlet?method=deleteChild&cid=${child.cid }'/>">删除</a>
+<%--     		  <a href="<c:url value='/admin/AdminCategoryServlet?method=editChildPre&cid=${child.cid }'/>">修改</a>
+    		  <a onclick="return confirm('您是否真要删除该二级分类？')" href="<c:url value='/admin/AdminCategoryServlet?method=deleteChild&cid=${child.cid }'/>">删除</a> --%>
     		</td>
     	</tr>
    </c:forEach>
 	</c:forEach>
 	   
 </table>
+<br>
 </div>
 <!-- 添加一级分类 -->
 <!-- 模态框（Modal） -->
@@ -199,5 +201,5 @@
 		}
 	}
 </script>
-  </body>
+</body>
 </html>

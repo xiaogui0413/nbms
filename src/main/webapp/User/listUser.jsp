@@ -9,6 +9,9 @@
     <link href="resources/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet" type="text/css" />
 	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+	<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap-responsive.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/style.css" />
     <script type="text/javascript" src="${pageContext.request.contextPath }/Js/ckform.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath }/Js/common.js"></script>
@@ -32,12 +35,15 @@
     </style>
 </head>
 <body>
-<div>
-<form class="form-inline definewidth m20" action="selectUserList" method="post">    
-    用户名称：
-    <input type="text" name="username" id="username"class="abc input-default" value="">&nbsp;&nbsp;  
-    <button type="submit" class="btn btn-primary">查询</button>&nbsp;&nbsp; 
-    <button type="button" class="btn btn-success" id="addnew">新增用户</button>
+<div class="container-fluid">
+<form class="form-inline definewidth m20" action="selectUserList" method="post">
+<div class="input-group input-group-sm">
+			<span class="input-group-addon">用户名称:</span>
+			<input type="text" name="username" id="username" placeholder="用户名" class="form-control" value="">
+</div>    
+    
+    <button type="submit" class="btn btn-primary btn-sm">查询</button>&nbsp;&nbsp;
+    <button type="button" class="btn btn-success btn-sm" id="addnew">新增用户</button>
 </form>
 <table class="table table-bordered table-hover definewidth m10">
     <thead>
@@ -73,7 +79,7 @@
 
 <!-- 添加用户模态框 -->
 <!-- 模态框（Modal） -->
-<form action="${pageContext.request.contextPath }/addUser" method="post" class="definewidth m20">
+<form action="${pageContext.request.contextPath }/addUser" method="post" class="definewidth m20" id="userForm">
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -87,25 +93,27 @@
 			</div>
 			<div class="modal-body">
 <table class="table table-bordered definewidth m10">
+
     <tr>
         <td width="15%" class="tableleft">登录名</td>
-        <td><input type="text" name="clerkName" id="clerkName" style="border:none; width:450px"/>${msg }</td>
+        <td><input type="text" name="clerkName" id="clerkName" required="required" style="border:none; width:450px"/>${msg }</td>
     </tr>
+
     <tr>
         <td class="tableleft">密码</td>
-        <td><input type="password" name="password" id="password"  style="border:none; width:450px"/></td>
+        <td><input type="password" name="password" id="password" required="required" style="border:none; width:450px"/></td>
     </tr>
     <tr>
         <td class="tableleft">手机</td>
-        <td><input type="text" name="contact" id="contact" style="border:none; width:450px"/></td>
+        <td><input type="text" name="contact" id="contact" required="required" style="border:none; width:450px"/></td>
     </tr>
     <tr>
         <td class="tableleft">邮箱</td>
-        <td><input type="text" name="emailAddr" id="emailAddr" style="border:none; width:450px"/></td>
+        <td><input type="text" name="emailAddr" id="emailAddr" required="required" style="border:none; width:450px"/></td>
     </tr>
     <tr>
         <td class="tableleft">地址</td>
- 		<td><input type="text" name="address" id="address"  style="border:none; width:450px"/></td>
+ 		<td><input type="text" name="address" id="address" style="border:none; width:450px"/></td>
     </tr>
     <tr>
         <td class="tableleft">备注</td>
@@ -142,7 +150,7 @@
 <table class="table table-bordered definewidth m10">
     	<tr style="display:none">
             <td width="15%" class="tableleft">用户ID</td>
-            <td><input type="text" name="id" id="id1" readonly="readonly" value="" style="border:none; width:450px"/></td>
+            <td><input type="text" name="id" id="id1" readonly="readonly" value="" style="border:none; width:450px" /></td>
         </tr> 
         <tr>
             <td width="15%" class="tableleft">用户名称</td>
@@ -178,6 +186,10 @@
 	</div><!-- /.modal -->
 </div>
 <script>
+
+$().ready(function() {
+    $("#userForm").validate();
+});
     $(function () {       
 		$('#addnew').click(function(){
 			 $("#myModal").modal('show');

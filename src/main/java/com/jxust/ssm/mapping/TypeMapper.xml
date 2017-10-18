@@ -6,10 +6,28 @@
 		<result column="code" property="code" jdbcType="VARCHAR" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="detail" property="detail" jdbcType="VARCHAR" />
+				
+	<collection property="subType" ofType="com.jxust.ssm.pojo.SubType">
+              <!-- id：二级分类唯 一标识
+             property:要将订单明细的唯 一标识 映射到pojo.SubType的哪个属性               -->
+            <id column="sub_id" property="id"/>
+			<result column="code" property="code"/>
+			<result column="sub_name" property="name"/>
+			<result column="detail" property="detail"/>
+			<result column="image_path" property="image_path"/>
+			<result column="parentCode" property="parentCode"/>
+	  </collection>
 	</resultMap>
+	
 	<sql id="Base_Column_List">
 		id, code, name, detail
 	</sql>
+	
+	<select id="selectSubTypeByType" resultMap="BaseResultMap">
+	<!-- SELECT * FROM tab_type t1,tab_subtype WHERE tab_subtype.parentCode = t1.id AND t1.id = #{id} -->
+	SELECT tab_type.*,tab_subtype.id sub_id, tab_subtype.name sub_name FROM tab_type,tab_subtype WHERE tab_subtype.parentCode = tab_type.id and tab_type.id = #{id}
+	</select>
+	
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
 		select

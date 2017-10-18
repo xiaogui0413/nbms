@@ -60,12 +60,23 @@
 		sDevName
                 LIKE '%${value}%'
 	</select>
+	
+	<!-- 监控设备 -->
 	<update id="updateStockOutState" parameterType="java.lang.Integer">
 		update
 		tab_devstockoutmngt
 		set
 		   state = 1
 		where sn = #{sn,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 取消监控设备 -->
+	<update id="updateStockOutState1" parameterType="java.lang.String">
+		update
+		tab_devstockoutmngt
+		set
+		   state = 0
+		where sDevID = #{sDevID}
 	</update>
 	
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
