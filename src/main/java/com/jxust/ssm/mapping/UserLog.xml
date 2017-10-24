@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace的值就是dao接口的完整路径，就这个demo而言namespace 就是userDao.java的完整路径-->
+<mapper namespace="com.jxust.ssm.dao.UserLogDao">
+	<resultMap id="BaseResultMap" type="com.jxust.ssm.pojo.UserLog">
+		<id column="id" property="id" />
+		<result column="create_time" property="create_time" />
+		<result column="operator" property="operator" />
+		<result column="content" property="content" />
+		<result column="ip" property="ip" />
+		<result column="remark" property="remark" />
+
+	</resultMap>
+	<sql id="Base_Column_List">
+        id ,create_time ,operator ,content ,ip ,remark
+	</sql>
+	
+	<select id="selectById" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		*
+		from tab_userlog
+		where id =#{id}
+	</select>
+	
+	<!-- 根据用户名查询，用于校验用户名是否被注册 -->
+	<select id="selectByOperator" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		*
+		from tab_userlog
+		where operator  LIKE '%${value}%'
+	</select>
+	
+	<!-- 查询用户日志列表 -->
+	<select id="selectUserLogList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tab_userlog
+	</select>
+	
+	<!-- 添加用户日志 -->
+	<insert id="insertUserLog" parameterType="com.jxust.ssm.pojo.UserLog">
+		insert into
+		tab_userlog
+		(create_time ,operator ,content ,ip ,remark)
+		values
+		(#{create_time},#{operator},#{content},#{ip},#{remark})
+	</insert>
+
+</mapper>

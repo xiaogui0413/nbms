@@ -7,6 +7,7 @@
     <title>NB-IOT物资定位管理系统</title>
     <link href="${pageContext.request.contextPath }/Public/style/a.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath }/Public/img/dianxin.ico" rel="shotcut icon"/>
+    <script src="Js/jquery.js"></script>
 </head>
 <body style="margin:0;padding:0;position:absolute;">
 <header>
@@ -26,7 +27,7 @@
             <!-- <span class="fl">记住密码</span>
             <em class="fl">忘记密码？</em> -->
         <input type="text" id="code" name="code" class="form-control"/>  
-        <img id="imgObj" alt="验证码" src="validateCode" onclick="changeImg()"/>  
+        <img id="imgObj1" alt="验证码" src="validateCode" onclick="changeImg()"/>  
         <a href="#" onclick="changeImg()">换一张</a>
             <input id="submit" type="submit" value="登录"/><br/>
         </div>
@@ -38,12 +39,13 @@
 
 <script type="text/javascript">  
     // 刷新图片  
-    function changeImg() {  
+    function changeImg() {
 /*         var imgSrc = $("#imgObj");  
         var src = imgSrc.attr("src");  
         imgSrc.attr("src", changeUrl(src));  */
-       // $("#imgObj").attr("src", "validateCode");
-        location.reload();
+        $("#imgObj1").attr("src", "validateCode?"+ new Date().getTime());
+        
+        //location.reload();
     }  
     //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳  
     function changeUrl(url) {  

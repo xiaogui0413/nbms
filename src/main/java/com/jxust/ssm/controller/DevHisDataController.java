@@ -26,6 +26,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jxust.ssm.pojo.DevHisData;
 import com.jxust.ssm.service.DevHisDataService;
@@ -48,22 +49,21 @@ public class DevHisDataController {
 	@RequestMapping("/listDevHisDataByPage")
 	public String listDevHisDataByPage(Model model,
 			@RequestParam(required=true,defaultValue="1") Integer page,
-            @RequestParam(required=false,defaultValue="8") Integer pageSize) throws IOException{
+            @RequestParam(required=false,defaultValue="14") Integer pageSize) throws IOException{
 		
+		PageHelper.startPage(page, pageSize);
 		List<DevHisData> devHisData = devHisService.selectDevHisDataList();
 		
-		System.out.println("执行了");
 		PageInfo<DevHisData> p=new PageInfo<DevHisData>(devHisData);
-		System.out.println(p.getPageNum());
 		if(p.getPageNum()<=0){
 			p.setPageNum(1);
 		}
 		model.addAttribute("page",p);
 		model.addAttribute("devHisData", devHisData);
-		System.out.println("历史数据"+devHisData);
 		return "DevData/listHis.jsp";
 
 	}
+	
 	
 	@RequestMapping("/selectDevHisDataMap11")
 	public String selectStockInMap11(HttpServletRequest request ,Model model) throws IOException{
@@ -82,6 +82,13 @@ public class DevHisDataController {
 
 	}
 	
+	/**
+	 * 不带带分页搜索
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping("/selectStockInMap")
 	public String selectStockInMap(HttpServletRequest request ,Model model) throws IOException{
 		String devID = request.getParameter("devID");
@@ -105,12 +112,50 @@ public class DevHisDataController {
 		return "DevData/listHis.jsp";
 	}
 	
+	/**
+	 * 带分页搜索
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping("/selectStockInMapByPage")
+	public String selectStockInMapByPage(HttpServletRequest request ,Model model,
+			@RequestParam(required=true,defaultValue="1") Integer page,
+            @RequestParam(required=false,defaultValue="12") Integer pageSize) throws IOException{
+		String devID = request.getParameter("devID");
+		String devName = request.getParameter("devName");
+		String beginTime = request.getParameter("beginTime");
+		String endTime = request.getParameter("endTime");
+			
+		model.addAttribute("devID", devID);
+		model.addAttribute("devName", devName);
+		model.addAttribute("beginTime", beginTime);
+		model.addAttribute("endTime", endTime);
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("devID", devID);
+		paramMap.put("devName", devName);
+		paramMap.put("beginTime", beginTime);
+		paramMap.put("endTime", endTime);
+		
+		PageHelper.startPage(page, pageSize);
+		List<DevHisData> devHisData = devHisService.selectDevHisDataMap(paramMap);
+		PageInfo<DevHisData> p=new PageInfo<DevHisData>(devHisData);
+		System.out.println(p.getPageNum());
+		model.addAttribute("page", p);
+		model.addAttribute("devHisData", devHisData);
+		
+		return "DevData/listHis.jsp";
+	}
+	
+	
 	 @RequestMapping("/export")
 	 public void export(HttpServletResponse response, Model model) throws IOException {
 	        //第一步:创建一个工作簿excel文件  
 	        Workbook workbook=new HSSFWorkbook();//HSSF操作Excel2003以下版本 
 	         
-	        //第二步:创建一个工作表sheet  
+	        //第二步:创建一个工作表sheet
 	        Sheet sheet=workbook.createSheet("设备历史数据");
 	        //设置标题样式
 	        HSSFCellStyle headerStyle = (HSSFCellStyle) workbook .createCellStyle();// 创建标题样式  

@@ -1,5 +1,4 @@
 package com.jxust.ssm.utils;
-
 import java.io.*;
 import java.net.*;
 import org.json.*;
@@ -45,16 +44,20 @@ class UDPThread implements Runnable{
             address = packet.getAddress();      //客户端IP
             sAddr = address.toString();
             sAddr = sAddr.substring(sAddr.lastIndexOf("/") + 1 );
-            port = packet.getPort();            //客户端端口号            
-         
+            port = packet.getPort();            //客户端端口号                    
+
+            Date now = new Date(); 
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//修改日期格式
+            sDateTime = dateFormat.format(now); 
+            
         	info = new String(packet.getData(), 0, packet.getLength());   //接收到的信息
-            System.out.println("接收数据from"+sAddr+"<<"+info);
+            System.out.println(sDateTime+"接收数据from"+sAddr+"<<"+info);
             
           
             //数据解析，更新到数据库表中
             //数据样例：{"DevType":"GPS","SubType":"NB-GPS","DevID":"1001","Loca":"LBS","x_pos":"114.219984","y_pos":"30.59902","Hop":"0.00","BattVolt":"4.12"}     
             
-            JSONObject dataJson = new JSONObject(info); 
+            JSONObject dataJson = new JSONObject(info);
             
             //sDevType = dataJson.get("DevType").toString();
            // sSubType = dataJson.get("SubType").toString();
@@ -74,14 +77,9 @@ class UDPThread implements Runnable{
             }
             else{
             	 double sHop1 = 500;
-            	 
-
 
             double   sBattVolt1 = Double.valueOf(sBattVolt).doubleValue();
-
-            Date now = new Date(); 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//修改日期格式
-            sDateTime = dateFormat.format(now);             
+            
          
             String strsql = "update tab_nbms_devattr set nLocaMode=?,x_pos=?,y_pos=?,fHop=?,fBatteryVolt=?,nState=?,SamplingTime=?,sIPAddr=?,nPort=? where sDevID=?";
             PreparedStatement pstmt = dbConn.prepareStatement(strsql);
@@ -152,7 +150,7 @@ class DataTask extends TimerTask {
 	        
 	        System.out.println(sDateTime);  
 	        
-		    String sql = "update tab_nbms_devattr set nState=? where SamplingTime<?";  
+		    String sql = "update tab_nbms_devattr set nState=? where SamplingTime<? AND nState = 1"; 
 		    PreparedStatement pstmt = dbConn.prepareStatement(sql);  
 		    pstmt.setInt(1, 0);
 		    pstmt.setString(2,sDateTime);
@@ -214,7 +212,7 @@ public class UDPServer {
 //        };
     	
         long delay = 300000;               //延时执行时间 
-        long intevalPeriod = 300000;    //时间间隔
+        long intevalPeriod = 300000*7;    //时间间隔
     	TimerTask task = new DataTask(dbSQLConn,intevalPeriod);
         Timer timer = new Timer();  
         //间隔定时执行任务
@@ -229,9 +227,9 @@ public class UDPServer {
         while(true){
             data = new byte[1024];//创建字节数组，指定接收的数据包的大小
             packet = new DatagramPacket(data, data.length);
-            socket.receive(packet);//此方法在接收到数据报之前会一直阻塞          
+            socket.receive(packet);//此方法在接收到数据报之前会一直阻塞        
             Thread thread = new Thread(new UDPThread(socket, packet,dbSQLConn));
-            thread.start();           
+            thread.start();     
         } 
     }
 }

@@ -46,7 +46,7 @@
 			<th>状态</th>
 			<!-- <th>经度</th> -->
 			<th>操作</th>
-			<!-- <th>操作</th> -->
+			<th>操作</th>
 		</tr>
 	</thead>
 	    <c:choose>
@@ -59,7 +59,7 @@
 			<td>${u.sDevName }</td>
 			<td align="center">
 			<c:choose>
-				<c:when test="${u.nState eq '0' }">离线
+				<c:when test="${u.nState eq '-1' }">离线
 				</c:when>
 				<c:when test="${u.nState eq '1' }">在线
 				</c:when>
@@ -76,7 +76,7 @@
 			<!-- <td><a href="selectDevAttr">定位</a></td> -->
 			<td><input type="hidden" name="test1" id="test1" value="${u.sn }"><a href="javascript:void(0)" onclick="locate(this)">定位</a></td>
 <%-- 			<td><input type="hidden" name="test" id="test" value="${u.sn }"><a href="javascript:void(0)" onclick="detail(this)">详情</a></td> --%>
-<%-- 			<td><input type="hidden" name="test" id="test" value="${u.sn }"><a href="javascript:void(0)" onclick="recall(this)">取消监控</a></td> --%>
+			<td><input type="hidden" name="test" id="test" value="${u.sn }"><a href="javascript:void(0)" onclick="recall(this)">取消监控</a></td>
 		</tr>
 		</c:forEach>
 		     </c:when>
@@ -87,15 +87,8 @@
 	     </c:otherwise>
      </c:choose>
 </table>
-<%-- <div class="inline pull-right page">
-        共${page.total}条记录 /共${page.pages}页  <a href='listDevAttrByPage?page=${page.prePage}'>上一页</a><a href="listDevAttrByPage?page=${page.nextPage}">下一页</a>   
-</div> --%>
 <div class="inline pull-right page">
-<ul class="pagination">
-	<li><a>第${page.pageNum}页/共${page.pages}页</a></li>
-	<li><a href="listDevAttrByPage?page=${page.prePage}">上一页</a></li>
-	<li><a href="listDevAttrByPage?page=${page.nextPage}">下一页</a></li>
-</ul>
+        共${page.total}条记录 /共${page.pages}页  <a href='listDevAttrByPage?page=${page.prePage}'>上一页</a><a href="listDevAttrByPage?page=${page.nextPage}">下一页</a>   
 </div>
 </div>
 </div>
@@ -249,6 +242,8 @@
 		 var content1 = data_info[i][2];
 		content = "设备ID："+content1;
 		map.addOverlay(marker);        // 将标注添加到地图中
+		var label = new BMap.Label("我是文字标注哦",{offset:new BMap.Size(20,-10)});
+		marker.setLabel(label);
 		addClickHandler(content,marker);
 	}
 
@@ -360,7 +355,6 @@ function locate(obj){
 		dataType : 'json',
 		contentType: "application/json; charset=utf-8",
 		success : function (data){
-			
 			aa(data[0].x_pos,data[0].y_pos);
 			for(var i=0;i<data.length;i++){
 				$("#sDevName").text(data[i].sDevName);
@@ -390,13 +384,11 @@ function locate(obj){
 		map.openInfoWindow(infoWindow,point); //开启信息窗口
 	});
 	} */
-
-
+	
 	function aa(a,b){
 		var map = new BMap.Map("shang");
 		var point = new BMap.Point(a,b);
-		console.log(point);
-		map.enableScrollWheelZoom(true);	
+		//map.enableScrollWheelZoom(true);		
 		
 	    //坐标转换完之后的回调函数
 	    translateCallback = function (data){
@@ -446,23 +438,23 @@ function locate(obj){
 			  title : "窗口信息" , // 信息窗口标题
 			  enableMessage:true,//设置允许信息窗发送短息
 			}
- 			marker.addEventListener("click",function(){
+			marker.addEventListener("click",function(e){
 				$("#myModal").modal('show');
-
-				geoc.getLocation(point, function(rs){
+				var pt = e.point;
+				geoc.getLocation(pt, function(rs){
 					var addComp = rs.addressComponents;
 					var dizhi = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
 					$("#address").text(dizhi);
 /* 					var infoWindow = new BMap.InfoWindow(dizhi, opts);
 					map.openInfoWindow(infoWindow,point); */
 				});
-			 });
+			});
 	      }
 	    }
 	        var convertor = new BMap.Convertor();
 	        var pointArr = [];
 	        pointArr.push(point);
-	        convertor.translate(pointArr, 1, 5, translateCallback); 
+	        convertor.translate(pointArr, 1, 5, translateCallback);   	 
 		}
 </script>
 </body>

@@ -1,5 +1,9 @@
 package com.jxust.ssm.controller;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,10 +20,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jxust.ssm.pojo.UserData;
+import com.jxust.ssm.pojo.UserLog;
 import com.jxust.ssm.service.UserDataService;
+import com.jxust.ssm.service.UserLogService;
+import com.jxust.ssm.utils.AddressUtil;
 import com.jxust.ssm.utils.Md5Utils;
 import com.jxust.ssm.utils.ValidateCode;
 
+import cz.mallat.uasparser.OnlineUpdater;
+import cz.mallat.uasparser.UASparser;
+import cz.mallat.uasparser.UserAgentInfo;
 import net.sf.json.JSONArray;
 
 @Controller
@@ -27,6 +37,8 @@ public class UserDataController {
 	
 	@Resource
 	private UserDataService userDataService;
+	@Resource
+	private UserLogService userLogService;
 	
 	/**
 	 * 
@@ -56,6 +68,7 @@ public class UserDataController {
 		String password = request.getParameter("password");
 		String code = request.getParameter("code");
 		String password1 = Md5Utils.md5(password);
+		
 		  HttpSession session = request.getSession(); 	  
 		    String sessionCode = (String) session.getAttribute("code");  
 		    if (!StringUtils.equalsIgnoreCase(code, sessionCode)){
@@ -65,17 +78,58 @@ public class UserDataController {
 
 		UserData userData = userDataService.selectByPrimaryKey(clerkName, password1);
 			if(userData == null){
-				
 				model.addAttribute("msg", "用户名或密码错误！");
 				return "/Public/login.jsp";
 			}
 			else{
 				model.addAttribute("username", clerkName);
-				request.getSession().setAttribute("username",clerkName); 
+				request.getSession().setAttribute("username",clerkName);
+				
+				UserLog userLog = new UserLog();
+				Date date = new Date();
+				SimpleDateFormat  sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String loginTime = sdf.format(date);
+				userLog.setOperator(clerkName);
+				userLog.setCreate_time(loginTime);
+				String userIP = getRemoteHost(request); //：获得客户端的ip地址
+				userLog.setIp(userIP);
+				String address = "";
+				 try {
+					address = AddressUtil.getAddresses("ip="+userIP, "utf-8");
+				} catch (UnsupportedEncodingException e1) {
+					e1.printStackTrace();
+				}
+				 userLog.setRemark(address);
+				
+				 String str = request.getHeader("user-agent");
+				 UASparser uasParser = null;
+				 try {
+					uasParser = new UASparser(OnlineUpdater.getVendoredInputStream());
+					UserAgentInfo userAgentInfo = uasParser.parse(str);
+					String userOS = "用户操作系统为："+ userAgentInfo.getOsName();
+					String userBrowser = "用户浏览器为：" + userAgentInfo.getUaName();
+					userLog.setContent(userOS+"；"+userBrowser);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}				
+				userLogService.insertUserLog(userLog);			
 				return "index.jsp";
-			}
-			
+			}			
 	}
+	
+	  public String getRemoteHost(HttpServletRequest request) {
+		    String ip = request.getHeader("x-forwarded-for");
+		    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		      ip = request.getHeader("Proxy-Client-IP");
+		    }
+		    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		      ip = request.getHeader("WL-Proxy-Client-IP");
+		    }
+		    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		      ip = request.getRemoteAddr();
+		    }
+		    return ip.equals("0:0:0:0:0:0:0:1") ? "127.0.0.1" : ip;
+		  }
 	
 	@RequestMapping("/selectUserList")
 	public String selectUserList(Model model) {

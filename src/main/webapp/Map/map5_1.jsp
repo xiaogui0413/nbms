@@ -46,7 +46,7 @@
 			<th>状态</th>
 			<!-- <th>经度</th> -->
 			<th>操作</th>
-			<!-- <th>操作</th> -->
+			<th>操作</th>
 		</tr>
 	</thead>
 	    <c:choose>
@@ -59,7 +59,7 @@
 			<td>${u.sDevName }</td>
 			<td align="center">
 			<c:choose>
-				<c:when test="${u.nState eq '0' }">离线
+				<c:when test="${u.nState eq '-1' }">离线
 				</c:when>
 				<c:when test="${u.nState eq '1' }">在线
 				</c:when>
@@ -76,7 +76,7 @@
 			<!-- <td><a href="selectDevAttr">定位</a></td> -->
 			<td><input type="hidden" name="test1" id="test1" value="${u.sn }"><a href="javascript:void(0)" onclick="locate(this)">定位</a></td>
 <%-- 			<td><input type="hidden" name="test" id="test" value="${u.sn }"><a href="javascript:void(0)" onclick="detail(this)">详情</a></td> --%>
-<%-- 			<td><input type="hidden" name="test" id="test" value="${u.sn }"><a href="javascript:void(0)" onclick="recall(this)">取消监控</a></td> --%>
+			<td><input type="hidden" name="test" id="test" value="${u.sn }"><a href="javascript:void(0)" onclick="recall(this)">取消监控</a></td>
 		</tr>
 		</c:forEach>
 		     </c:when>
@@ -87,15 +87,8 @@
 	     </c:otherwise>
      </c:choose>
 </table>
-<%-- <div class="inline pull-right page">
-        共${page.total}条记录 /共${page.pages}页  <a href='listDevAttrByPage?page=${page.prePage}'>上一页</a><a href="listDevAttrByPage?page=${page.nextPage}">下一页</a>   
-</div> --%>
 <div class="inline pull-right page">
-<ul class="pagination">
-	<li><a>第${page.pageNum}页/共${page.pages}页</a></li>
-	<li><a href="listDevAttrByPage?page=${page.prePage}">上一页</a></li>
-	<li><a href="listDevAttrByPage?page=${page.nextPage}">下一页</a></li>
-</ul>
+        共${page.total}条记录 /共${page.pages}页  <a href='listDevAttrByPage?page=${page.prePage}'>上一页</a><a href="listDevAttrByPage?page=${page.nextPage}">下一页</a>   
 </div>
 </div>
 </div>
@@ -192,13 +185,12 @@
 </div>
 <!-- 模态框结束 -->
 <script type="text/javascript">
-
 	// 百度地图API功能
 	map = new BMap.Map("shang");
 /* 	map.centerAndZoom("深圳",9); */
-	map.centerAndZoom(new BMap.Point(114.273439,30.674298), 5);
+	map.centerAndZoom(new BMap.Point(113.921242,22.519478), 12);
 	map.enableScrollWheelZoom(true);
-	var geoc = new BMap.Geocoder(); 
+	var geoc = new BMap.Geocoder();
 	
 	 // 添加带有定位的导航控件
 	  var navigationControl = new BMap.NavigationControl({
@@ -210,85 +202,25 @@
 	    enableGeolocation: true
 	  });
 	   map.addControl(navigationControl); 
-	  // 添加定位控件
-	  var geolocationControl = new BMap.GeolocationControl();
-	  geolocationControl.addEventListener("locationSuccess", function(e){
-	    // 定位成功事件
-	    var address = '';
-	    address += e.addressComponent.province;
-	    address += e.addressComponent.city;
-	    address += e.addressComponent.district;
-	    address += e.addressComponent.street;
-	    address += e.addressComponent.streetNumber;
-	    alert("当前定位地址为：" + address);
-	  });
-	  geolocationControl.addEventListener("locationError",function(e){
-	    // 定位失败事件
-	    alert(e.message);
-	  });
-	  map.addControl(geolocationControl);
 
-/*  	  if("${s}"!=']'){
-		  alert("hah");
-		  var data_info = "${s}";
-	  }
-	  alert("java");
-	  //alert("${s}"); */
-
-  	 	var data_info = ${s};
+  	  var data_info = ${s};
 
 
-	var opts = {
-				width : 250,     // 信息窗口宽度
-				height: 80,     // 信息窗口高度
-				title : "信息窗口" , // 信息窗口标题
-				enableMessage:true//设置允许信息窗发送短息
-			   };
-	for(var i=0;i<data_info.length;i++){
-		var marker = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]));  // 创建标注
-		 var content1 = data_info[i][2];
-		content = "设备ID："+content1;
-		map.addOverlay(marker);        // 将标注添加到地图中
-		addClickHandler(content,marker);
-	}
+      //坐标转换完之后的回调函数
+      translateCallback = function (data){
+        if(data.status === 0) {
+          for (var i = 0; i < data.data_info.length; i++) {
+              bm.addOverlay(new BMap.Marker(data.points[i]));
+              bm.setCenter(data.points[i]);
+          }
+        }
+      }
+    
+          var convertor = new BMap.Convertor();
+          convertor.translate(data_info, 1, 5, translateCallback)
 
-	function addClickHandler(content,marker){
- 		 marker.addEventListener("click1",function(e){
-   			    var pt = e.point;			
-				geoc.getLocation(pt, function(rs){
-				var addComp = rs.addressComponents;
-				var dizhi = addComp.province  + addComp.city  + addComp.district  + addComp.street + addComp.streetNumber;				
-				openInfo(content+"地址："+dizhi,e);			      
-			 });
-			}
-		);
-	}
-	function openInfo(content,e){
-		var p = e.target;
-		var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-		var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象
-		map.openInfoWindow(infoWindow,point); //开启信息窗口
-	}
 </script>
-<!-- <script type="text/javascript">
 
-$(function(){
- setInterval(aa,700000);
- function aa(){
-   $.ajax({
-		type : "post",
-		url : "selectDevAttr1",
-		dataType : 'json',
-		contentType: "application/json; charset=utf-8",
-		success : function (data){
-
-		}
-	});
-   /*   window.location.reload(true);   */
- /* alert("aaaaaa")  */
- }
-})
-</script> -->
 <script type="text/javascript">
 function detail(obj){
 
@@ -327,17 +259,7 @@ function recall(obj){
  				alert("java");
  			}
  		});
-/*  		$.ajax({
- 			type : "post",
- 			url : "recallDevAttr",
- 			data: id,
- 			dataType : 'json',
- 			contentType: "application/json; charset=utf-8",
- 			success : function (data){
- 				alert(data);
- 				alert("java");
- 			}
- 		}); */
+
 	}
 	else{
 		return false;
@@ -360,7 +282,6 @@ function locate(obj){
 		dataType : 'json',
 		contentType: "application/json; charset=utf-8",
 		success : function (data){
-			
 			aa(data[0].x_pos,data[0].y_pos);
 			for(var i=0;i<data.length;i++){
 				$("#sDevName").text(data[i].sDevName);
@@ -373,25 +294,6 @@ function locate(obj){
 		}
 	});
 }
-/* function aa(a,b){
-	var map = new BMap.Map("shang");
-	var point = new BMap.Point(a,b);
-	var marker = new BMap.Marker(point);  // 创建标注
-	map.addOverlay(marker);              // 将标注添加到地图中
-	map.centerAndZoom(point, 15);
-	var opts = {
-	  width : 200,     // 信息窗口宽度
-	  height: 100,     // 信息窗口高度
-	  title : "设备窗口信息" , // 信息窗口标题
-	  enableMessage:true,//设置允许信息窗发送短息
-	}
-	var infoWindow = new BMap.InfoWindow("地址：北京市东城区王府井大街88号乐天银泰百货八层", opts);  // 创建信息窗口对象 
-	marker.addEventListener("click", function(){          
-		map.openInfoWindow(infoWindow,point); //开启信息窗口
-	});
-	} */
-
-
 	function aa(a,b){
 		var map = new BMap.Map("shang");
 		var point = new BMap.Point(a,b);
@@ -411,42 +313,8 @@ function locate(obj){
 			map.centerAndZoom(data.points[0], 18);
 			var point = data.points[0];
 			var geoc = new BMap.Geocoder();
-/***************** 下面注释的这段代码是显示导航控件的 *******************/
-			/*  // 添加带有定位的导航控件
-			  var navigationControl = new BMap.NavigationControl({
-			    // 靠左上角位置
-			    anchor: BMAP_ANCHOR_TOP_LEFT,
-			    // LARGE类型
-			    type: BMAP_NAVIGATION_CONTROL_LARGE,
-			    // 启用显示定位
-			    enableGeolocation: true
-			  });
-			   map.addControl(navigationControl);
-			  // 添加定位控件
-			  var geolocationControl = new BMap.GeolocationControl(); */
-/***************** 上面注释的这段代码是显示导航控件的 *******************/
-			  geolocationControl.addEventListener("locationSuccess", function(e){
-			    // 定位成功事件
-			    var address = '';
-			    address += e.addressComponent.province;
-			    address += e.addressComponent.city;
-			    address += e.addressComponent.district;
-			    address += e.addressComponent.street;
-			    address += e.addressComponent.streetNumber;
-			    alert("当前定位地址为：" + address);
-			  });
-			  geolocationControl.addEventListener("locationError",function(e){
-			    // 定位失败事件
-			    alert(e.message);
-			  });
-			  map.addControl(geolocationControl);	  
-			var opts = {
-			  width : 200,     // 信息窗口宽度
-			  height: 100,     // 信息窗口高度
-			  title : "窗口信息" , // 信息窗口标题
-			  enableMessage:true,//设置允许信息窗发送短息
-			}
- 			marker.addEventListener("click",function(){
+  
+			marker.addEventListener("click",function(){
 				$("#myModal").modal('show');
 
 				geoc.getLocation(point, function(rs){
@@ -456,13 +324,13 @@ function locate(obj){
 /* 					var infoWindow = new BMap.InfoWindow(dizhi, opts);
 					map.openInfoWindow(infoWindow,point); */
 				});
-			 });
+			});
 	      }
 	    }
 	        var convertor = new BMap.Convertor();
 	        var pointArr = [];
 	        pointArr.push(point);
-	        convertor.translate(pointArr, 1, 5, translateCallback); 
+	        convertor.translate(pointArr, 1, 5, translateCallback);   	 
 		}
 </script>
 </body>

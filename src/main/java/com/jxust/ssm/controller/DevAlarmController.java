@@ -34,7 +34,6 @@ public class DevAlarmController {
 	public String listDevAlarmNow(Model model) throws IOException{
 		List<DevAlarm> devAlarm = devAlarmService.selectDevAlarmList();
 		model.addAttribute("devAlarm", devAlarm);
-		System.out.println(devAlarm);
 		return "Alarm/listAlarmnow.jsp";
 	}	
 	/*根据条件查询历史数据*/
@@ -63,7 +62,7 @@ public class DevAlarmController {
 	}
 	
 	@RequestMapping("/alarmDef")
-	public String alarmDef(Model model) throws IOException{	
+	public String alarmDef(Model model) throws IOException{
 
 		return "Alarm/alarmDef.jsp";
 

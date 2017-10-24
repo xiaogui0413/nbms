@@ -25,8 +25,8 @@
 	<!-- <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script> -->
 	<script src="http://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
 	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<title>给多个点添加信息窗口</title>
-
+	<title>用于批量坐标转换</title>
+		<!-- 这个jsp用于批量坐标转换 -->
 </head>
 <body>
 <div id="top">
@@ -44,7 +44,6 @@
 			<th style="display:none">id</th>
 			<th>设备名称</th>
 			<th>状态</th>
-			<!-- <th>经度</th> -->
 			<th>操作</th>
 			<!-- <th>操作</th> -->
 		</tr>
@@ -228,15 +227,8 @@
 	  });
 	  map.addControl(geolocationControl);
 
-/*  	  if("${s}"!=']'){
-		  alert("hah");
-		  var data_info = "${s}";
-	  }
-	  alert("java");
-	  //alert("${s}"); */
 
   	 	var data_info = ${s};
-
 
 	var opts = {
 				width : 250,     // 信息窗口宽度
@@ -244,21 +236,38 @@
 				title : "信息窗口" , // 信息窗口标题
 				enableMessage:true//设置允许信息窗发送短息
 			   };
-	for(var i=0;i<data_info.length;i++){
-		var marker = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]));  // 创建标注
-		 var content1 = data_info[i][2];
-		content = "设备ID："+content1;
-		map.addOverlay(marker);        // 将标注添加到地图中
-		addClickHandler(content,marker);
-	}
+
+
+ 	var points = [];
+    for(var i=0;i<data_info.length;i++){
+        var points1 = new BMap.Point(data_info[i][0],data_info[i][1]);
+        points.push(points1);
+    }
+    console.log(points);
+
+
+	   //坐标转换完之后的回调函数
+    translateCallback = function (data){
+      if(data.status === 0){
+        for (var i = 0; i < data.points.length; i++) {
+            map.addOverlay(new BMap.Marker(data.points[i]));
+            map.setCenter(data.points[i]);
+        }
+      }
+    }
+
+        var convertor = new BMap.Convertor();
+        convertor.translate(points, 1, 5, translateCallback);
 
 	function addClickHandler(content,marker){
- 		 marker.addEventListener("click1",function(e){
+ 		 marker.addEventListener("click",function(e){
    			    var pt = e.point;			
 				geoc.getLocation(pt, function(rs){
 				var addComp = rs.addressComponents;
 				var dizhi = addComp.province  + addComp.city  + addComp.district  + addComp.street + addComp.streetNumber;				
-				openInfo(content+"地址："+dizhi,e);			      
+				openInfo(content+"地址："+dizhi,e);
+				locate(obj);
+				alert("java");
 			 });
 			}
 		);
@@ -270,25 +279,7 @@
 		map.openInfoWindow(infoWindow,point); //开启信息窗口
 	}
 </script>
-<!-- <script type="text/javascript">
 
-$(function(){
- setInterval(aa,700000);
- function aa(){
-   $.ajax({
-		type : "post",
-		url : "selectDevAttr1",
-		dataType : 'json',
-		contentType: "application/json; charset=utf-8",
-		success : function (data){
-
-		}
-	});
-   /*   window.location.reload(true);   */
- /* alert("aaaaaa")  */
- }
-})
-</script> -->
 <script type="text/javascript">
 function detail(obj){
 
@@ -304,10 +295,10 @@ function detail(obj){
 			$("#table001 tr td").remove();
 			console.log(data);
 			for(var i=0;i<data.length;i++){
-			 trs+='<tr><td>'+data[i].sDevID+'</td><td>'+data[i].sDevName+'</td><td>'+data[i].nState+'</td><td>'+data[i].nLocaMode+'</td><td>'+data[i].x_pos+'&nbsp;'+data[i].y_pos+'</td><td>'+data[i].samplingTime+'</td><td>'+data[i].fHop+'</td><td>'+data[i].fBatteryVolt+'</td><td>'+data[i].nAlarm+'</td></tr>'
+			trs+='<tr><td>'+data[i].sDevID+'</td><td>'+data[i].sDevName+'</td><td>'+data[i].nState+'</td><td>'+data[i].nLocaMode+'</td><td>'+data[i].x_pos+'&nbsp;'+data[i].y_pos+'</td><td>'+data[i].samplingTime+'</td><td>'+data[i].fHop+'</td><td>'+data[i].fBatteryVolt+'</td><td>'+data[i].nAlarm+'</td></tr>'
 		}
 			console.log(trs);
-			 $('#table001').append(trs);
+			$('#table001').append(trs);
 		}
 	});
 }
@@ -373,24 +364,6 @@ function locate(obj){
 		}
 	});
 }
-/* function aa(a,b){
-	var map = new BMap.Map("shang");
-	var point = new BMap.Point(a,b);
-	var marker = new BMap.Marker(point);  // 创建标注
-	map.addOverlay(marker);              // 将标注添加到地图中
-	map.centerAndZoom(point, 15);
-	var opts = {
-	  width : 200,     // 信息窗口宽度
-	  height: 100,     // 信息窗口高度
-	  title : "设备窗口信息" , // 信息窗口标题
-	  enableMessage:true,//设置允许信息窗发送短息
-	}
-	var infoWindow = new BMap.InfoWindow("地址：北京市东城区王府井大街88号乐天银泰百货八层", opts);  // 创建信息窗口对象 
-	marker.addEventListener("click", function(){          
-		map.openInfoWindow(infoWindow,point); //开启信息窗口
-	});
-	} */
-
 
 	function aa(a,b){
 		var map = new BMap.Map("shang");
@@ -404,27 +377,12 @@ function locate(obj){
 	      if(data.status === 0) {
 	        var marker = new BMap.Marker(data.points[0]);
 	      
-	        map.addOverlay(marker);	       
-	        
+	        map.addOverlay(marker);
 	        map.setCenter(data.points[0]);
-	       
 			map.centerAndZoom(data.points[0], 18);
 			var point = data.points[0];
 			var geoc = new BMap.Geocoder();
-/***************** 下面注释的这段代码是显示导航控件的 *******************/
-			/*  // 添加带有定位的导航控件
-			  var navigationControl = new BMap.NavigationControl({
-			    // 靠左上角位置
-			    anchor: BMAP_ANCHOR_TOP_LEFT,
-			    // LARGE类型
-			    type: BMAP_NAVIGATION_CONTROL_LARGE,
-			    // 启用显示定位
-			    enableGeolocation: true
-			  });
-			   map.addControl(navigationControl);
-			  // 添加定位控件
-			  var geolocationControl = new BMap.GeolocationControl(); */
-/***************** 上面注释的这段代码是显示导航控件的 *******************/
+
 			  geolocationControl.addEventListener("locationSuccess", function(e){
 			    // 定位成功事件
 			    var address = '';

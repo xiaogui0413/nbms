@@ -59,7 +59,7 @@
 			<td>${u.sDevName }</td>
 			<td align="center">
 			<c:choose>
-				<c:when test="${u.nState eq '0' }">离线
+				<c:when test="${u.nState eq '-1' }">离线
 				</c:when>
 				<c:when test="${u.nState eq '1' }">在线
 				</c:when>
@@ -253,12 +253,14 @@
 	}
 
 	function addClickHandler(content,marker){
- 		 marker.addEventListener("click1",function(e){
+ 		 marker.addEventListener("click",function(e){
    			    var pt = e.point;			
 				geoc.getLocation(pt, function(rs){
 				var addComp = rs.addressComponents;
 				var dizhi = addComp.province  + addComp.city  + addComp.district  + addComp.street + addComp.streetNumber;				
-				openInfo(content+"地址："+dizhi,e);			      
+				openInfo(content+"地址："+dizhi,e);
+				locate(obj);
+				alert("java");
 			 });
 			}
 		);
@@ -270,25 +272,7 @@
 		map.openInfoWindow(infoWindow,point); //开启信息窗口
 	}
 </script>
-<!-- <script type="text/javascript">
 
-$(function(){
- setInterval(aa,700000);
- function aa(){
-   $.ajax({
-		type : "post",
-		url : "selectDevAttr1",
-		dataType : 'json',
-		contentType: "application/json; charset=utf-8",
-		success : function (data){
-
-		}
-	});
-   /*   window.location.reload(true);   */
- /* alert("aaaaaa")  */
- }
-})
-</script> -->
 <script type="text/javascript">
 function detail(obj){
 
@@ -304,10 +288,10 @@ function detail(obj){
 			$("#table001 tr td").remove();
 			console.log(data);
 			for(var i=0;i<data.length;i++){
-			 trs+='<tr><td>'+data[i].sDevID+'</td><td>'+data[i].sDevName+'</td><td>'+data[i].nState+'</td><td>'+data[i].nLocaMode+'</td><td>'+data[i].x_pos+'&nbsp;'+data[i].y_pos+'</td><td>'+data[i].samplingTime+'</td><td>'+data[i].fHop+'</td><td>'+data[i].fBatteryVolt+'</td><td>'+data[i].nAlarm+'</td></tr>'
+			trs+='<tr><td>'+data[i].sDevID+'</td><td>'+data[i].sDevName+'</td><td>'+data[i].nState+'</td><td>'+data[i].nLocaMode+'</td><td>'+data[i].x_pos+'&nbsp;'+data[i].y_pos+'</td><td>'+data[i].samplingTime+'</td><td>'+data[i].fHop+'</td><td>'+data[i].fBatteryVolt+'</td><td>'+data[i].nAlarm+'</td></tr>'
 		}
 			console.log(trs);
-			 $('#table001').append(trs);
+			$('#table001').append(trs);
 		}
 	});
 }
@@ -352,6 +336,7 @@ function flush(){
 }
 
 function locate(obj){
+	alert("locate");
 	var id = $(obj).parent().prev().prev().prev().text();
 	$.ajax({
 		type : "post",
@@ -373,24 +358,6 @@ function locate(obj){
 		}
 	});
 }
-/* function aa(a,b){
-	var map = new BMap.Map("shang");
-	var point = new BMap.Point(a,b);
-	var marker = new BMap.Marker(point);  // 创建标注
-	map.addOverlay(marker);              // 将标注添加到地图中
-	map.centerAndZoom(point, 15);
-	var opts = {
-	  width : 200,     // 信息窗口宽度
-	  height: 100,     // 信息窗口高度
-	  title : "设备窗口信息" , // 信息窗口标题
-	  enableMessage:true,//设置允许信息窗发送短息
-	}
-	var infoWindow = new BMap.InfoWindow("地址：北京市东城区王府井大街88号乐天银泰百货八层", opts);  // 创建信息窗口对象 
-	marker.addEventListener("click", function(){          
-		map.openInfoWindow(infoWindow,point); //开启信息窗口
-	});
-	} */
-
 
 	function aa(a,b){
 		var map = new BMap.Map("shang");
@@ -404,27 +371,12 @@ function locate(obj){
 	      if(data.status === 0) {
 	        var marker = new BMap.Marker(data.points[0]);
 	      
-	        map.addOverlay(marker);	       
-	        
+	        map.addOverlay(marker);
 	        map.setCenter(data.points[0]);
-	       
 			map.centerAndZoom(data.points[0], 18);
 			var point = data.points[0];
 			var geoc = new BMap.Geocoder();
-/***************** 下面注释的这段代码是显示导航控件的 *******************/
-			/*  // 添加带有定位的导航控件
-			  var navigationControl = new BMap.NavigationControl({
-			    // 靠左上角位置
-			    anchor: BMAP_ANCHOR_TOP_LEFT,
-			    // LARGE类型
-			    type: BMAP_NAVIGATION_CONTROL_LARGE,
-			    // 启用显示定位
-			    enableGeolocation: true
-			  });
-			   map.addControl(navigationControl);
-			  // 添加定位控件
-			  var geolocationControl = new BMap.GeolocationControl(); */
-/***************** 上面注释的这段代码是显示导航控件的 *******************/
+
 			  geolocationControl.addEventListener("locationSuccess", function(e){
 			    // 定位成功事件
 			    var address = '';

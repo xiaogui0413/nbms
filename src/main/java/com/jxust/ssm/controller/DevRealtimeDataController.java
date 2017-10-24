@@ -23,13 +23,11 @@ public class DevRealtimeDataController {
 	
 	@RequestMapping("/listDevRealtimeData")
 	public String listDevRealtimeData(Model model) throws IOException{
-		System.out.println("hahaha ");
 /*		List<DevRealtimeData> devRealtimeData = devRealtimeService.selectDevRealtimeDataList();
 		model.addAttribute("devRealtimeData", devRealtimeData);*/
 		
 		/*实时数据其实就是在线设备当前的数据*/
 		List<DevAttr> devAttr = devAttrService.selectDevAttrOnline();
-		System.out.println(devAttr);
 		model.addAttribute("devRealtimeData", devAttr);
 		return "DevData/listRealtime.jsp";
 

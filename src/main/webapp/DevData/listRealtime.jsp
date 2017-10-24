@@ -36,8 +36,9 @@
 <table class="table table-bordered table-hover definewidth m10">
     <thead>
 	    <tr>
-	        <th>设备类型</th>
-	        <th>设备子类型	</th>
+	    	<th>序号</th>
+	        <!-- <th>设备类型</th>
+	        <th>设备子类型	</th> -->
 	      <!--   <th>设备地址</th> -->
 	        <th>设备ID</th>
 	        <th>定位方式</th>
@@ -49,15 +50,18 @@
 	        <th>剩余电量(%)</th>
 	      <!--   <th>供电电压(V)</th> -->
 	        <th>告警状态</th>
-	        <th>在线</th>
+	        <th>状态</th>
 	        <th>数据采集时间</th>
 	    </tr>
     </thead>
-	<c:forEach var="s" items="${devRealtimeData }">
+        <c:choose>
+			<c:when test="${not empty requestScope.devRealtimeData }">
+	<c:forEach var="s" items="${devRealtimeData }" varStatus="vs">
 	    <tr>
-            <td>${s.nDevType }</td>
-            <td>${s.nSubtype }</td>
+            <%-- <td>${s.nDevType }</td>
+            <td>${s.nSubtype }</td> --%>
            <%--  <td>${s.nDevAddr }</td> --%>
+            <td>${vs.count }</td>
             <td>${s.sDevID }</td>
             <td>${s.nLocaMode }</td>
             <td>${s.sDevName }</td>
@@ -68,11 +72,28 @@
             <td>${s.nRSOC }</td>
           <%--   <td>${s.fVolt }</td> --%>
             <td>${s.nAlarm }</td>
-            <td>${s.nState }</td>
-            <td>0</td>
-          <%--   <td>${s.SamplingTime }</td> --%>
+            <td align="center">
+			<c:choose>
+				<c:when test="${s.nState eq '-1' }">离线
+				</c:when>
+				<c:when test="${s.nState eq '1' }">在线
+				</c:when>
+				<c:otherwise>
+				--
+				</c:otherwise>
+			</c:choose>
+			</td>
+            <!-- <td>0</td> -->
+            <td>${s.samplingTime }</td>
         </tr>
      </c:forEach>
+           </c:when>
+	     <c:otherwise>
+	     	<tr class="success">
+				<td colspan=15>暂时没有设备在线!</td>
+			</tr>
+	     </c:otherwise>
+     </c:choose>
 </table>
 </div>
 </body>

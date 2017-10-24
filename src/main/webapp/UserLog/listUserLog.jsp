@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>出库</title>
+<title>用户日志信息</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/bootstrap-3.3.7/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap-responsive.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/style.css" />
@@ -31,75 +31,44 @@
     </style>
 </head>
 <body>
-<form class="form-inline definewidth m20" action="selectgStockOutByDevName" method="post">    
+<form class="form-inline definewidth m20" action="selectByOperator" method="post">    
 
     	<div class="input-group input-group-sm">
-			<span class="input-group-addon">设备名称：</span>
-			<input type="text" class="form-control" name="selectItem" id="username" value="" placeholder="设备名称">
+			<span class="input-group-addon">操作人：</span>
+			<input type="text" class="form-control" name="selectItem" id="username" value="" placeholder="操作人">
 		</div>
 		<button type="submit" class="btn btn-primary btn-sm">查询</button>&nbsp;&nbsp;
-		
- <%--  	<label class="error" id="msg">${msg }</label><br> --%>
-      <label style="width:800px; color:#F00; text-align:right;/*  border: 1px solid */">备注：绿色背景的表示已经监控的设备</label>
-      <!-- <span align="right"></span> -->
-   <!--  <button type="button" class="btn btn-success" id="addnew">新增设备</button> -->
+
 </form>
 <table class="table table-bordered table-hover definewidth m10">
    <thead>
     <tr>
-        <th>设备ID</th>
-        <th>设备名称</th>
-        <th>设备类型</th>
-        <th>出库类型</th>
-        <th>仓库名称</th>
-        <th>单位</th>
-        <th>负责人</th>
-        <th>联系电话</th>
-        <th>登记人员</th>
-        <th>出库时间</th>
+    	<th>操作人</th>
+        <th>登录时间</th>
+        <th>内容</th>
+        <th>IP</th>
         <th>备注</th>
-<!--         <th style="display:none">监控状态</th> -->
-        <th colspan=3 align="center">操作</th>
     </tr>
     </thead>
-    <c:forEach var="so" items="${stockOut }">
-    <tr class = "${so.state==1?'success':'' }" >
-       <td>${so.sn }</td>
-       <td>${so.sDevName }</td>
-       <td>${so.nDevType }</td>
-       <td>${so.sStockOutType }</td>
-       <td>${so.sStorageName }</td>
-       <td>${so.sUnitName }</td>
-       <td>${so.sResponsiblePerson }</td>
-       <td>${so.sTelphone }</td>
-       <td>${so.sRegistrant }</td>
-       <td>${so.stockOutTime }</td>
-       <td>${so.sRemark }</td>
-       <td>
-           <a href="updateStockOutView?id=${so.sn }">编辑</a>
-       </td>
-       <td>
-          <%--  <a href="insertToDevAttr?id=${so.sn }">监控</a> --%>
-           <a onclick="monitor(this)">监控</a>
-       </td>
-        <td>
-           <a href="deleteStockOut?id=${so.sn }" onClick="return delConfirm();">删除</a>       
-       </td>
-      </tr>
+    <c:forEach var="userLog" items="${userLog }">
+    <tr>
+    	<td>${userLog.operator }</td>
+       <td>${userLog.create_time }</td>
+       <td>${userLog.content }</td>
+       <td>${userLog.ip }</td>
+       <td>${userLog.remark }</td>
+    </tr>
 	</c:forEach>
 </table>
-<%-- <div class="inline pull-right page">
-        共 ${page.total}条记录 /共 ${page.pages}页  <a href='listStockOut?page=${page.prePage}'>上一页</a><a href="listStockOut?page=${page.nextPage}">下一页</a><a href='listStockOut?page=${page.lastPage}'>最后一页</a>   
-</div> --%>
 
 <div class="inline pull-right page">
 <ul class="pagination">
 	<li><a>共${page.total}条记录</a></li>
 	<li><a>第${page.pageNum}页/共${page.pages}页</a></li>
-	<li><a href="listStockOut?page=${page.firstPage}">&laquo;</a></li>
-	<li><a href="listStockOut?page=${page.prePage}">上一页</a></li>
-	<li><a href="listStockOut?page=${page.nextPage}">下一页</a></li>
-	<li><a href="listStockOut?page=${page.pages}">&raquo;</a></li>
+	<li><a href="logInfo?page=${page.firstPage}">&laquo;</a></li>
+	<li><a href="logInfo?page=${page.prePage}">上一页</a></li>
+	<li><a href="logInfo?page=${page.nextPage}">下一页</a></li>
+	<li><a href="logInfo?page=${page.pages}">&raquo;</a></li>
 </ul>
 </div>
 <script>
@@ -135,7 +104,7 @@
 				model.addAttribute("msg", "监控成功！");
 			}*/
 				if(data == 1){
-					alert("已监控，请勿重复操作！");					 
+					alert("已监控，请勿重复操作！");				 
 				}
 				else{
 					alert("操作成功！");

@@ -4,14 +4,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>实时数据</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/bootstrap-3.3.7/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap-responsive.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/style.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap-datetimepicker.min.css" />
     <script type="text/javascript" src="${pageContext.request.contextPath }/Js/jquery.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath }/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/resources/bootstrap-3.3.7/js/bootstrap.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath }/Js/ckform.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath }/Js/common.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath }/Js/bootstrap-datetimepicker.min.js"></script>
@@ -34,17 +35,32 @@
     </style>
 </head>    
 <body>
-<form class="form-inline definewidth m20" action="selectStockInMap" method="post">    
-	&nbsp;&nbsp;&nbsp;设备ID：
-    <input type="text" name="devID" id="selectItem" class="abc input-default" value="${devID }">&nbsp;&nbsp;
-	设备名称：
-    <input type="text" name="devName" id="selectItem" class="abc input-default" value="${devName }">&nbsp;&nbsp;
-    <button type="submit" class="btn btn-primary">查询</button>&nbsp;&nbsp;<br>
-	开始时间：
-    <input type="text" name="beginTime" id="selectItem" readonly="readonly" class="form_datetime" value="${beginTime }">&nbsp;&nbsp;
-	结束时间：
-    <input type="text" name="endTime" id="selectItem" readonly="readonly" class="form_datetime" value="${endTime }">&nbsp;&nbsp;     
-    <button type="button" class="btn btn-success" onclick="export1()">导出</button>
+<form class="form-inline definewidth m20" action="selectStockInMapByPage" method="post">
+
+&nbsp;&nbsp;
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon">设备ID：</span>
+			<input type="text" class="form-control" name="devID" id="selectItem" value="${devID }" placeholder="设备ID">
+		</div>
+		
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon">设备名称：</span>
+			<input type="text" class="form-control" name="devName" id="selectItem" value="${devName }" placeholder="设备名称">
+		</div> 
+
+    <button type="submit" class="btn btn-primary btn-sm">查询</button><br><br>
+		
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon">开始时间：</span>
+			<input type="text" class="form-control form_datetime" name="beginTime" id="selectItem" readonly="readonly" value="${beginTime }">
+		</div>
+		
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon">结束时间：</span>
+			<input type="text" class="form-control form_datetime" name="endTime" id="selectItem" readonly="readonly" value="${endTime }">
+		</div> 
+		
+    <button type="button" class="btn btn-success btn-sm" onclick="export1()">导出</button>
 </form>
 <table class="table table-bordered table-hover definewidth m10">
     <thead>
@@ -95,6 +111,22 @@
 	     </c:otherwise>
      </c:choose>
 </table>
+<div class="inline pull-right page">
+<ul class="pagination">
+	<li><a>共${page.total}条记录</a></li>
+	<li><a>第${page.pageNum}页/共${page.pages}页</a></li>
+	<li><a href="selectStockInMapByPage?page=${page.firstPage}">&laquo;</a></li>
+	<li><a href="selectStockInMapByPage?page=${page.prePage}">上一页</a></li>
+	<li><a href="selectStockInMapByPage?page=${page.nextPage}">下一页</a></li>
+	<li><a href="selectStockInMapByPage?page=${page.pages}">&raquo;</a></li>
+</ul>
+</div>
+<%-- <div class="inline pull-right page">
+        共${page.total}条记录 第${page.pageNum}页/共${page.pages}页  <a href='selectStockInMapByPage?page=${page.prePage}'>上一页</a>
+        <a href="selectStockInMapByPage?page=${page.nextPage}">下一页</a>
+        <a href='selectStockInMapByPage?page=${page.lastPage}'>最后一页</a>
+</div> --%>
+
 <script type="text/javascript">
 $(function () {
 	$(".form_datetime").datetimepicker({

@@ -38,7 +38,7 @@ public class DevAttrController {
 	private StockOutService stockOutService;
 	
 	@RequestMapping("/showDevAttr")
-	public String testtoshowUser(@RequestParam(value = "id") Integer id, Model model) {
+	public String testtoshowUser(@RequestParam(value = "id") Integer id, Model model){
 		DevAttr devAttr = devAttrService.getDevAttrById(id);
 		model.addAttribute("devAttr", devAttr);
 		return "/WEB-INF/views/";
@@ -80,13 +80,12 @@ public class DevAttrController {
 	@RequestMapping("/listDevAttrByPage")
 	public String listDevAttrByPage(Model model,
 			@RequestParam(required=true,defaultValue="1") Integer page,
-            @RequestParam(required=false,defaultValue="8") Integer pageSize) throws IOException{
+            @RequestParam(required=false,defaultValue="10") Integer pageSize) throws IOException{
 		
 		PageHelper.startPage(page, pageSize);
 		
 		List<DevAttr> devAttr = devAttrService.selectDevAttrList();
 		PageInfo<DevAttr> p=new PageInfo<DevAttr>(devAttr);
-		System.out.println(p.getPageNum());
 		if(p.getPageNum()<=0){
 			p.setPageNum(1);
 		}
@@ -110,7 +109,6 @@ public class DevAttrController {
 	public String selectDevAttr(HttpServletResponse response,@RequestBody int id,Model model) {
 		DevAttr devAttr1 = devAttrService.getDevAttrById(id);
 		String json = JSONArray.fromObject(devAttr1).toString();
-		System.out.println(json);
 		return json.toString();
 	}
 	
@@ -267,7 +265,6 @@ public class DevAttrController {
 			JSONArray json = JSONArray.fromObject(state);
 			return json.toString();
 			}
-
 	}
 	
 	@RequestMapping("/selectByDevName")
@@ -277,8 +274,7 @@ public class DevAttrController {
 		model.addAttribute("devAttr", devAttr);
 		String s="[";
 		for(DevAttr d:devAttr){
-			 s +="["+ d.getX_pos()+","+d.getY_pos()+","+d.getSn()+"],";
-			/*System.out.println(d.getX_pos()+d.getY_pos());*/					
+			 s +="["+ d.getX_pos()+","+d.getY_pos()+","+d.getSn()+"],";			
 		}
 		s = s.substring(0,s.length()-1);
 		s+="]";
@@ -286,11 +282,5 @@ public class DevAttrController {
    	 	model.addAttribute("s", s);
    	 	return "/Map/map5.jsp";
 	}
-	
-	@RequestMapping("/getUdpData")
-	public String getUdpData(Model model) throws IOException{
-		/*UDPServer udp = new UDPServer();*/
-	return null;
-	}
-	
+
 }
