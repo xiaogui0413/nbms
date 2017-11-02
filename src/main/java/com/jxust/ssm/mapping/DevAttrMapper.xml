@@ -36,6 +36,15 @@
 		where sn = #{sn,jdbcType=INTEGER}
 	</select>
 	
+	<!-- 根据设备ID查询ID -->
+	<select id="selectByDevID" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from tab_nbms_devattr
+		where sDevID = #{sDevID}
+	</select>
+	
 	<!-- 根据设备名查询 -->
 	<select id="selectByDevName" resultMap="BaseResultMap"
 		parameterType="java.lang.String">

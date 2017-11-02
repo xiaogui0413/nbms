@@ -17,51 +17,51 @@ import com.jxust.ssm.pojo.StockOut;
 import com.jxust.ssm.service.StockOutService;
 
 @Controller
-public class StockOutController{
-	
+public class StockOutController {
+
 	@Resource
 	private StockOutService stockOutService;
-	
+
 	@RequestMapping("/listStockOut")
-	public String listStockOut(Model model,
-			@RequestParam(required=true,defaultValue="1") Integer page,
-            @RequestParam(required=false,defaultValue="10") Integer pageSize) throws IOException{
-		
+	public String listStockOut(Model model, @RequestParam(required = true, defaultValue = "1") Integer page,
+			@RequestParam(required = false, defaultValue = "10") Integer pageSize) throws IOException {
+
 		PageHelper.startPage(page, pageSize);
 		List<StockOut> stockOut = stockOutService.selectStockOutList();
-		PageInfo<StockOut> p=new PageInfo<StockOut>(stockOut);
-		model.addAttribute("page",p);	
+		PageInfo<StockOut> p = new PageInfo<StockOut>(stockOut);
+		model.addAttribute("page", p);
 		model.addAttribute("stockOut", stockOut);
-		
-	return "/Stock/listStockOut.jsp";
+
+		return "/Stock/listStockOut.jsp";
 	}
 
 	@RequestMapping("/selectgStockOutByDevName")
-	public String selectgStockOutByDevName(@RequestParam("selectItem")String sDevName,Model model) throws IOException{
+	public String selectgStockOutByDevName(@RequestParam("selectItem") String sDevName, Model model)
+			throws IOException {
 		List<StockOut> stockOut = stockOutService.selectByDevName(sDevName);
 		model.addAttribute("stockOut", stockOut);
-	return "/Stock/listStockOut.jsp";
+		return "/Stock/listStockOut.jsp";
 	}
-	
+
 	@RequestMapping("/deleteStockOut")
-	public String deleteStockOut(int id) throws IOException{
+	public String deleteStockOut(int id) throws IOException {
 		stockOutService.deleteByPrimaryKey(id);
-	return "listStockOut";
+		return "listStockOut";
 	}
-	
+
 	@RequestMapping("/updateStockOutView")
-	public String updateStockOutView(int id,Model model) throws IOException{
+	public String updateStockOutView(int id, Model model) throws IOException {
 		StockOut stock = stockOutService.selectByPrimaryKey(id);
-		model.addAttribute("stock",stock);
-	return "/Stock/editStockOut.jsp";
+		model.addAttribute("stock", stock);
+		return "/Stock/editStockOut.jsp";
 	}
-	
+
 	@RequestMapping("/updateStockOut")
-	public String updateStockOut(HttpServletRequest request,Model model) throws IOException{
+	public String updateStockOut(HttpServletRequest request, Model model) throws IOException {
 
 		int id = Integer.parseInt(request.getParameter("sn"));
 		String sDevName = request.getParameter("sDevName");
-		int  nDevType = Integer.parseInt(request.getParameter("nDevType"));
+		int nDevType = Integer.parseInt(request.getParameter("nDevType"));
 		int nSubtype = Integer.parseInt(request.getParameter("nSubtype"));
 		String sDevID = request.getParameter("sDevID");
 		String sStockOutType = request.getParameter("sStockOutType");
@@ -72,7 +72,7 @@ public class StockOutController{
 		String sRegistrant = request.getParameter("sRegistrant");
 		String stockOutTime = request.getParameter("stockOutTime");
 		String sRemark = request.getParameter("sRemark");
-						
+
 		StockOut stock = new StockOut();
 		stock.setSn(id);
 		stock.setsDevName(sDevName);
@@ -87,17 +87,17 @@ public class StockOutController{
 		stock.setsRegistrant(sRegistrant);
 		stock.setStockOutTime(stockOutTime);
 		stock.setsRemark(sRemark);
-				
+
 		stockOutService.updateStockOut(stock);
 		return "/listStockOut";
 	}
-	
+
 	@RequestMapping("/outStockIn")
-	public String outStockIn(HttpServletRequest request,Model model) throws IOException{
+	public String outStockIn(HttpServletRequest request, Model model) throws IOException {
 
 		String sDevName = request.getParameter("sDevName");
-		int  nDevType = Integer.parseInt(request.getParameter("nDevType"));
-		int  nsubtype = Integer.parseInt(request.getParameter("nSubtype"));
+		int nDevType = Integer.parseInt(request.getParameter("nDevType"));
+		int nsubtype = Integer.parseInt(request.getParameter("nSubtype"));
 		String sDevID = request.getParameter("sDevID");
 		String sStockOutType = request.getParameter("sStockOutType");
 		String sStorageName = request.getParameter("sStorageName");
@@ -108,8 +108,8 @@ public class StockOutController{
 		String stockOutTime = request.getParameter("stockOutTime");
 		String sRemark = request.getParameter("sRemark");
 		StockOut stock = new StockOut();
-		
-		/*stock.setSn(id);*/
+
+		/* stock.setSn(id); */
 		stock.setsDevName(sDevName);
 		stock.setnDevType(nDevType);
 		stock.setnSubtype(nsubtype);
@@ -122,17 +122,17 @@ public class StockOutController{
 		stock.setsRegistrant(sRegistrant);
 		stock.setStockOutTime(stockOutTime);
 		stock.setsRemark(sRemark);
-		
-		stockOutService.insertStockOut(stock);	
-		
+
+		stockOutService.insertStockOut(stock);
+
 		return "/listStockIn";
 	}
-	
+
 	@RequestMapping("/insertStockOut")
-	public String insertStockOut(HttpServletRequest request,Model model) throws IOException{
+	public String insertStockOut(HttpServletRequest request, Model model) throws IOException {
 
 		String sDevName = request.getParameter("sDevName");
-		int  nDevType = Integer.parseInt(request.getParameter("nDevType"));
+		int nDevType = Integer.parseInt(request.getParameter("nDevType"));
 		String sStockOutType = request.getParameter("sStockOutType");
 		String sStorageName = request.getParameter("sStorageName");
 		String sUnitName = request.getParameter("sUnitName");
@@ -157,7 +157,7 @@ public class StockOutController{
 		StockOut stock1 = new StockOut();
 		stock1.setsDevName(sDevName);
 		stock1.setnDevType(nDevType);
-		
-	return "/listStockOut";
+
+		return "/listStockOut";
 	}
 }

@@ -16,6 +16,43 @@
     	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
     
+  <!--  Quartz定时任务开始  -->
+    <!-- 工作的bean -->  
+   <bean id="myJob" class="com.jxust.ssm.utils.Quartz" />
+      <!-- job的配置开始 -->
+   <bean id="myJobDetail"  
+       class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+       <property name="targetObject">  
+           <ref bean="myJob" />  
+       </property>  
+       <property name="targetMethod">  
+           <value>work</value>  
+       </property>  
+   </bean>
+      <!-- job的配置结束 -->
+      <!-- 调度的配置开始 -->  
+   <bean id="crontestJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+       <property name="jobDetail">
+           <ref bean="myJobDetail" />  
+       </property>
+       <property name="cronExpression">  
+           <value>10 0/1 * * * ?</value>  <!-- Cron表达式“10 */1 * * * ?”意为：从10秒开始，每1分钟执行一次。  -->  
+       </property>
+   </bean>  
+   <!-- 调度的配置结束 -->
+   
+      <!-- 启动触发器的配置开始 -->  
+   <bean name="startQuertz" lazy-init="false" autowire="no"  
+       class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+       <property name="triggers">  
+           <list>  
+               <ref bean="crontestJobTrigger" />
+           </list>  
+       </property>  
+   </bean>  
+   <!-- 启动触发器的配置结束 -->  
+   
+  <!--  Quartz定时任务结束 -->
      <!-- 引入配置文件 -->
     <bean id="propertyConfigurer"
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
@@ -41,42 +78,30 @@
     </bean>  
     
      <!-- spring和MyBatis整合，不需要mybatis的配置映射文件 -->  
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
-        <property name="dataSource" ref="dataSource" />  
-        <!-- 自动扫描mapping.xml文件 -->  
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!-- 自动扫描mapping.xml文件 -->
         <property name="mapperLocations" value="classpath:com/jxust/ssm/mapping/*.xml"></property> 
         <property name="configLocation" value="classpath:mybatis-config.xml"></property>
-       <!--  配置pagehelper分页插件 -->
-<!--           <property name="plugins">
-            <array>
-                <bean class="com.github.pagehelper.PageHelper">
-                    <property name="properties">
-                        <value>
-                            dialect=mysql
-                        </value>
-                    </property>
-                </bean>
-            </array>
-        </property>  -->
     </bean>  
   
     <!-- DAO接口所在包名，Spring会自动查找其下的类 动态代理实现 不用写dao的实现类-->  
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
         <property name="basePackage" value="com.jxust.ssm.dao" />  
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>  
   
-    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->  
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx --> 
     <bean id="transactionManager"  
-        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
-        <property name="dataSource" ref="dataSource" />  
-    </bean>  
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
     
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <!-- 
     	在这里我有一个疑惑,原文博客这里并没有配置事务注解，我测试了向数据库添加数据，也能成功，(HIbernate是需要配置事务的)
     	不知道是不是，service实现类，bean 使用了注解的方式,还是其他什么的
-    	这里我把事务注解加上	
+    	这里我把事务注解加上
     	spring、mybatis 配置方式 可以看这篇博客：http://blog.csdn.net/qh_java/article/details/51601139	
     -->
 </beans>

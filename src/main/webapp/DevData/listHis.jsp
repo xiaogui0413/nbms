@@ -20,6 +20,7 @@
      <style type="text/css">
         body {
             padding-bottom: 40px;
+            height: 700px;
         }
         .sidebar-nav {
             padding: 9px 0;
@@ -33,7 +34,7 @@
             }
         }
     </style>
-</head>    
+</head>
 <body>
 <form class="form-inline definewidth m20" action="selectStockInMapByPage" method="post">
 
@@ -58,9 +59,9 @@
 		<div class="input-group input-group-sm">
 			<span class="input-group-addon">结束时间：</span>
 			<input type="text" class="form-control form_datetime" name="endTime" id="selectItem" readonly="readonly" value="${endTime }">
-		</div> 
+		</div>
 		
-    <button type="button" class="btn btn-success btn-sm" onclick="export1()">导出</button>
+    <button type="button" id=export class="btn btn-success btn-sm" onclick="export1()">导出</button>
 </form>
 <table class="table table-bordered table-hover definewidth m10">
     <thead>
@@ -115,7 +116,7 @@
 <ul class="pagination">
 	<li><a>共${page.total}条记录</a></li>
 	<li><a>第${page.pageNum}页/共${page.pages}页</a></li>
-	<li><a href="selectStockInMapByPage?page=${page.firstPage}">&laquo;</a></li>
+	<li><a href="selectStockInMapByPage?page=1">&laquo;</a></li>
 	<li><a href="selectStockInMapByPage?page=${page.prePage}">上一页</a></li>
 	<li><a href="selectStockInMapByPage?page=${page.nextPage}">下一页</a></li>
 	<li><a href="selectStockInMapByPage?page=${page.pages}">&raquo;</a></li>
@@ -137,9 +138,14 @@ $(function () {
 	 });
 });
  function export1(){
+	 $("#export").attr("disabled", true);
+	 setTimeout(aa,5000);
+	 function aa(){
+		 $("#export").attr("disabled", false);
+	 }
+	
 	 location.href = "export";
 	 }
-
 </script>
 </body>
 </html>

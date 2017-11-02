@@ -228,16 +228,9 @@
 	  });
 	  map.addControl(geolocationControl);
 
-/*  	  if("${s}"!=']'){
-		  alert("hah");
-		  var data_info = "${s}";
-	  }
-	  alert("java");
-	  //alert("${s}"); */
-
-  	 	var data_info = ${s};
-
-
+  	var data_info = ${s};
+  	//alert(data_info);
+  	console.log(data_info);
 	var opts = {
 				width : 250,     // 信息窗口宽度
 				height: 80,     // 信息窗口高度
@@ -246,14 +239,15 @@
 			   };
 	for(var i=0;i<data_info.length;i++){
 		var marker = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]));  // 创建标注
-		 var content1 = data_info[i][2];
-		content = "设备ID："+content1;
+		 var content1 = data_info[i][3];
+		content = "设备名称："+content1;
+		//alert("hah");
 		map.addOverlay(marker);        // 将标注添加到地图中
 		addClickHandler(content,marker);
 	}
 
 	function addClickHandler(content,marker){
- 		 marker.addEventListener("click1",function(e){
+ 		 marker.addEventListener("click",function(e){
    			    var pt = e.point;			
 				geoc.getLocation(pt, function(rs){
 				var addComp = rs.addressComponents;
@@ -360,8 +354,10 @@ function locate(obj){
 		dataType : 'json',
 		contentType: "application/json; charset=utf-8",
 		success : function (data){
-			
-			aa(data[0].x_pos,data[0].y_pos);
+			if(data[0].x_pos==0&&data[0].y_pos==0){
+				alert("坐标是位置不存在！");
+			}
+			else {aa(data[0].x_pos,data[0].y_pos);}
 			for(var i=0;i<data.length;i++){
 				$("#sDevName").text(data[i].sDevName);
 			    $("#sDevID").text(data[i].sDevID);
@@ -411,20 +407,6 @@ function locate(obj){
 			map.centerAndZoom(data.points[0], 18);
 			var point = data.points[0];
 			var geoc = new BMap.Geocoder();
-/***************** 下面注释的这段代码是显示导航控件的 *******************/
-			/*  // 添加带有定位的导航控件
-			  var navigationControl = new BMap.NavigationControl({
-			    // 靠左上角位置
-			    anchor: BMAP_ANCHOR_TOP_LEFT,
-			    // LARGE类型
-			    type: BMAP_NAVIGATION_CONTROL_LARGE,
-			    // 启用显示定位
-			    enableGeolocation: true
-			  });
-			   map.addControl(navigationControl);
-			  // 添加定位控件
-			  var geolocationControl = new BMap.GeolocationControl(); */
-/***************** 上面注释的这段代码是显示导航控件的 *******************/
 			  geolocationControl.addEventListener("locationSuccess", function(e){
 			    // 定位成功事件
 			    var address = '';
@@ -446,23 +428,21 @@ function locate(obj){
 			  title : "窗口信息" , // 信息窗口标题
 			  enableMessage:true,//设置允许信息窗发送短息
 			}
- 			marker.addEventListener("click",function(){
+ 		 	marker.addEventListener("click",function(){
 				$("#myModal").modal('show');
 
 				geoc.getLocation(point, function(rs){
 					var addComp = rs.addressComponents;
 					var dizhi = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
 					$("#address").text(dizhi);
-/* 					var infoWindow = new BMap.InfoWindow(dizhi, opts);
-					map.openInfoWindow(infoWindow,point); */
 				});
-			 });
+		 	 });
 	      }
 	    }
 	        var convertor = new BMap.Convertor();
 	        var pointArr = [];
 	        pointArr.push(point);
-	        convertor.translate(pointArr, 1, 5, translateCallback); 
+	        convertor.translate(pointArr, 1, 5, translateCallback);
 		}
 </script>
 </body>

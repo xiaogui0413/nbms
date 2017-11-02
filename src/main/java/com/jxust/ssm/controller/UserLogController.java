@@ -16,30 +16,29 @@ import com.jxust.ssm.service.UserLogService;
 
 @Controller
 public class UserLogController {
-	
+
 	@Resource
 	private UserLogService userLogService;
-	
+
 	@RequestMapping("/logInfo")
-	public String selectUserLogList(Model model,
-			@RequestParam(required=true,defaultValue="1") Integer page,
-            @RequestParam(required=false,defaultValue="10") Integer pageSize) {
+	public String selectUserLogList(Model model, @RequestParam(required = true, defaultValue = "1") Integer page,
+			@RequestParam(required = false, defaultValue = "10") Integer pageSize) {
 
 		PageHelper.startPage(page, pageSize);
 		List<UserLog> userLog = userLogService.selectUserLogList();
 		PageInfo<UserLog> p = new PageInfo<UserLog>(userLog);
-		model.addAttribute("page",p);
+		model.addAttribute("page", p);
 		model.addAttribute("userLog", userLog);
 		return "UserLog/listUserLog.jsp";
 	}
-	
+
 	@RequestMapping("/selectByOperator")
-	public String selectByOperator(@RequestParam("selectItem")String operator, Model model) {
+	public String selectByOperator(@RequestParam("selectItem") String operator, Model model) {
 
 		PageHelper.startPage(1, 10);
 		List<UserLog> userLog = userLogService.selectByOperator(operator);
 		PageInfo<UserLog> p = new PageInfo<UserLog>(userLog);
-		model.addAttribute("page",p);
+		model.addAttribute("page", p);
 		model.addAttribute("userLog", userLog);
 		return "UserLog/listUserLog.jsp";
 	}

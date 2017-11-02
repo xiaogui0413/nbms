@@ -18,66 +18,71 @@ import com.jxust.ssm.service.DevAttrService;
  */
 @Transactional
 @Service("devAttrService")
-public class DevAttrServiceImpl implements DevAttrService{
-	
+public class DevAttrServiceImpl implements DevAttrService {
+
 	@Resource
 	DevAttrDao devAttrDao;
+
 	@Override
 	public DevAttr getDevAttrById(Integer id) {
-		
+
 		return devAttrDao.selectByPrimaryKey(id);
 	}
 
 	@Override
 	public List<DevAttr> selectDevAttrList() {
-		
+
 		return devAttrDao.selectDevAttrList();
 	}
 
 	@Override
 	public List<DevAttr> selectDevAttrOnline() {
-		
+
 		return devAttrDao.selectDevAttrOnline();
 	}
 
 	@Override
 	public List<DevAttr> selectDevAttrOffline() {
-		
+
 		return devAttrDao.selectDevAttrOffline();
 	}
 
 	@Override
 	public List<DevAttr> selectDevAttrByDevType() {
-		
+
 		return devAttrDao.selectDevAttrByDevType();
 	}
 
 	@Override
 	public void insertDevAttr(DevAttr devAttr) {
-		
+
 		devAttrDao.insertDevAttr(devAttr);
-		
+
 	}
 
 	@Override
 	public void deleteByPrimaryKey(Integer id) {
-		
+
 		devAttrDao.deleteByPrimaryKey(id);
-		
+
 	}
 
 	@Override
 	public int selectCountDevAttr() {
-		
+
 		return devAttrDao.selectCountDevAttr();
 	}
 
 	@Override
 	public List<DevAttr> selectByDevName(String devName) {
-		
+
 		return devAttrDao.selectByDevName(devName);
 	}
-	
-	
+
+	@Override
+	public DevAttr selectByDevID(String sDevID) {
+
+		return devAttrDao.selectByDevID(sDevID);
+	}
 
 }

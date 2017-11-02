@@ -22,9 +22,10 @@ import com.jxust.ssm.service.UserService;
 public class UserController {
 	/**
 	 * 使用@Autowired也可以，@Autowired默认按类型装配
+	 * 
 	 * @Resource 默认按名称装配，当找不到与名称匹配的bean才会按类型装配。
 	 */
-	@Resource 
+	@Resource
 	private UserService userService;
 
 	@RequestMapping("/showUser")
@@ -45,28 +46,29 @@ public class UserController {
 		System.out.println("插入" + count + "条数据成功");
 		return "showUser";
 	}
-	
+
 	@RequestMapping("/listUser")
 	public String testlistUser(Model model) {
 		List<User> user = userService.selectUserList();
 		System.out.println(user);
-		model.addAttribute("user",user);
+		model.addAttribute("user", user);
 
 		return "map";
 	}
-	
-	 @RequestMapping(value="/testAction")  
-	    public @ResponseBody Map<String,Object> login(HttpServletRequest request,HttpServletResponse response) throws IOException{  
-	        System.out.println(request.getParameter("name"));  
-	        Map<String,Object> map = new HashMap<String,Object>();  
-	          
-	        if(request.getParameter("name").equals("123")){  
-	            System.out.println("城东");  
-	            map.put("msg", "成功");  
-	        }else{  
-	            System.out.println("失败"); 
-	            map.put("msg", "失败");
-	        }  
-	        return map;  
-	    }  
+
+	@RequestMapping(value = "/testAction")
+	public @ResponseBody Map<String, Object> login(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		System.out.println(request.getParameter("name"));
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		if (request.getParameter("name").equals("123")) {
+			System.out.println("城东");
+			map.put("msg", "成功");
+		} else {
+			System.out.println("失败");
+			map.put("msg", "失败");
+		}
+		return map;
+	}
 }

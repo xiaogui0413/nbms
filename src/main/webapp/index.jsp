@@ -4,7 +4,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>NB-IOT物资定位管理系统</title>
+    <title>NB-IoT物资定位管理系统</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="assets/css/dpl-min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/bui-min.css" rel="stylesheet" type="text/css" />
@@ -30,7 +30,7 @@
         .tab-content-container{border:1px solid red}
 
 	</style> -->
-<body>
+<body style="height: 700px">
 
 <div class="header">
 

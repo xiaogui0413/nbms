@@ -15,18 +15,21 @@ import com.jxust.ssm.service.DevRealtimeDataService;
 
 @Controller
 public class DevRealtimeDataController {
-	
+
 	@Resource
 	private DevRealtimeDataService devRealtimeService;
 	@Resource
 	private DevAttrService devAttrService;
-	
+
 	@RequestMapping("/listDevRealtimeData")
-	public String listDevRealtimeData(Model model) throws IOException{
-/*		List<DevRealtimeData> devRealtimeData = devRealtimeService.selectDevRealtimeDataList();
-		model.addAttribute("devRealtimeData", devRealtimeData);*/
-		
-		/*实时数据其实就是在线设备当前的数据*/
+	public String listDevRealtimeData(Model model) throws IOException {
+		/*
+		 * List<DevRealtimeData> devRealtimeData =
+		 * devRealtimeService.selectDevRealtimeDataList();
+		 * model.addAttribute("devRealtimeData", devRealtimeData);
+		 */
+
+		/* 实时数据其实就是在线设备当前的数据 */
 		List<DevAttr> devAttr = devAttrService.selectDevAttrOnline();
 		model.addAttribute("devRealtimeData", devAttr);
 		return "DevData/listRealtime.jsp";
