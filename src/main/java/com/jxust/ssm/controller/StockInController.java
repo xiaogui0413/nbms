@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jxust.ssm.pojo.StockIn;
 import com.jxust.ssm.pojo.Type;
 import com.jxust.ssm.service.StockInService;
@@ -44,24 +46,13 @@ public class StockInController {
 		System.out.println(subType);
 		return subType;
 	}
-	/*
-	 * @RequestMapping(value = "/selectSubTypeByType",produces =
-	 * "application/json; charset=utf-8")
-	 * 
-	 * @ResponseBody public String selectDevAttr(HttpServletResponse
-	 * response,@RequestBody int v,Model model) { System.out.println(v);
-	 * //List<SubType> subType = subTypeService.selectSubTypeByType(v);
-	 * List<Type> subType = typeService.selectSubTypeByType(v);
-	 * System.out.println(subType); model.addAttribute("subType", subType);
-	 * for(Type t:subType){ System.out.println(t); } String json =
-	 * JSONArray.fromObject(subType).toString();
-	 * 
-	 * System.out.println(json); return json.toString(); }
-	 */
 
 	@RequestMapping("/listStockIn")
 	public String testlidevser(HttpServletResponse response, Model model) throws IOException {
+		PageHelper.startPage(1, 10);
 		List<StockIn> stockIn = stockInService.selectStockInList();
+		PageInfo<StockIn> p = new PageInfo<StockIn>(stockIn);
+		model.addAttribute("page", p);
 		model.addAttribute("stockIn", stockIn);
 		return "/Stock/listStockIn.jsp";
 	}

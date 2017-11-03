@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>入库</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap.css" />
+    <link href="resources/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/bootstrap-responsive.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/Css/style.css" />
     <script type="text/javascript" src="${pageContext.request.contextPath }/Js/jquery.js"></script>
@@ -88,6 +88,16 @@
           </tr>
 	</c:forEach>
 </table>
+<div class="inline pull-right page">
+<ul class="pagination">
+	<li><a>共${page.total}条记录</a></li>
+	<li><a>第${page.pageNum}页/共${page.pages}页</a></li>
+	<li><a href="listStockIn?page=${page.firstPage}">&laquo;</a></li>
+	<li><a href="listStockIn?page=${page.prePage}">上一页</a></li>
+	<li><a href="listStockIn?page=${page.nextPage}">下一页</a></li>
+	<li><a href="listStockIn?page=${page.pages}">&raquo;</a></li>
+</ul>
+</div>
 </div>
 
 <script>
@@ -99,9 +109,7 @@
 	function delConfirm()
 	{				
 		if(confirm("确定要删除吗？"))
-		{		
-			/* var url = "index.html";			
-			window.location.href=url; */			
+		{			
 		}
 		else{
 			return false;

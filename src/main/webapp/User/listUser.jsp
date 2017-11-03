@@ -75,6 +75,16 @@
         </tr>
 	</c:forEach>
 </table>
+<div class="inline pull-right page">
+<ul class="pagination">
+	<li><a>共${page.total}条记录</a></li>
+	<li><a>第${page.pageNum}页/共${page.pages}页</a></li>
+	<li><a href="selectUserList?page=${page.firstPage}">&laquo;</a></li>
+	<li><a href="selectUserList?page=${page.prePage}">上一页</a></li>
+	<li><a href="selectUserList?page=${page.nextPage}">下一页</a></li>
+	<li><a href="selectUserList?page=${page.pages}">&raquo;</a></li>
+</ul>
+</div>
 </div>
 
 <!-- 添加用户模态框 -->

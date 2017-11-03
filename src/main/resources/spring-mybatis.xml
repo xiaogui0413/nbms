@@ -10,89 +10,89 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 		
-	<!-- 自动扫描 -->  
+	<!-- 自动扫描 -->
     <context:component-scan base-package="com.jxust.ssm">
     <!-- 不扫描@Controller注解的类-->
     	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
     
   <!--  Quartz定时任务开始  -->
-    <!-- 工作的bean -->  
+    <!-- 工作的bean -->
    <bean id="myJob" class="com.jxust.ssm.utils.Quartz" />
       <!-- job的配置开始 -->
-   <bean id="myJobDetail"  
+   <bean id="myJobDetail"
        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-       <property name="targetObject">  
-           <ref bean="myJob" />  
+       <property name="targetObject">
+           <ref bean="myJob" />
        </property>  
-       <property name="targetMethod">  
+       <property name="targetMethod">
            <value>work</value>  
-       </property>  
+       </property>
    </bean>
       <!-- job的配置结束 -->
-      <!-- 调度的配置开始 -->  
+      <!-- 调度的配置开始 -->
    <bean id="crontestJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
        <property name="jobDetail">
-           <ref bean="myJobDetail" />  
+           <ref bean="myJobDetail" />
        </property>
-       <property name="cronExpression">  
+       <property name="cronExpression">
            <value>10 0/1 * * * ?</value>  <!-- Cron表达式“10 */1 * * * ?”意为：从10秒开始，每1分钟执行一次。  -->  
        </property>
-   </bean>  
+   </bean>
    <!-- 调度的配置结束 -->
    
-      <!-- 启动触发器的配置开始 -->  
-   <bean name="startQuertz" lazy-init="false" autowire="no"  
-       class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
-       <property name="triggers">  
-           <list>  
+   <!-- 启动触发器的配置开始 -->
+   <bean name="startQuertz" lazy-init="false" autowire="no"
+       class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+       <property name="triggers">
+           <list>
                <ref bean="crontestJobTrigger" />
-           </list>  
-       </property>  
-   </bean>  
-   <!-- 启动触发器的配置结束 -->  
+           </list>
+       </property>
+   </bean>
+   <!-- 启动触发器的配置结束 -->
    
-  <!--  Quartz定时任务结束 -->
-     <!-- 引入配置文件 -->
+   <!--  Quartz定时任务结束 -->
+   <!-- 引入配置文件 -->
     <bean id="propertyConfigurer"
-        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
-        <property name="location" value="classpath:jdbc.properties" />  
-    </bean>  
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:jdbc.properties" />
+    </bean>
   	
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"  
-        destroy-method="close">  
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close">
         <property name="driverClassName" value="${driver}" />
         <property name="url" value="${url}" />
         <property name="username" value="${username}" />
         <property name="password" value="${password}" />
-        <!-- 初始化连接大小 -->  
+        <!-- 初始化连接大小 -->
         <property name="initialSize" value="${initialSize}"></property>
-        <!-- 连接池最大数量 -->  
+        <!-- 连接池最大数量 -->
         <property name="maxActive" value="${maxActive}"></property>
-        <!-- 连接池最大空闲 -->  
+        <!-- 连接池最大空闲 -->
         <property name="maxIdle" value="${maxIdle}"></property>
-        <!-- 连接池最小空闲 -->  
+        <!-- 连接池最小空闲 -->
         <property name="minIdle" value="${minIdle}"></property>
-        <!-- 获取连接最大等待时间 -->  
+        <!-- 获取连接最大等待时间 -->
         <property name="maxWait" value="${maxWait}"></property>
-    </bean>  
+    </bean>
     
-     <!-- spring和MyBatis整合，不需要mybatis的配置映射文件 -->  
+     <!-- spring和MyBatis整合，不需要mybatis的配置映射文件 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <!-- 自动扫描mapping.xml文件 -->
-        <property name="mapperLocations" value="classpath:com/jxust/ssm/mapping/*.xml"></property> 
+        <property name="mapperLocations" value="classpath:com/jxust/ssm/mapping/*.xml"></property>
         <property name="configLocation" value="classpath:mybatis-config.xml"></property>
-    </bean>  
+    </bean>
   
     <!-- DAO接口所在包名，Spring会自动查找其下的类 动态代理实现 不用写dao的实现类-->  
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
         <property name="basePackage" value="com.jxust.ssm.dao" />  
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
-    </bean>  
+    </bean>
   
-    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx --> 
-    <bean id="transactionManager"  
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager"
         class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>

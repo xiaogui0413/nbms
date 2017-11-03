@@ -65,9 +65,9 @@ public class DevInvokeController {
 	@ResponseBody
 	public String whereIs2(String devid, String ak) {
 		// String devid = "865352030203284";
-		System.out.println(ak);
-		if (ak.equals("ssssss")) {
-			DevAttr devAttr = devAttrService.selectByDevID(devid);
+		DevAttr devAttr = devAttrService.selectByDevID(devid);
+		if (ak.equals("ssssss") && devAttr != null) {
+
 			String position = devAttr.getY_pos() + "," + devAttr.getX_pos();
 			String position2 = devAttr.getX_pos() + "," + devAttr.getY_pos();
 
@@ -77,15 +77,23 @@ public class DevInvokeController {
 			String Local = devAttr.getnLocaMode();
 			String devName = devAttr.getsDevName();
 
+			String transferedPosition = BaiduMapUtil.getPositionTransfer(position2);
+			String first = transferedPosition.substring(2, 16);
+			String last = transferedPosition.substring(22);
+			String aa = last + "," + first;
+			position = aa;
+
+			String str = BaiduMapUtil.getAddress(position);
+			str = str.substring(3, str.length() - 3);
+
 			Map<Object, Object> devMap = new HashMap<Object, Object>();
 			devMap.put("devName", devName);
 			devMap.put("Position", Position);
 			devMap.put("Hop", Hop);
 			devMap.put("Local", Local);
 			devMap.put("BattValt", BattValt);
+			devMap.put("地址：", str);
 
-			BaiduMapUtil.getPositionTransfer(position2);
-			BaiduMapUtil.getAddress(position);
 			JSONObject json = JSONObject.fromObject(devMap);
 			return json.toString();
 		} else {

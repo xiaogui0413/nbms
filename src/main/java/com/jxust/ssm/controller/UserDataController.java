@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jxust.ssm.pojo.UserData;
 import com.jxust.ssm.pojo.UserLog;
 import com.jxust.ssm.service.UserDataService;
@@ -122,7 +124,10 @@ public class UserDataController {
 
 	@RequestMapping("/selectUserList")
 	public String selectUserList(Model model) {
+		PageHelper.startPage(1, 10);
 		List<UserData> userData = userDataService.selectUserList();
+		PageInfo<UserData> p = new PageInfo<UserData>(userData);
+		model.addAttribute("page", p);
 		model.addAttribute("userData", userData);
 		return "User/listUser.jsp";
 	}
@@ -212,7 +217,6 @@ public class UserDataController {
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache");
 		response.setDateHeader("Expires", 0);
-
 		HttpSession session = request.getSession();
 
 		ValidateCode vCode = new ValidateCode(120, 30, 4, 80);

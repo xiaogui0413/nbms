@@ -247,7 +247,7 @@
 	}
 
 	function addClickHandler(content,marker){
- 		 marker.addEventListener("click",function(e){
+ 		 marker.addEventListener("click1",function(e){
    			    var pt = e.point;			
 				geoc.getLocation(pt, function(rs){
 				var addComp = rs.addressComponents;
